@@ -1182,20 +1182,20 @@ img {
 
 .orbital-logo {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 110px;
+  height: 110px;
   background: var(--card-bg);
   border: 2px solid var(--border);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 14px;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
   top: 50%;
   left: 50%;
-  margin: -45px 0 0 -45px;
+  margin: -55px 0 0 -55px;
 }
 
 .orbital-logo:hover {
@@ -1218,24 +1218,24 @@ img {
 }
 
 /* Positions orbitales pour 18 logos */
-.orbital-logo:nth-child(1)  { transform: rotate(0deg) translateX(300px) rotate(0deg); }
-.orbital-logo:nth-child(2)  { transform: rotate(20deg) translateX(300px) rotate(-20deg); }
-.orbital-logo:nth-child(3)  { transform: rotate(40deg) translateX(300px) rotate(-40deg); }
-.orbital-logo:nth-child(4)  { transform: rotate(60deg) translateX(300px) rotate(-60deg); }
-.orbital-logo:nth-child(5)  { transform: rotate(80deg) translateX(300px) rotate(-80deg); }
-.orbital-logo:nth-child(6)  { transform: rotate(100deg) translateX(300px) rotate(-100deg); }
-.orbital-logo:nth-child(7)  { transform: rotate(120deg) translateX(300px) rotate(-120deg); }
-.orbital-logo:nth-child(8)  { transform: rotate(140deg) translateX(300px) rotate(-140deg); }
-.orbital-logo:nth-child(9)  { transform: rotate(160deg) translateX(300px) rotate(-160deg); }
-.orbital-logo:nth-child(10) { transform: rotate(180deg) translateX(300px) rotate(-180deg); }
-.orbital-logo:nth-child(11) { transform: rotate(200deg) translateX(300px) rotate(-200deg); }
-.orbital-logo:nth-child(12) { transform: rotate(220deg) translateX(300px) rotate(-220deg); }
-.orbital-logo:nth-child(13) { transform: rotate(240deg) translateX(300px) rotate(-240deg); }
-.orbital-logo:nth-child(14) { transform: rotate(260deg) translateX(300px) rotate(-260deg); }
-.orbital-logo:nth-child(15) { transform: rotate(280deg) translateX(300px) rotate(-280deg); }
-.orbital-logo:nth-child(16) { transform: rotate(300deg) translateX(300px) rotate(-300deg); }
-.orbital-logo:nth-child(17) { transform: rotate(320deg) translateX(300px) rotate(-320deg); }
-.orbital-logo:nth-child(18) { transform: rotate(340deg) translateX(300px) rotate(-340deg); }
+.orbital-logo:nth-child(1)  { transform: rotate(0deg) translateX(350px) rotate(0deg); }
+.orbital-logo:nth-child(2)  { transform: rotate(20deg) translateX(350px) rotate(-20deg); }
+.orbital-logo:nth-child(3)  { transform: rotate(40deg) translateX(350px) rotate(-40deg); }
+.orbital-logo:nth-child(4)  { transform: rotate(60deg) translateX(350px) rotate(-60deg); }
+.orbital-logo:nth-child(5)  { transform: rotate(80deg) translateX(350px) rotate(-80deg); }
+.orbital-logo:nth-child(6)  { transform: rotate(100deg) translateX(350px) rotate(-100deg); }
+.orbital-logo:nth-child(7)  { transform: rotate(120deg) translateX(350px) rotate(-120deg); }
+.orbital-logo:nth-child(8)  { transform: rotate(140deg) translateX(350px) rotate(-140deg); }
+.orbital-logo:nth-child(9)  { transform: rotate(160deg) translateX(350px) rotate(-160deg); }
+.orbital-logo:nth-child(10) { transform: rotate(180deg) translateX(350px) rotate(-180deg); }
+.orbital-logo:nth-child(11) { transform: rotate(200deg) translateX(350px) rotate(-200deg); }
+.orbital-logo:nth-child(12) { transform: rotate(220deg) translateX(350px) rotate(-220deg); }
+.orbital-logo:nth-child(13) { transform: rotate(240deg) translateX(350px) rotate(-240deg); }
+.orbital-logo:nth-child(14) { transform: rotate(260deg) translateX(350px) rotate(-260deg); }
+.orbital-logo:nth-child(15) { transform: rotate(280deg) translateX(350px) rotate(-280deg); }
+.orbital-logo:nth-child(16) { transform: rotate(300deg) translateX(350px) rotate(-300deg); }
+.orbital-logo:nth-child(17) { transform: rotate(320deg) translateX(350px) rotate(-320deg); }
+.orbital-logo:nth-child(18) { transform: rotate(340deg) translateX(350px) rotate(-340deg); }
 
 @keyframes orbit-rotate {
   from { transform: rotate(0deg); }
@@ -1263,13 +1263,13 @@ img {
   }
   
   .orbital-logo {
-    width: 70px;
-    height: 70px;
-    margin: -35px 0 0 -35px;
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
   }
-  
+
   .orbital-logo:nth-child(n) {
-    transform: rotate(var(--angle)) translateX(200px) rotate(calc(-1 * var(--angle)));
+    transform: rotate(var(--angle)) translateX(250px) rotate(calc(-1 * var(--angle)));
   }
 }
 
@@ -1293,9 +1293,9 @@ img {
   }
   
   .orbital-logo {
-    width: 55px;
-    height: 55px;
-    margin: -27.5px 0 0 -27.5px;
+    width: 75px;
+    height: 75px;
+    margin: -37.5px 0 0 -37.5px;
     padding: 8px;
   }
 }
