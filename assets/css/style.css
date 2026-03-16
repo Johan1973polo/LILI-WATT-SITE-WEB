@@ -1196,6 +1196,7 @@ img {
   top: 50%;
   left: 50%;
   margin: -55px 0 0 -55px;
+  animation: counter-rotate 60s linear infinite;
 }
 
 .orbital-logo:hover {
@@ -1240,6 +1241,11 @@ img {
 @keyframes orbit-rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes counter-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
 
 /* Responsive */
