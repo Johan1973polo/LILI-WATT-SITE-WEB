@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Actualités Énergie France 2026 — Blog LILIWATT</title>
+  <meta name="description" content="Toute l'actualité du marché de l'énergie en France : prix électricité, offres gaz, tarifs fournisseurs. Blog mis à jour automatiquement par LILIWATT, courtier en énergie B2B & B2C.">
+  <meta name="keywords" content="actualité énergie France, prix électricité 2026, offres gaz, fournisseur énergie, tarif réglementé, courtage énergie">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://liliwatt.fr/blog">
+  <meta property="og:title" content="Actualités Énergie France 2026 — Blog LILIWATT">
+  <meta property="og:description" content="Toute l'actualité du marché de l'énergie en France : prix électricité, offres gaz, tarifs fournisseurs.">
+  <meta property="og:image" content="https://liliwatt.fr/assets/images/logo-liliwatt.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://liliwatt.fr/blog">
+  <meta property="twitter:title" content="Actualités Énergie France 2026 — Blog LILIWATT">
+  <meta property="twitter:description" content="Toute l'actualité du marché de l'énergie en France.">
+  <meta property="twitter:image" content="https://liliwatt.fr/assets/images/logo-liliwatt.png">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo-liliwatt.png">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="/assets/images/logo-liliwatt.png" alt="LILIWATT - Courtier en énergie B2B" class="logo-liliwatt">
+      </a>
+
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="/offres.html" class="nav-link">Nos offres</a></li>
+          <li><a href="/extracteur" class="nav-link badge">Extracteur de factures</a></li>
+          <li><a href="/apropos.html" class="nav-link">À propos</a></li>
+          <li><a href="/blog" class="nav-link active">Blog</a></li>
+          <li><a href="/contact.html" class="nav-link">Contact</a></li>
+          <li><a href="/recrutement.html" class="nav-link">Recrutement</a></li>
+        </ul>
+        <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
+      </nav>
+
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section Blog -->
+  <section class="section section-hero" style="padding-top: 140px; padding-bottom: 60px;">
+    <div class="container">
+      <div class="hero-content" style="text-align: center;">
+        <div style="display: inline-block; background: linear-gradient(90deg, #7C3AED, #D946EF); padding: 8px 20px; border-radius: 30px; margin-bottom: 20px;">
+          <span style="color: white; font-size: 0.9rem; font-weight: 600;">🔄 Mis à jour toutes les heures</span>
+        </div>
+        <h1 class="hero-title reveal">Actualités Énergie</h1>
+        <p class="hero-subtitle reveal">Toute l'actualité du marché de l'énergie en France — mis à jour automatiquement</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Articles Section -->
+  <section class="section" style="padding-top: 40px;">
+    <div class="container">
+
+      {% if error %}
+      <!-- Message d'erreur si l'API ne répond pas -->
+      <div style="background: #0D0D1F; border: 2px solid #7C3AED; border-radius: 12px; padding: 40px; text-align: center; max-width: 600px; margin: 0 auto;">
+        <h3 style="color: #D946EF; margin-bottom: 16px;">⚠️ Erreur de chargement</h3>
+        <p style="color: #6B7280;">Impossible de récupérer les actualités pour le moment. Veuillez réessayer plus tard.</p>
+        <p style="color: #374151; font-size: 0.9rem; margin-top: 12px;">Erreur : {{ error }}</p>
+      </div>
+      {% elif not articles %}
+      <!-- Message si aucun article -->
+      <div style="text-align: center; padding: 60px 20px;">
+        <h3 style="color: #A78BFA;">📰 Aucun article disponible</h3>
+        <p style="color: #6B7280;">Les actualités seront chargées prochainement.</p>
+      </div>
+      {% else %}
+
+      <!-- Grille d'articles -->
+      <div class="grid grid-3">
+
+        {% for article in articles %}
+        <div class="card reveal" style="overflow: hidden; height: 100%;">
+
+          <!-- Image de l'article -->
+          <div style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
+            <img src="{{ article.urlToImage }}"
+                 alt="{{ article.title }}"
+                 style="width: 100%; height: 100%; object-fit: cover;"
+                 onerror="this.src='https://via.placeholder.com/400x200/0D0D1F/A78BFA?text=Pas+d%27image'">
+          </div>
+
+          <!-- Contenu de la carte -->
+          <div style="padding: 20px;">
+
+            <!-- Source et date -->
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 0.85rem;">
+              <span style="color: #A78BFA; font-weight: 600;">{{ article.source.name }}</span>
+              <span style="color: #6B7280;">·</span>
+              <span style="color: #6B7280;">{{ temps_relatif(article.publishedAt) }}</span>
+            </div>
+
+            <!-- Titre -->
+            <h3 style="color: #F0EEFF; font-size: 1.1rem; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+              {{ article.title }}
+            </h3>
+
+            <!-- Description -->
+            <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+              {{ article.description }}
+            </p>
+
+            <!-- Lien vers l'article -->
+            <a href="{{ article.url }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn btn-outline btn-sm"
+               style="display: inline-block; margin-top: auto;">
+              Lire l'article →
+            </a>
+
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section" style="margin-top: 80px;">
+    <div class="container" style="text-align: center;">
+      <h2 style="background: linear-gradient(90deg, #A78BFA, #7C3AED, #D946EF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px;">
+        Besoin d'optimiser vos factures d'énergie ?
+      </h2>
+      <a href="/extracteur" class="btn btn-white btn-lg">Analyser ma facture gratuitement</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <a href="/">
+              <img src="/assets/images/logo-liliwatt.png" alt="LILIWATT" class="footer-logo-img">
+            </a>
+          </div>
+          <p class="footer-tagline">Votre courtier en énergie B2B. Plus de pouvoir d'achat, moins de factures.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/offres.html">Nos offres</a></li>
+            <li><a href="/extracteur">Extracteur de factures</a></li>
+            <li><a href="/apropos.html">À propos</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/recrutement.html">Recrutement</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Nos partenaires</h4>
+          <ul>
+            <li>OHM Énergie</li>
+            <li>MINT Énergie</li>
+            <li>Ilek</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+            <li>Tél : +33 (0)1 XX XX XX XX</li>
+            <li>Lun-Ven : 9h-18h</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 LILIWATT — LILISTRAT STRATÉGIE SAS · Tous droits réservés</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+          <a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a> ·
+          <a href="https://www.liliwatt.fr">www.liliwatt.fr</a> ·
+          <a href="#">Mentions légales</a> ·
+          <a href="#">Politique de confidentialité</a> ·
+          <a href="#">RGPD</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

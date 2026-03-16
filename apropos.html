@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LILIWATT - Qui sommes-nous ? Découvrez notre équipe de spécialistes du courtage en énergie B2B et nos valeurs.">
+  <meta name="keywords" content="LILIWATT équipe, courtier énergie, à propos, valeurs">
+
+  <title>À propos - LILIWATT</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .team-member {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .team-member:hover {
+      transform: translateY(-4px);
+      border-color: var(--violet);
+      box-shadow: var(--glow);
+    }
+
+    .team-photo {
+      width: 100%;
+      height: 280px;
+      background: #1E1B4B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--steel);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: var(--spacing-md);
+    }
+
+    .team-info {
+      padding: var(--spacing-md);
+    }
+
+    .team-name {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .team-role {
+      color: var(--violet-l);
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .team-bio {
+      color: var(--steel);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .mission-box {
+      background: linear-gradient(135deg, var(--violet), var(--elec));
+      padding: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      margin: var(--spacing-lg) 0;
+    }
+
+    .mission-box h2 {
+      color: var(--white);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .mission-box p {
+      color: var(--white);
+      font-size: 1.25rem;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo-liliwatt.png" alt="LILIWATT - Courtier en énergie B2B" class="logo-liliwatt">
+      </a>
+
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Accueil</a></li>
+          <li><a href="offres.html" class="nav-link">Nos offres</a></li>
+          <li><a href="/extracteur" class="nav-link badge">Extracteur de factures</a></li>
+          <li><a href="apropos.html" class="nav-link">À propos</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="recrutement.html" class="nav-link">Recrutement</a></li>
+        </ul>
+        <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
+      </nav>
+
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="section section-hero" style="min-height: 60vh;">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title reveal">LILIWATT, c'est qui ?</h1>
+        <p class="hero-subtitle reveal">Nous sommes une équipe de spécialistes du courtage en énergie B2B, créée pour aider les professionnels français à reprendre le contrôle de leurs dépenses énergétiques.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notre mission -->
+  <section class="section">
+    <div class="container">
+      <div class="mission-box reveal">
+        <h2>Notre mission</h2>
+        <p>Chaque euro dépensé en trop sur votre facture d'énergie est un euro qui ne sert pas votre entreprise. Notre mission : vous rendre chaque centime récupérable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Les valeurs -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">Nos valeurs</h2>
+
+      <div class="grid grid-3">
+        <div class="card reveal">
+          <div class="card-icon">🔍</div>
+          <h3 class="card-title">Transparence</h3>
+          <p class="card-text">Aucun frais caché. Notre rémunération vient des fournisseurs, pas de vous. Vous économisez vraiment, nous gagnons seulement si vous gagnez.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-icon">🎯</div>
+          <h3 class="card-title">Performance</h3>
+          <p class="card-text">On ne vous propose une offre que si elle est meilleure que l'actuelle. Si votre tarif actuel est imbattable, on vous le dit clairement.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-icon">📞</div>
+          <h3 class="card-title">Proximité</h3>
+          <p class="card-text">Un conseiller dédié, joignable, qui connaît votre dossier. Pas de plateforme automatisée, pas de changement d'interlocuteur.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- L'équipe -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">L'équipe LILIWATT</h2>
+      <p class="section-subtitle reveal">Des experts passionnés au service de votre performance énergétique.</p>
+
+      <div class="team-grid">
+        <div class="team-member reveal">
+          <div class="team-photo">
+            [Photo Johan - Fondateur]
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Johan STRATÉGY</h3>
+            <div class="team-role">Fondateur & Directeur</div>
+            <p class="team-bio">Expert du courtage en énergie depuis plus de 5 ans. Ancien consultant énergie pour grands comptes, Johan a créé LILIWATT pour démocratiser l'accès aux meilleurs tarifs professionnels.</p>
+          </div>
+        </div>
+
+        <div class="team-member reveal">
+          <div class="team-photo">
+            [Photo Marie - Conseillère commerciale]
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Marie DUBOIS</h3>
+            <div class="team-role">Conseillère Commerciale Senior</div>
+            <p class="team-bio">Spécialiste des secteurs CHR (Cafés, Hôtels, Restaurants) et artisans. Marie accompagne nos clients dans leur transition énergétique avec pédagogie et efficacité.</p>
+          </div>
+        </div>
+
+        <div class="team-member reveal">
+          <div class="team-photo">
+            [Photo Thomas - Analyste tarifs]
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Thomas MARTIN</h3>
+            <div class="team-role">Analyste Tarifs & Marchés</div>
+            <p class="team-bio">Veille quotidienne du marché de l'énergie et des grilles tarifaires. Thomas garantit que nos clients accèdent toujours aux offres les plus compétitives du moment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partenaires institutionnels -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">Nos partenaires & certifications</h2>
+
+      <div class="grid grid-3 reveal">
+        <div class="card text-center">
+          <div style="height: 100px; background: #1E1B4B; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+            <span style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--violet-l);">OHM ÉNERGIE</span>
+          </div>
+          <h4>Partenaire officiel</h4>
+          <p class="card-text">Accès aux tarifs négociés pour nos clients</p>
+        </div>
+
+        <div class="card text-center">
+          <div style="height: 100px; background: #1E1B4B; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+            <span style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--violet-l);">MINT ÉNERGIE</span>
+          </div>
+          <h4>Partenaire officiel</h4>
+          <p class="card-text">Offres sur-mesure pour professionnels</p>
+        </div>
+
+        <div class="card text-center">
+          <div style="height: 100px; background: #1E1B4B; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+            <span style="font-family: var(--font-heading); font-size: 1.5rem; color: #10B981;">ILEK</span>
+          </div>
+          <h4>Partenaire officiel</h4>
+          <p class="card-text">Énergie verte certifiée 100% renouvelable</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <div class="card reveal" style="display: inline-block; max-width: 600px;">
+          <h4 style="margin-bottom: var(--spacing-sm);">Inscription ORIAS</h4>
+          <p class="card-text">LILIWATT est inscrit au registre ORIAS des intermédiaires en assurances, banque et finance (mention courtage). Numéro d'enregistrement : <strong style="color: var(--white);">XX XXX XXX</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chiffres clés -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">LILIWATT en chiffres</h2>
+
+      <div class="stats reveal">
+        <div class="stat-item">
+          <span class="stat-number" data-count="200">0</span>
+          <span class="stat-label">Contrats signés</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-count="3">0</span>
+          <span class="stat-label">Fournisseurs partenaires</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-count="18">0</span>
+          <span class="stat-label">% d'économies maximum</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-count="2026">0</span>
+          <span class="stat-label">Année de création</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notre histoire -->
+  <section class="section">
+    <div class="container">
+      <div class="card reveal" style="max-width: 900px; margin: 0 auto;">
+        <h2 style="margin-bottom: var(--spacing-md); text-align: center;">Notre histoire</h2>
+        <p class="card-text" style="font-size: 1.125rem; line-height: 1.8;">
+          LILIWATT est née d'un constat simple : <strong style="color: var(--white);">trop de professionnels payent leur énergie trop cher</strong>, faute de temps ou d'expertise pour comparer les offres.
+        </p>
+        <p class="card-text" style="font-size: 1.125rem; line-height: 1.8; margin-top: var(--spacing-sm);">
+          Après avoir accompagné des dizaines de grands comptes dans leur optimisation énergétique, notre fondateur Johan a voulu rendre ce service accessible à tous les professionnels, quelle que soit leur taille.
+        </p>
+        <p class="card-text" style="font-size: 1.125rem; line-height: 1.8; margin-top: var(--spacing-sm);">
+          Aujourd'hui, LILIWATT aide des boulangeries, hôtels, restaurants, laveries et PME à <strong style="color: var(--white);">économiser des milliers d'euros par an</strong> grâce à notre expertise et nos partenariats privilégiés avec les meilleurs fournisseurs du marché.
+        </p>
+        <p class="card-text" style="font-size: 1.125rem; line-height: 1.8; margin-top: var(--spacing-sm);">
+          Notre ambition : <strong style="color: var(--elec);">devenir le courtier de référence pour les professionnels français.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="cta-section reveal">
+    <div class="container text-center">
+      <h2 style="color: var(--white); margin-bottom: var(--spacing-md);">
+        Faites confiance à LILIWATT pour optimiser votre facture d'énergie
+      </h2>
+      <p style="color: var(--white); margin-bottom: var(--spacing-md); font-size: 1.125rem;">
+        Analyse gratuite, accompagnement personnalisé, résultats garantis.
+      </p>
+      <a href="/extracteur" class="btn btn-white btn-lg">Analyser ma facture</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <a href="index.html">
+              <img src="assets/images/logo-liliwatt.png" alt="LILIWATT" class="footer-logo-img">
+            </a>
+          </div>
+          <p class="footer-tagline">Votre courtier en énergie B2B. Plus de pouvoir d'achat, moins de factures.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="offres.html">Nos offres</a></li>
+            <li><a href="/extracteur">Extracteur de factures</a></li>
+            <li><a href="apropos.html">À propos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="recrutement.html">Recrutement</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Nos partenaires</h4>
+          <ul>
+            <li>OHM Énergie</li>
+            <li>MINT Énergie</li>
+            <li>Ilek</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+            <li>Tél : +33 (0)1 XX XX XX XX</li>
+            <li>Lun-Ven : 9h-18h</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 LILIWATT — Tous droits réservés · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a> · <a href="#">RGPD</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

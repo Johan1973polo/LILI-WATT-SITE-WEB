@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyseur de facture — LILIWATT</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --violet: #7C3AED;
+    --violet-l: #A78BFA;
+    --fuchsia: #D946EF;
+    --noir: #06060F;
+    --card: #0D0D1F;
+    --border: #1E1B4B;
+    --white: #F0EEFF;
+    --gray: #6B7280;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--noir);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px 60px;
+  }
+
+  .wrap { width: 100%; max-width: 520px; }
+
+  /* Logo */
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--violet-l);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fuchsia); }
+
+  /* Progress */
+  .pbar-wrap { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; }
+  .pbar { height: 100%; background: linear-gradient(90deg, var(--violet), var(--fuchsia)); border-radius: 2px; transition: width 0.5s ease; }
+
+  /* Screens */
+  .screen { display: none; }
+  .screen.on { display: block; }
+
+  .step-lbl { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--violet-l); text-transform: uppercase; margin-bottom: 8px; }
+  .step-title { font-size: 22px; font-weight: 500; color: var(--white); margin-bottom: 8px; line-height: 1.3; }
+  .step-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; line-height: 1.7; }
+
+  /* Pills */
+  .pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .pills.tri { grid-template-columns: 1fr 1fr 1fr; }
+  .pill {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pill:hover { border-color: var(--violet); }
+  .pill.sel { border-color: var(--violet); background: rgba(124,58,237,0.12); }
+  .pill b { display: block; font-size: 13px; font-weight: 500; color: var(--white); }
+  .pill span { font-size: 11px; color: var(--gray); margin-top: 3px; display: block; }
+
+  /* Input fields */
+  .ifield { margin-bottom: 16px; }
+  .ifield label { font-size: 13px; color: var(--gray); display: block; margin-bottom: 6px; }
+  .ifield input, .ifield select {
+    width: 100%;
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .ifield input:focus, .ifield select:focus { border-color: var(--violet); }
+  .suf { position: relative; }
+  .suf input { padding-right: 44px; }
+  .suf em { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-style: normal; font-size: 13px; color: var(--gray); pointer-events: none; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 4px;
+  }
+  .btn-main { background: var(--violet); color: #fff; }
+  .btn-main:hover { background: #6D28D9; }
+  .btn-main:disabled { background: var(--border); color: var(--gray); cursor: not-allowed; }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 16px;
+    font-family: 'DM Sans', sans-serif;
+    display: inline-block;
+  }
+  .back-btn:hover { color: var(--white); }
+
+  /* Loader */
+  .loader-wrap { text-align: center; padding: 40px 0; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 2px solid var(--border);
+    border-top-color: var(--violet);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .load-title { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+  .load-sub { font-size: 13px; color: var(--gray); margin-bottom: 24px; }
+  .load-steps { text-align: left; max-width: 280px; margin: 0 auto; }
+  .lstep {
+    font-size: 13px;
+    color: var(--gray);
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+  }
+  .lstep.done { color: #34D399; }
+  .lstep::before { content: '○'; font-size: 11px; flex-shrink: 0; }
+  .lstep.done::before { content: '✓'; color: #34D399; }
+
+  /* Teaser flou */
+  .teaser-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .teaser-label { font-size: 11px; color: var(--gray); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+  .teaser-amount {
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--violet-l);
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.5s;
+  }
+  .teaser-pct { font-size: 13px; color: var(--gray); margin-top: 8px; filter: blur(6px); user-select: none; }
+
+  .unlock-card {
+    background: rgba(124,58,237,0.08);
+    border: 1.5px solid var(--violet);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .unlock-title { font-size: 17px; font-weight: 500; color: var(--white); margin-bottom: 8px; }
+  .unlock-sub { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+
+  /* Résultat */
+  .result-hero {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(217,70,239,0.08));
+    border: 1.5px solid var(--violet);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .res-greeting { font-size: 13px; color: var(--violet-l); margin-bottom: 6px; }
+  .res-label { font-size: 12px; color: var(--gray); margin-bottom: 12px; }
+  .res-amount { font-size: 48px; font-weight: 500; color: var(--white); line-height: 1; margin-bottom: 4px; }
+  .res-range { font-size: 13px; color: var(--gray); margin-bottom: 12px; }
+  .res-badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.2);
+    color: var(--violet-l);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 16px;
+    border-radius: 20px;
+  }
+
+  .info-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .info-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .tag-warn { background: rgba(251,191,36,0.15); color: #FCD34D; }
+  .tag-ok { background: rgba(52,211,153,0.15); color: #34D399; }
+  .tag-info { background: rgba(124,58,237,0.2); color: var(--violet-l); }
+  .info-card-title { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 5px; }
+  .info-card-sub { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+  /* Bloc détails contrat */
+  .contract-detail {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .contract-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .contract-icon {
+    font-size: 24px;
+  }
+  .contract-type {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .contract-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .contract-label {
+    color: var(--gray);
+  }
+  .contract-value {
+    color: var(--white);
+    font-weight: 500;
+  }
+  .contract-value.highlight {
+    color: var(--violet-l);
+    font-weight: 600;
+  }
+  .contract-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0;
+  }
+
+  .mention { font-size: 11px; color: var(--border); text-align: center; margin-top: 12px; line-height: 1.7; }
+
+  /* RGPD Checkbox */
+  .rgpd-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .rgpd-checkbox:hover {
+    border-color: var(--violet);
+    background: rgba(124,58,237,0.05);
+  }
+  .rgpd-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--violet);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .rgpd-label {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .rgpd-label strong {
+    color: var(--white);
+  }
+  .rgpd-link {
+    color: var(--violet-l);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .rgpd-link:hover {
+    color: var(--fuchsia);
+  }
+
+  /* Modal RGPD */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(6,6,15,0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .modal-overlay.show {
+    display: flex;
+  }
+  .modal-content {
+    background: var(--bg);
+    border: 2px solid var(--violet);
+    border-radius: 12px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .modal-close:hover {
+    background: var(--card);
+    color: var(--white);
+  }
+  .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 20px;
+    padding-right: 40px;
+  }
+  .modal-body {
+    color: var(--gray);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .modal-body h3 {
+    color: var(--violet-l);
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .modal-body p {
+    margin-bottom: 12px;
+  }
+  .modal-body ul {
+    margin-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  /* Choice cards */
+  .choice-cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
+  .choice-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .choice-card:hover { border-color: var(--violet); background: rgba(124,58,237,0.05); }
+  .choice-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: rgba(124,58,237,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  .choice-title { font-size: 17px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .choice-sub { font-size: 13px; color: var(--gray); line-height: 1.6; }
+  .choice-badge {
+    display: inline-block;
+    background: rgba(217,70,239,0.2);
+    color: var(--fuchsia);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Upload zone */
+  .dropzone {
+    background: var(--card);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+  }
+  .dropzone:hover, .dropzone.drag-over { border-color: var(--violet); background: rgba(124,58,237,0.05); }
+  .dropzone-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.6; }
+  .dropzone-text { font-size: 14px; color: var(--white); margin-bottom: 4px; }
+  .dropzone-sub { font-size: 12px; color: var(--gray); }
+
+  /* File preview */
+  .file-preview {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .file-preview.show { display: block; }
+  .file-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .file-preview-name { font-size: 13px; color: var(--white); font-weight: 500; }
+  .file-preview-remove { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 18px; padding: 0; }
+  .file-preview-remove:hover { color: #EF4444; }
+  .file-preview-img { width: 100%; border-radius: 8px; overflow: hidden; position: relative; }
+  .file-preview-img img { width: 100%; display: block; }
+
+  /* Laser Scan Effect */
+  .laser-scan-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .laser-scan-container.active { opacity: 1; }
+
+  .laser-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #7C3AED, #D946EF, #7C3AED, transparent);
+    box-shadow:
+      0 0 20px rgba(124, 58, 237, 0.8),
+      0 0 40px rgba(217, 70, 239, 0.6),
+      0 0 60px rgba(124, 58, 237, 0.4);
+    animation: laserScan 2.5s ease-in-out infinite;
+  }
+
+  @keyframes laserScan {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    51% { top: 100%; }
+    100% { top: 0%; }
+  }
+
+  /* Hero Landing Page */
+  .hero-container {
+    text-align: center;
+    padding: 60px 0 40px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid var(--violet);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--violet-l);
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #F0EEFF 0%, var(--violet-l) 50%, var(--fuchsia) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-cta {
+    background: linear-gradient(135deg, var(--violet), var(--fuchsia));
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 18px 40px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(124,58,237,0.3);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(124,58,237,0.4);
+  }
+  .hero-features {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-feature {
+    font-size: 12px;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-feature::before {
+    content: '✓';
+    color: #34D399;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* Profile & Energy Selection */
+  .selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .selection-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .selection-card:hover {
+    border-color: var(--violet);
+    background: rgba(124,58,237,0.05);
+  }
+  .selection-card.selected {
+    border-color: var(--violet);
+    background: rgba(124,58,237,0.12);
+  }
+  .selection-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .selection-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .selection-desc {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  /* Responsive */
+  @media (max-width: 400px) {
+    .row2 { grid-template-columns: 1fr; }
+    .pills { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo"><div class="logo-dot"></div>LILIWATT</div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+
+  <!-- ── HERO LANDING PAGE ── -->
+  <div class="screen on" id="s-hero">
+    <div class="hero-container">
+      <div class="hero-badge">Courtage énergie B2B & B2C</div>
+      <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
+      <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
+      <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
+
+      <div class="hero-features">
+        <div class="hero-feature">100% gratuit</div>
+        <div class="hero-feature">Sans engagement</div>
+        <div class="hero-feature">Analyse en 30 secondes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SÉLECTION PROFIL ── -->
+  <div class="screen" id="s-profile">
+    <button class="back-btn" onclick="go('s-profile','s-hero',0)">← Retour</button>
+    <div class="step-lbl">Étape 1 sur 3</div>
+    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Vous êtes ?</div>
+    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez votre profil</div>
+
+    <div class="selection-grid">
+      <div class="selection-card" onclick="selectProfile('particulier')">
+        <span class="selection-icon">👤</span>
+        <div class="selection-title">Particulier</div>
+        <div class="selection-desc">Logement personnel</div>
+      </div>
+      <div class="selection-card" onclick="selectProfile('professionnel')">
+        <span class="selection-icon">🏢</span>
+        <div class="selection-title">Professionnel</div>
+        <div class="selection-desc">Entreprise, local commercial</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SÉLECTION TYPE D'ÉNERGIE ── -->
+  <div class="screen" id="s-energy">
+    <button class="back-btn" onclick="go('s-energy','s-profile',2)">← Retour</button>
+    <div class="step-lbl">Étape 2 sur 3</div>
+    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Type d'énergie</div>
+    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Quelle facture souhaitez-vous analyser ?</div>
+
+    <div class="selection-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="selection-card" onclick="selectEnergy('electricite')">
+        <span class="selection-icon">⚡</span>
+        <div class="selection-title">Électricité</div>
+      </div>
+      <div class="selection-card" onclick="selectEnergy('gaz')">
+        <span class="selection-icon">🔥</span>
+        <div class="selection-title">Gaz</div>
+      </div>
+      <div class="selection-card" onclick="selectEnergy('les_deux')">
+        <span class="selection-icon">⚡🔥</span>
+        <div class="selection-title">Les deux</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ÉCRAN DE CHOIX ── -->
+  <div class="screen" id="s-start">
+    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Comment voulez-vous procéder ?</div>
+    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Choisissez la méthode la plus simple pour vous</div>
+
+    <div class="choice-cards">
+      <div class="choice-card" onclick="goUpload()">
+        <div class="choice-icon">📄</div>
+        <div class="choice-title">J'ai ma facture</div>
+        <div class="choice-sub">Importez votre facture PDF ou photo<br>Analyse automatique en 30 secondes</div>
+        <div class="choice-badge">RECOMMANDÉ · PLUS RAPIDE</div>
+      </div>
+
+      <div class="choice-card" onclick="go('s-start','s0',8)">
+        <div class="choice-icon">✏️</div>
+        <div class="choice-title">Je n'ai pas ma facture</div>
+        <div class="choice-sub">Estimation sans facture — Saisie manuelle<br>En 2 minutes chrono</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ÉCRAN UPLOAD ── -->
+  <div class="screen" id="s-upload">
+    <button class="back-btn" onclick="go('s-upload','s-start',0)">← Retour</button>
+    <div class="step-lbl">Analyse automatique</div>
+    <div class="step-title">Importez votre facture</div>
+    <div class="step-sub">Formats acceptés : PDF, JPG, PNG, HEIC</div>
+
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+      <div class="dropzone-icon">📁</div>
+      <div class="dropzone-text">Glissez votre facture ici ou cliquez pour importer</div>
+      <div class="dropzone-sub">PDF, JPG, PNG, HEIC — 16 MB max</div>
+    </div>
+    <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none" onchange="handleFileSelect(event)">
+
+    <div class="file-preview" id="file-preview">
+      <div class="file-preview-header">
+        <span class="file-preview-name" id="file-name"></span>
+        <button class="file-preview-remove" onclick="removeFile()">✕</button>
+      </div>
+      <div class="file-preview-img" id="file-img">
+        <div class="laser-scan-container" id="laser-scan">
+          <div class="laser-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-main" id="btn-upload" disabled onclick="analyzeInvoice()">Analyser ma facture →</button>
+  </div>
+
+  <!-- ── STEP 0 : Facture ── -->
+  <div class="screen" id="s0">
+    <div class="step-lbl">Démarrage</div>
+    <div class="step-title">Analysez votre facture d'énergie</div>
+    <div class="step-sub">En 2 minutes, découvrez combien vous pourriez économiser. Gratuit et sans engagement.</div>
+
+    <div class="ifield">
+      <label>Montant de votre dernière facture (TTC)</label>
+      <div class="suf"><input type="number" id="f-montant" placeholder="ex : 850" min="1" oninput="chk0()"><em>€</em></div>
+    </div>
+
+    <div class="ifield">
+      <label>Période couverte</label>
+      <div class="pills tri" id="pp-periode">
+        <div class="pill" onclick="pick('periode','mensuel',this)"><b>1 mois</b></div>
+        <div class="pill" onclick="pick('periode','bimestriel',this)"><b>2 mois</b></div>
+        <div class="pill" onclick="pick('periode','trimestriel',this)"><b>3 mois</b></div>
+      </div>
+    </div>
+
+    <div class="ifield">
+      <label>Votre fournisseur actuel</label>
+      <div class="pills" id="pp-fourn">
+        <div class="pill" onclick="pick('fourn','EDF',this)"><b>EDF</b></div>
+        <div class="pill" onclick="pick('fourn','Engie',this)"><b>Engie</b></div>
+        <div class="pill" onclick="pick('fourn','Autre fournisseur',this)"><b>Autre fournisseur</b></div>
+        <div class="pill" onclick="pick('fourn','Ne sait pas',this)"><b>Je ne sais pas</b></div>
+      </div>
+    </div>
+
+    <button class="btn btn-main" id="btn0" disabled onclick="goLoader()">Analyser ma facture →</button>
+  </div>
+
+  <!-- ── LOADER 1 ── -->
+  <div class="screen" id="s-load">
+    <div class="loader-wrap">
+      <div class="spinner"></div>
+      <div class="load-title">Analyse en cours…</div>
+      <div class="load-sub">Veuillez patienter quelques secondes</div>
+      <div class="load-steps">
+        <div class="lstep" id="ls0">Récupération des données tarifaires</div>
+        <div class="lstep" id="ls1">Identification de votre profil</div>
+        <div class="lstep" id="ls2">Comparaison avec le marché</div>
+        <div class="lstep" id="ls3">Calcul des économies potentielles</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 1 : Secteur ── -->
+  <div class="screen" id="s1">
+    <button class="back-btn" onclick="go('s1','s0',8)">← Retour</button>
+    <div class="step-lbl">Question 1 / 2</div>
+    <div class="step-title">Votre secteur d'activité</div>
+    <div class="step-sub">Pour affiner le calcul selon votre profil de consommation.</div>
+    <div class="pills" id="pp-secteur">
+      <div class="pill" onclick="pick('secteur','Restaurant / Café',this)"><b>Restaurant / Café</b><span>Forte conso cuisine</span></div>
+      <div class="pill" onclick="pick('secteur','Hôtel / Hébergement',this)"><b>Hôtel / Hébergement</b><span>Conso 24h/24</span></div>
+      <div class="pill" onclick="pick('secteur','Boulangerie / Artisan',this)"><b>Boulangerie / Artisan</b><span>Fours & équipements</span></div>
+      <div class="pill" onclick="pick('secteur','Laverie / Pressing',this)"><b>Laverie / Pressing</b><span>Très forte conso</span></div>
+      <div class="pill" onclick="pick('secteur','Bureaux / PME',this)"><b>Bureaux / PME</b><span>Éclairage & IT</span></div>
+      <div class="pill" onclick="pick('secteur','Autre',this)"><b>Autre activité</b><span></span></div>
+    </div>
+    <button class="btn btn-main" id="btn1" disabled onclick="go('s1','s2',50)">Continuer →</button>
+  </div>
+
+  <!-- ── STEP 2 : Type contrat ── -->
+  <div class="screen" id="s2">
+    <button class="back-btn" onclick="go('s2','s1',30)">← Retour</button>
+    <div class="step-lbl">Question 2 / 2</div>
+    <div class="step-title">Votre type de contrat</div>
+    <div class="step-sub">Si vous ne savez pas, sélectionnez "Je ne sais pas" — on l'identifie pour vous.</div>
+    <div class="pills" id="pp-contrat">
+      <div class="pill" onclick="pick('contrat','indexe',this)"><b>Prix indexé</b><span>Variable selon le marché</span></div>
+      <div class="pill" onclick="pick('contrat','fixe',this)"><b>Prix fixe garanti</b><span>Stable sur la durée</span></div>
+      <div class="pill" onclick="pick('contrat','trv',this)"><b>Tarif réglementé</b><span>TRV EDF / Engie</span></div>
+      <div class="pill" onclick="pick('contrat','inconnu',this)"><b>Je ne sais pas</b><span>On identifie pour vous</span></div>
+    </div>
+    <button class="btn btn-main" id="btn2" disabled onclick="goTeaser()">Voir mes résultats →</button>
+  </div>
+
+  <!-- ── STEP 3 : Teaser ── -->
+  <div class="screen" id="s3">
+    <div class="step-lbl">Résultats prêts</div>
+    <div class="step-title">Vos économies ont été calculées</div>
+    <div class="step-sub">Renseignez vos coordonnées pour découvrir votre potentiel d'économies exact.</div>
+
+    <div class="teaser-card">
+      <div class="teaser-label">Économies estimées sur 12 mois</div>
+      <div class="teaser-amount" id="teaser-blur">████ € — ████ €</div>
+      <div class="teaser-pct" id="teaser-pct">soit XX% à XX% d'économies potentielles</div>
+    </div>
+
+    <div class="unlock-card">
+      <div class="unlock-title">Découvrir mon potentiel d'économies</div>
+      <div class="unlock-sub">Entrez vos coordonnées ci-dessous — un conseiller LILIWATT vous rappelle sous 24h avec une offre personnalisée.</div>
+      <button class="btn btn-main" style="margin-top:0" onclick="go('s3','s4',65)">Je veux voir mes économies →</button>
+    </div>
+    <div class="mention">Sans engagement · Gratuit · RGPD conforme</div>
+  </div>
+
+  <!-- ── STEP 4 : Formulaire ── -->
+  <div class="screen" id="s4">
+    <button class="back-btn" onclick="go('s4','s3',55)">← Retour</button>
+    <div class="step-lbl">Dernière étape</div>
+    <div class="step-title">Vos coordonnées</div>
+    <div class="step-sub">Pour recevoir votre analyse complète et être rappelé par votre conseiller LILIWATT.</div>
+
+    <!-- Champ Nom de société - affiché seulement pour professionnel -->
+    <div class="ifield" id="field-entreprise" style="display:none;">
+      <label>Nom de la société *</label>
+      <input type="text" id="f-entreprise" placeholder="DUPONT SARL" oninput="chk4()">
+    </div>
+
+    <div class="row2">
+      <div class="ifield"><label>Prénom *</label><input type="text" id="f-prenom" placeholder="Jean" oninput="chk4()"></div>
+      <div class="ifield"><label>Nom *</label><input type="text" id="f-nom" placeholder="Dupont" oninput="chk4()"></div>
+    </div>
+    <div class="ifield"><label>Téléphone *</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="chk4()"></div>
+    <div class="ifield"><label>Email professionnel *</label><input type="email" id="f-email" placeholder="contact@monentreprise.fr" oninput="chk4()"></div>
+
+    <!-- Case RGPD obligatoire -->
+    <label class="rgpd-checkbox" for="rgpd-consent">
+      <input type="checkbox" id="rgpd-consent" onchange="chk4()">
+      <div class="rgpd-label">
+        <strong>J'autorise LILIWATT</strong> (marque de LILISTRAT STRATÉGIE SAS) à accéder à mes données de consommation Enedis/GRDF, à transmettre mes informations à ses partenaires fournisseurs d'énergie dans le cadre d'une demande de changement de contrat, et à me contacter par téléphone et email concernant mon offre énergie.
+        <br><span class="rgpd-link" onclick="event.stopPropagation(); openRgpdModal()">Lire les conditions complètes ▼</span>
+      </div>
+    </label>
+
+    <button class="btn btn-main" id="btn4" disabled onclick="submitLead()">Voir mes économies maintenant →</button>
+    <div class="mention">Vos données sont utilisées uniquement par LILIWATT pour vous contacter.<br>Aucune revente. Conformité RGPD totale.</div>
+  </div>
+
+  <!-- ── LOADER 2 ── -->
+  <div class="screen" id="s-load2">
+    <div class="loader-wrap">
+      <div class="spinner"></div>
+      <div class="load-title">Finalisation de votre analyse…</div>
+      <div class="load-sub">Un instant</div>
+    </div>
+  </div>
+
+  <!-- ── STEP 5 : Résultat ── -->
+  <div class="screen" id="s5">
+    <div class="result-hero">
+      <div class="res-greeting" id="r-greeting">Bonjour Jean,</div>
+      <div class="res-label">votre potentiel d'économies annuel est de</div>
+      <div class="res-amount" id="r-min">—</div>
+      <div class="res-range" id="r-range">à — € selon le fournisseur retenu</div>
+      <div class="res-badge" id="r-pct">—% d'économies potentielles</div>
+    </div>
+
+    <!-- Bloc électricité (affiché si type_energie = electricite ou les_deux) -->
+    <div class="contract-detail" id="bloc-elec" style="display:none;">
+      <div class="contract-header">
+        <span class="contract-icon">⚡</span>
+        <span class="contract-type">VOTRE CONTRAT ÉLECTRICITÉ</span>
+      </div>
+      <div class="contract-line"><span class="contract-label">Fournisseur</span><span class="contract-value" id="r-fourn-elec">—</span></div>
+      <div class="contract-line"><span class="contract-label">Offre</span><span class="contract-value" id="r-offre-elec">—</span></div>
+      <div class="contract-line"><span class="contract-label">Option</span><span class="contract-value" id="r-option">—</span></div>
+      <div class="contract-line"><span class="contract-label">Puissance</span><span class="contract-value" id="r-puissance">—</span></div>
+      <div class="contract-line"><span class="contract-label">PDL</span><span class="contract-value" id="r-pdl">—</span></div>
+      <div class="contract-divider"></div>
+      <div class="contract-line"><span class="contract-label">Prix HP</span><span class="contract-value highlight" id="r-prix-hp">—</span></div>
+      <div class="contract-line"><span class="contract-label">Prix HC</span><span class="contract-value highlight" id="r-prix-hc">—</span></div>
+      <div class="contract-line"><span class="contract-label">Prix kWh</span><span class="contract-value highlight" id="r-prix-base">—</span></div>
+      <div class="contract-line"><span class="contract-label">Abonnement</span><span class="contract-value" id="r-abo-elec">—</span></div>
+      <div class="contract-line"><span class="contract-label">Conso annuelle estimée</span><span class="contract-value" id="r-conso-elec">—</span></div>
+      <div class="contract-line"><span class="contract-label">Fin de contrat</span><span class="contract-value" id="r-fin-contrat">—</span></div>
+      <div class="contract-divider"></div>
+      <div class="contract-line"><span class="contract-label">Économies potentielles</span><span class="contract-value highlight" id="r-eco-elec">—</span></div>
+    </div>
+
+    <!-- Bloc gaz (affiché si type_energie = gaz ou les_deux) -->
+    <div class="contract-detail" id="bloc-gaz" style="display:none;">
+      <div class="contract-header">
+        <span class="contract-icon">🔥</span>
+        <span class="contract-type">VOTRE CONTRAT GAZ</span>
+      </div>
+      <div class="contract-line"><span class="contract-label">Fournisseur</span><span class="contract-value" id="r-fourn-gaz">—</span></div>
+      <div class="contract-line"><span class="contract-label">PCE</span><span class="contract-value" id="r-pce">—</span></div>
+      <div class="contract-line"><span class="contract-label">Prix kWh</span><span class="contract-value highlight" id="r-prix-gaz">—</span></div>
+      <div class="contract-line"><span class="contract-label">Abonnement</span><span class="contract-value" id="r-abo-gaz">—</span></div>
+      <div class="contract-line"><span class="contract-label">Conso annuelle estimée</span><span class="contract-value" id="r-conso-gaz">—</span></div>
+      <div class="contract-divider"></div>
+      <div class="contract-line"><span class="contract-label">Économies potentielles</span><span class="contract-value highlight" id="r-eco-gaz">—</span></div>
+    </div>
+
+    <!-- Bloc entreprise (affiché si nom_entreprise ou siren présent) -->
+    <div class="contract-detail" id="bloc-entreprise" style="display:none;">
+      <div class="contract-header">
+        <span class="contract-icon">🏢</span>
+        <span class="contract-type">INFORMATIONS ENTREPRISE</span>
+      </div>
+      <div class="contract-line"><span class="contract-label">Raison sociale</span><span class="contract-value" id="r-entreprise">—</span></div>
+      <div class="contract-line"><span class="contract-label">SIREN</span><span class="contract-value" id="r-siren">—</span></div>
+      <div class="contract-line"><span class="contract-label">Adresse</span><span class="contract-value" id="r-adresse">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-tag" id="r-tag">—</div>
+      <div class="info-card-title" id="r-ct">—</div>
+      <div class="info-card-sub" id="r-cd">—</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-tag tag-info">Prochaine étape</div>
+      <div class="info-card-title">Un conseiller LILIWATT vous rappelle sous 24h</div>
+      <div class="info-card-sub">Votre conseiller analysera votre facture complète et vous présentera les meilleures offres disponibles — sans frais, sans engagement, sans coupure de courant.</div>
+    </div>
+
+    <div class="mention">LILIWATT · Courtage Énergie B2B & B2C<br>contact@liliwatt.fr · www.liliwatt.fr</div>
+  </div>
+
+</div>
+
+<!-- Modal RGPD -->
+<div class="modal-overlay" id="rgpd-modal" onclick="closeRgpdModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeRgpdModal()">✕</button>
+    <div class="modal-title">Politique de confidentialité — LILIWATT</div>
+    <div class="modal-body">
+      <h3>Données collectées</h3>
+      <p>Dans le cadre de ce service, LILIWATT collecte :</p>
+      <ul>
+        <li>Vos coordonnées (nom, prénom, email, téléphone)</li>
+        <li>Vos données de consommation énergétique</li>
+        <li>Vos données contractuelles (PDL, PCE, fournisseur, puissance souscrite)</li>
+        <li>Informations d'entreprise le cas échéant (raison sociale, SIREN)</li>
+      </ul>
+
+      <h3>Utilisation des données</h3>
+      <p>Ces données sont utilisées pour :</p>
+      <ul>
+        <li>Calculer vos économies potentielles d'énergie</li>
+        <li>Rechercher les meilleures offres du marché</li>
+        <li>Vous mettre en relation avec nos partenaires fournisseurs d'énergie</li>
+        <li>Vous contacter par téléphone et email concernant votre analyse</li>
+        <li>Accéder à vos données de consommation Enedis/GRDF pour optimiser votre contrat</li>
+      </ul>
+
+      <h3>Protection et confidentialité</h3>
+      <p>
+        Vos données ne sont <strong>jamais revendues</strong> à des tiers non partenaires.
+        Elles sont traitées de manière sécurisée et confidentielle par LILIWATT
+        (marque de LILISTRAT STRATÉGIE SAS) et partagées uniquement avec nos fournisseurs
+        partenaires dans le cadre de votre demande d'optimisation de contrat.
+      </p>
+
+      <h3>Vos droits RGPD</h3>
+      <p>
+        Conformément au Règlement Général sur la Protection des Données (RGPD - UE 2016/679)
+        et à la loi Informatique et Libertés, vous disposez des droits suivants :
+      </p>
+      <ul>
+        <li><strong>Droit d'accès</strong> : consulter vos données personnelles</li>
+        <li><strong>Droit de rectification</strong> : corriger vos données</li>
+        <li><strong>Droit à l'effacement</strong> : supprimer vos données</li>
+        <li><strong>Droit d'opposition</strong> : refuser le traitement de vos données</li>
+        <li><strong>Droit à la portabilité</strong> : récupérer vos données</li>
+      </ul>
+
+      <p>
+        Pour exercer ces droits ou pour toute question relative au traitement de vos données,
+        contactez-nous à : <strong>contact@liliwatt.fr</strong>
+      </p>
+
+      <h3>Consentement</h3>
+      <p>
+        En cochant la case de consentement RGPD, vous acceptez que LILIWATT collecte et traite
+        vos données personnelles conformément à cette politique. Vous pouvez retirer votre
+        consentement à tout moment en nous contactant.
+      </p>
+
+      <h3>Conservation des données</h3>
+      <p>
+        Vos données sont conservées pour la durée nécessaire à la réalisation de votre demande
+        et conformément aux obligations légales (3 ans maximum pour les prospects non convertis,
+        durée du contrat + 5 ans pour les clients).
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+const D = {};
+
+function selectProfile(type) {
+  D.profil = type;
+
+  // Show/hide company field based on profile
+  const fieldEntreprise = document.getElementById('field-entreprise');
+  if (type === 'professionnel') {
+    fieldEntreprise.style.display = 'block';
+  } else {
+    fieldEntreprise.style.display = 'none';
+    // Clear company field if switching to particulier
+    document.getElementById('f-entreprise').value = '';
+  }
+
+  // Visual feedback
+  document.querySelectorAll('#s-profile .selection-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+  event.target.closest('.selection-card').classList.add('selected');
+  // Navigate to next screen after a short delay
+  setTimeout(() => go('s-profile', 's-energy', 3), 300);
+}
+
+function selectEnergy(type) {
+  D.energie = type;
+  // Visual feedback
+  document.querySelectorAll('#s-energy .selection-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+  event.target.closest('.selection-card').classList.add('selected');
+  // Navigate to choice screen
+  setTimeout(() => go('s-energy', 's-start', 5), 300);
+}
+
+function pick(key, val, el) {
+  el.closest('[id^="pp-"]').querySelectorAll('.pill').forEach(p => p.classList.remove('sel'));
+  el.classList.add('sel');
+  D[key] = val;
+  if (key === 'periode' || key === 'fourn') chk0();
+  if (key === 'secteur') document.getElementById('btn1').disabled = false;
+  if (key === 'contrat') document.getElementById('btn2').disabled = false;
+}
+
+function chk0() {
+  const m = document.getElementById('f-montant').value;
+  document.getElementById('btn0').disabled = !(m > 0 && D.periode && D.fourn);
+}
+
+function chk4() {
+  const p = document.getElementById('f-prenom').value.trim();
+  const n = document.getElementById('f-nom').value.trim();
+  const t = document.getElementById('f-tel').value.trim();
+  const e = document.getElementById('f-email').value.trim();
+  const rgpd = document.getElementById('rgpd-consent').checked;
+
+  // Check company field if visible (professionnel)
+  const fieldEntreprise = document.getElementById('field-entreprise');
+  let entrepriseOk = true;
+  if (fieldEntreprise && fieldEntreprise.style.display !== 'none') {
+    const entreprise = document.getElementById('f-entreprise').value.trim();
+    entrepriseOk = entreprise.length > 0;
+  }
+
+  document.getElementById('btn4').disabled = !(p && n && t && e && rgpd && entrepriseOk);
+}
+
+function openRgpdModal() {
+  document.getElementById('rgpd-modal').classList.add('show');
+}
+
+function closeRgpdModal() {
+  document.getElementById('rgpd-modal').classList.remove('show');
+}
+
+function setPbar(w) { document.getElementById('pbar').style.width = w + '%'; }
+
+function go(from, to, pct) {
+  document.getElementById(from).classList.remove('on');
+  document.getElementById(to).classList.add('on');
+  setPbar(pct);
+  window.scrollTo(0, 0);
+}
+
+function goLoader() {
+  go('s0', 's-load', 20);
+  calcEco();
+  const steps = ['ls0', 'ls1', 'ls2', 'ls3'];
+  let i = 0;
+  const iv = setInterval(() => {
+    if (i < steps.length) { document.getElementById(steps[i]).classList.add('done'); i++; }
+    else { clearInterval(iv); setTimeout(() => go('s-load', 's1', 30), 500); }
+  }, 650);
+}
+
+function calcEco() {
+  const m = parseFloat(document.getElementById('f-montant').value) || 0;
+  const per = D.periode || 'mensuel';
+  const f = { mensuel: 12, bimestriel: 6, trimestriel: 4 };
+  D._ann = m * (f[per] || 12);
+}
+
+function getRate() {
+  const taux = { trv: {min:10,max:22}, indexe: {min:8,max:18}, fixe: {min:3,max:10}, inconnu: {min:7,max:18} };
+  return taux[D.contrat] || taux.inconnu;
+}
+
+function goTeaser() {
+  const r = getRate();
+  const lo = Math.round(D._ann * r.min / 100);
+  const hi = Math.round(D._ann * r.max / 100);
+  document.getElementById('teaser-blur').textContent = lo.toLocaleString('fr-FR') + ' € — ' + hi.toLocaleString('fr-FR') + ' €';
+  document.getElementById('teaser-pct').textContent = 'soit ' + r.min + '% à ' + r.max + '% d\'économies potentielles';
+  go('s2', 's3', 55);
+}
+
+async function submitLead() {
+  go('s4', 's-load2', 88);
+
+  const payload = {
+    // Informations de base
+    prenom:  document.getElementById('f-prenom').value.trim(),
+    nom:     document.getElementById('f-nom').value.trim(),
+    tel:     document.getElementById('f-tel').value.trim(),
+    email:   document.getElementById('f-email').value.trim(),
+    secteur: D.secteur,
+
+    // Nom de société (seulement si professionnel)
+    nom_entreprise: D.profil === 'professionnel' ? document.getElementById('f-entreprise').value.trim() : '',
+
+    // Données de facturation
+    montant: document.getElementById('f-montant').value,
+    periode: D.periode,
+    fourn:   D.fourn,
+    contrat: D.contrat,
+
+    // Consentement RGPD
+    rgpd_consent: document.getElementById('rgpd-consent').checked,
+
+    // Données extraites (si disponibles depuis l'upload)
+    ...D
+  };
+
+  try {
+    const res = await fetch('/api/submit-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+
+    if (result.success) {
+      const eco = result.eco;
+      const infos = result.infos_contrat;
+
+      // Remplir le bloc hero
+      document.getElementById('r-greeting').textContent = 'Bonjour ' + payload.prenom + ',';
+      document.getElementById('r-min').textContent = eco.eco_min.toLocaleString('fr-FR') + ' €';
+      document.getElementById('r-range').textContent = 'à ' + eco.eco_max.toLocaleString('fr-FR') + ' € selon le fournisseur retenu';
+      document.getElementById('r-pct').textContent = eco.pct_min + '% à ' + eco.pct_max + '% d\'économies potentielles';
+
+      // Afficher et remplir le bloc électricité
+      const typeEnergie = D.type_energie || 'electricite';
+      if (typeEnergie === 'electricite' || typeEnergie === 'les_deux') {
+        document.getElementById('bloc-elec').style.display = 'block';
+        document.getElementById('r-fourn-elec').textContent = D.fourn || payload.fourn || '—';
+        document.getElementById('r-offre-elec').textContent = D.nom_offre || '—';
+        document.getElementById('r-option').textContent = D.option_tarifaire || '—';
+        document.getElementById('r-puissance').textContent = D.puissance_kva ? D.puissance_kva + ' kVA — Segment ' + (D.segment || 'particulier') : '—';
+        document.getElementById('r-pdl').textContent = D.pdl ? D.pdl.replace(/(.{3})/g, '$1 ').trim() : '—';
+
+        // Prix selon option tarifaire
+        if (D.option_tarifaire === 'HPHC') {
+          document.getElementById('r-prix-hp').parentElement.style.display = D.prix_kwh_hp_centimes ? 'flex' : 'none';
+          document.getElementById('r-prix-hc').parentElement.style.display = D.prix_kwh_hc_centimes ? 'flex' : 'none';
+          document.getElementById('r-prix-base').parentElement.style.display = 'none';
+          document.getElementById('r-prix-hp').textContent = D.prix_kwh_hp_centimes ? D.prix_kwh_hp_centimes + ' c€/kWh' : '—';
+          document.getElementById('r-prix-hc').textContent = D.prix_kwh_hc_centimes ? D.prix_kwh_hc_centimes + ' c€/kWh' : '—';
+        } else {
+          document.getElementById('r-prix-hp').parentElement.style.display = 'none';
+          document.getElementById('r-prix-hc').parentElement.style.display = 'none';
+          document.getElementById('r-prix-base').parentElement.style.display = D.prix_kwh_base_centimes ? 'flex' : 'none';
+          document.getElementById('r-prix-base').textContent = D.prix_kwh_base_centimes ? D.prix_kwh_base_centimes + ' c€/kWh' : '—';
+        }
+
+        document.getElementById('r-abo-elec').textContent = D.abonnement_elec_ht_mois ? D.abonnement_elec_ht_mois + ' €/mois HT' : '—';
+        document.getElementById('r-conso-elec').textContent = D.consommation_elec_kwh ? (D.consommation_elec_kwh * (D.periode === 'mensuel' ? 12 : D.periode === 'bimestriel' ? 6 : 4)) + ' kWh' : '—';
+        document.getElementById('r-fin-contrat').textContent = D.date_fin_contrat || 'NA';
+
+        if (eco.eco_elec_min || eco.eco_elec_max) {
+          document.getElementById('r-eco-elec').textContent = eco.eco_elec_min.toLocaleString('fr-FR') + ' € — ' + eco.eco_elec_max.toLocaleString('fr-FR') + ' €/an';
+        } else {
+          document.getElementById('r-eco-elec').parentElement.style.display = 'none';
+        }
+      }
+
+      // Afficher et remplir le bloc gaz
+      if (typeEnergie === 'gaz' || typeEnergie === 'les_deux') {
+        document.getElementById('bloc-gaz').style.display = 'block';
+        document.getElementById('r-fourn-gaz').textContent = D.fourn || payload.fourn || '—';
+        document.getElementById('r-pce').textContent = D.pce ? D.pce.replace(/(.{3})/g, '$1 ').trim() : '—';
+        document.getElementById('r-prix-gaz').textContent = D.prix_kwh_gaz_centimes ? D.prix_kwh_gaz_centimes + ' c€/kWh' : '—';
+        document.getElementById('r-abo-gaz').textContent = D.abonnement_gaz_ht_mois ? D.abonnement_gaz_ht_mois + ' €/mois HT' : '—';
+        document.getElementById('r-conso-gaz').textContent = D.consommation_gaz_kwh ? (D.consommation_gaz_kwh * (D.periode === 'mensuel' ? 12 : D.periode === 'bimestriel' ? 6 : 4)) + ' kWh' : '—';
+
+        if (eco.eco_gaz_min || eco.eco_gaz_max) {
+          document.getElementById('r-eco-gaz').textContent = eco.eco_gaz_min.toLocaleString('fr-FR') + ' € — ' + eco.eco_gaz_max.toLocaleString('fr-FR') + ' €/an';
+        } else {
+          document.getElementById('r-eco-gaz').parentElement.style.display = 'none';
+        }
+      }
+
+      // Afficher et remplir le bloc entreprise
+      if (D.nom_entreprise || D.siren) {
+        document.getElementById('bloc-entreprise').style.display = 'block';
+        document.getElementById('r-entreprise').textContent = D.nom_entreprise || '—';
+        document.getElementById('r-siren').textContent = D.siren ? D.siren.replace(/(.{3})/g, '$1 ').trim() : '—';
+        document.getElementById('r-adresse').textContent = D.adresse || '—';
+      }
+
+      // Infos contrat (carte existante)
+      const tagMap = { warn: 'tag-warn', ok: 'tag-ok', info: 'tag-info' };
+      document.getElementById('r-tag').textContent = infos.tag;
+      document.getElementById('r-tag').className = 'info-tag ' + (tagMap[infos.classe] || 'tag-info');
+      document.getElementById('r-ct').textContent = infos.titre;
+      document.getElementById('r-cd').textContent = infos.desc;
+
+      go('s-load2', 's5', 100);
+    } else {
+      alert('Une erreur est survenue. Veuillez réessayer.');
+      go('s-load2', 's4', 65);
+    }
+  } catch (err) {
+    alert('Erreur de connexion. Veuillez réessayer.');
+    go('s-load2', 's4', 65);
+  }
+}
+
+// ─── FONCTIONS UPLOAD ────────────────────────────────────
+let uploadedFile = null;
+
+function goUpload() {
+  go('s-start', 's-upload', 5);
+}
+
+function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/heic'];
+  if (!validTypes.includes(file.type) && !file.name.toLowerCase().match(/\.(pdf|jpg|jpeg|png|heic)$/)) {
+    alert('Format de fichier non accepté. Utilisez PDF, JPG, PNG ou HEIC.');
+    return;
+  }
+
+  if (file.size > 16 * 1024 * 1024) {
+    alert('Fichier trop volumineux. Maximum 16 MB.');
+    return;
+  }
+
+  uploadedFile = file;
+  document.getElementById('file-name').textContent = file.name;
+
+  // Preview pour les images
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('file-img').innerHTML = '<img src="' + e.target.result + '">';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    document.getElementById('file-img').innerHTML = '<p style="color:var(--gray);font-size:12px;padding:12px;">Aperçu non disponible pour les PDF</p>';
+  }
+
+  document.getElementById('file-preview').classList.add('show');
+  document.getElementById('btn-upload').disabled = false;
+}
+
+function removeFile() {
+  uploadedFile = null;
+  document.getElementById('file-preview').classList.remove('show');
+  document.getElementById('file-input').value = '';
+  document.getElementById('btn-upload').disabled = true;
+}
+
+async function analyzeInvoice() {
+  if (!uploadedFile) return;
+
+  // Activer l'effet laser scan
+  const laserScan = document.getElementById('laser-scan');
+  if (laserScan) {
+    laserScan.classList.add('active');
+  }
+
+  // Petit délai pour voir le laser avant de changer d'écran
+  await new Promise(resolve => setTimeout(resolve, 600));
+
+  go('s-upload', 's-load', 15);
+
+  // Réinitialiser les étapes
+  const steps = ['ls0', 'ls1', 'ls2', 'ls3'];
+  steps.forEach(s => document.getElementById(s).classList.remove('done'));
+
+  // Animation progressive des étapes
+  let stepIndex = 0;
+  const stepInterval = setInterval(() => {
+    if (stepIndex < 3) {
+      document.getElementById(steps[stepIndex]).classList.add('done');
+      stepIndex++;
+    }
+  }, 800);
+
+  const formData = new FormData();
+  formData.append('file', uploadedFile);
+
+  try {
+    const res = await fetch('/api/analyze-invoice', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await res.json();
+
+    // Désactiver le laser scan
+    if (laserScan) {
+      laserScan.classList.remove('active');
+    }
+
+    // Compléter toutes les étapes
+    clearInterval(stepInterval);
+    steps.forEach(s => document.getElementById(s).classList.add('done'));
+
+    if (result.success && result.data) {
+      const data = result.data;
+
+      // Stocker TOUTES les données extraites dans l'objet D pour les utiliser plus tard
+      Object.assign(D, data);
+
+      // Pré-remplir les champs du formulaire
+      if (data.montant) {
+        document.getElementById('f-montant').value = data.montant;
+      }
+      if (data.periode) {
+        D.periode = data.periode;
+      }
+      if (data.fourn) {
+        D.fourn = data.fourn;
+      }
+      if (data.contrat) {
+        D.contrat = data.contrat;
+      }
+
+      // Si prenom/nom client extrait, pré-remplir aussi
+      if (data.prenom_client && !document.getElementById('f-prenom').value) {
+        document.getElementById('f-prenom').value = data.prenom_client;
+      }
+      if (data.nom_client && !document.getElementById('f-nom').value) {
+        document.getElementById('f-nom').value = data.nom_client;
+      }
+
+      // Si nom d'entreprise extrait et champ visible (professionnel), pré-remplir
+      if (data.nom_entreprise) {
+        const fieldEntreprise = document.getElementById('field-entreprise');
+        if (fieldEntreprise && fieldEntreprise.style.display !== 'none') {
+          document.getElementById('f-entreprise').value = data.nom_entreprise;
+        }
+      }
+
+      // Calculer les économies
+      calcEco();
+
+      // Aller à l'écran secteur (s1) avec les données pré-remplies
+      setTimeout(() => {
+        go('s-load', 's1', 30);
+        // Sélectionner visuellement les pills correspondantes
+        if (data.periode) {
+          const periodePill = document.querySelector(`#pp-periode .pill[onclick*="${data.periode}"]`);
+          if (periodePill) periodePill.classList.add('sel');
+        }
+        if (data.fourn) {
+          const fournPill = document.querySelector(`#pp-fourn .pill[onclick*="${data.fourn}"]`);
+          if (fournPill) fournPill.classList.add('sel');
+        }
+      }, 1500);
+
+    } else {
+      // En cas d'erreur, basculer vers saisie manuelle
+      alert('Nous n\'avons pas pu lire votre facture. Veuillez compléter manuellement.');
+      setTimeout(() => go('s-load', 's0', 8), 500);
+    }
+
+  } catch (err) {
+    console.error('Erreur analyse facture:', err);
+    alert('Erreur lors de l\'analyse. Veuillez compléter manuellement.');
+    setTimeout(() => go('s-load', 's0', 8), 500);
+  }
+}
+
+// Drag & drop
+const dropzone = document.getElementById('dropzone');
+if (dropzone) {
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, preventDefaults, false);
+  });
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropzone.addEventListener(eventName, () => dropzone.classList.add('drag-over'), false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, () => dropzone.classList.remove('drag-over'), false);
+  });
+
+  dropzone.addEventListener('drop', handleDrop, false);
+}
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function handleDrop(e) {
+  const dt = e.dataTransfer;
+  const files = dt.files;
+  if (files.length > 0) {
+    document.getElementById('file-input').files = files;
+    handleFileSelect({ target: { files: files } });
+  }
+}
+</script>
+</body>
+</html>

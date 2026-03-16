@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Analysez votre facture d'électricité ou de gaz en 60 secondes. Notre extracteur détecte instantanément vos opportunités d'économies.">
+  <meta name="keywords" content="analyse facture, extracteur facture énergie, économies électricité, audit facture">
+
+  <title>Extracteur de factures - LILIWATT</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .results-section {
+      display: none;
+    }
+
+    .results-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-md) 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .results-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .results-current {
+      background: rgba(124, 58, 237, 0.1);
+      padding: var(--spacing-sm);
+      border-radius: var(--radius);
+      margin: var(--spacing-sm) 0;
+    }
+
+    .results-offers {
+      margin: var(--spacing-md) 0;
+    }
+
+    .offer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm);
+      margin: 0.5rem 0;
+      background: rgba(6, 6, 15, 0.5);
+      border-radius: var(--radius);
+      border-left: 4px solid transparent;
+    }
+
+    .offer-row.best {
+      border-left-color: #10B981;
+    }
+
+    .offer-row.good {
+      border-left-color: #F59E0B;
+    }
+
+    .opportunity-badge {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: var(--spacing-md) 0;
+    }
+
+    .opportunity-high {
+      background: linear-gradient(135deg, #EF4444, #DC2626);
+      color: white;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .security-item {
+      text-align: center;
+      padding: var(--spacing-md);
+    }
+
+    .security-icon {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo-liliwatt.png" alt="LILIWATT - Courtier en énergie B2B" class="logo-liliwatt">
+      </a>
+
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Accueil</a></li>
+          <li><a href="offres.html" class="nav-link">Nos offres</a></li>
+          <li><a href="/extracteur" class="nav-link badge">Extracteur de factures</a></li>
+          <li><a href="apropos.html" class="nav-link">À propos</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="recrutement.html" class="nav-link">Recrutement</a></li>
+        </ul>
+        <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
+      </nav>
+
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="section section-hero" style="min-height: 60vh;">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title reveal">Analysez votre facture en 60 secondes</h1>
+        <p class="hero-subtitle reveal">Déposez votre facture EDF ou tout autre fournisseur. Notre outil détecte votre potentiel d'économies instantanément.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upload Zone -->
+  <section class="section">
+    <div class="container">
+      <div class="upload-zone reveal">
+        <input type="file" id="file-upload" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+
+        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 18V15H9V18H7Z" fill="var(--violet)"/>
+          <path d="M11 18V12H13V18H11Z" fill="var(--violet-l)"/>
+          <path d="M15 18V14H17V18H15Z" fill="var(--elec)"/>
+          <path d="M3 22H21V20H3V22Z" fill="var(--white)"/>
+          <path d="M12 2L8 6H11V11H13V6H16L12 2Z" fill="var(--elec)"/>
+        </svg>
+
+        <p class="upload-text">Glissez votre facture ici</p>
+        <p class="upload-subtext">ou cliquez pour parcourir</p>
+        <p class="upload-subtext" style="margin-top: 1rem; font-size: 0.85rem;">PDF, JPEG, PNG, photo téléphone — tous formats acceptés</p>
+
+        <button class="btn btn-primary" style="margin-top: var(--spacing-md);">Analyser ma facture</button>
+      </div>
+
+      <div style="text-align: center; margin-top: var(--spacing-md);">
+        <button onclick="showExampleResults()" class="btn btn-outline">Voir un exemple de résultat</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section (hidden by default) -->
+  <section id="results-section" class="section results-section">
+    <div class="container">
+      <h2 class="section-title">Résultat de l'analyse</h2>
+
+      <div class="results-card">
+        <div class="results-header">
+          <div style="font-size: 1.1rem; color: var(--white); margin-bottom: 0.5rem;">
+            📄 ANALYSE FACTURE — Boulangerie Exemple
+          </div>
+          <div style="color: var(--steel);">
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          </div>
+        </div>
+
+        <div style="color: var(--white); margin-bottom: var(--spacing-md);">
+          <div>⚡ Segment : C2 | Puissance : 36 kVA | HPHC</div>
+          <div>📅 Période analysée : 4 200 kWh</div>
+        </div>
+
+        <div class="results-current">
+          <div style="color: var(--white); font-size: 1.1rem;">💶 Facture actuelle : <strong style="color: var(--elec);">984,60 € TTC</strong></div>
+        </div>
+
+        <div style="color: var(--steel); margin: var(--spacing-md) 0;">
+          ━━━━ VOTRE OPPORTUNITÉ ━━━━
+        </div>
+
+        <div class="results-offers">
+          <div class="offer-row best">
+            <div>
+              <span style="color: #10B981; margin-right: 0.5rem;">✅</span>
+              <strong style="color: var(--white);">OHM Énergie</strong>
+            </div>
+            <div style="color: var(--steel);">
+              → ~891 € | Économie : <strong style="color: #10B981;">9,5%</strong> | <strong>558 €/an</strong>
+            </div>
+          </div>
+
+          <div class="offer-row best">
+            <div>
+              <span style="color: #10B981; margin-right: 0.5rem;">✅</span>
+              <strong style="color: var(--white);">MINT Énergie</strong>
+            </div>
+            <div style="color: var(--steel);">
+              → ~908 € | Économie : <strong style="color: #10B981;">7,8%</strong> | <strong>462 €/an</strong>
+            </div>
+          </div>
+
+          <div class="offer-row">
+            <div>
+              <span style="color: var(--steel); margin-right: 0.5rem;">  </span>
+              <strong style="color: var(--white);">Ilek</strong>
+            </div>
+            <div style="color: var(--steel);">
+              → ~971 € | Économie : <strong style="color: var(--violet-l);">1,4%</strong> | <strong>84 €/an</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: var(--spacing-lg);">
+          <span class="opportunity-badge opportunity-high">🔴 NIVEAU D'OPPORTUNITÉ : ÉLEVÉ</span>
+          <div style="color: var(--white); font-size: 1.2rem; margin-top: var(--spacing-sm);">
+            Sur 3 ans → <strong style="color: var(--elec);">1 674 € récupérables</strong>
+          </div>
+        </div>
+
+        <div style="border-top: 2px solid var(--border); margin-top: var(--spacing-lg); padding-top: var(--spacing-md); text-align: center;">
+          <div style="color: var(--violet-l); font-size: 1.1rem;">
+            → Un conseiller LILIWATT vous rappelle sous 24h
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bars for visual representation -->
+      <div style="margin-top: var(--spacing-lg);">
+        <h3 class="text-center mb-lg">Comparaison visuelle des économies</h3>
+
+        <div style="margin-bottom: var(--spacing-md);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="color: var(--white); font-weight: 700;">OHM Énergie</span>
+            <span style="color: #10B981; font-weight: 700;">-9,5%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" data-width="95"></div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: var(--spacing-md);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="color: var(--white); font-weight: 700;">MINT Énergie</span>
+            <span style="color: #10B981; font-weight: 700;">-7,8%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" data-width="78"></div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: var(--spacing-md);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="color: var(--white); font-weight: 700;">Ilek</span>
+            <span style="color: var(--violet-l); font-weight: 700;">-1,4%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" data-width="14"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div style="text-align: center; margin-top: var(--spacing-xl);">
+        <button class="btn btn-primary btn-lg" data-modal="contact-modal">
+          Je veux être rappelé par un conseiller LILIWATT
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">Vos données sont protégées</h2>
+
+      <div class="security-grid reveal">
+        <div class="security-item">
+          <div class="security-icon">🔒</div>
+          <h4>Données chiffrées</h4>
+          <p class="card-text">Transmission sécurisée SSL/TLS. Vos factures sont cryptées de bout en bout.</p>
+        </div>
+
+        <div class="security-item">
+          <div class="security-icon">🛡️</div>
+          <h4>Conformité RGPD</h4>
+          <p class="card-text">Nous respectons strictement la réglementation européenne sur la protection des données.</p>
+        </div>
+
+        <div class="security-item">
+          <div class="security-icon">🗑️</div>
+          <h4>Suppression après analyse</h4>
+          <p class="card-text">Vos documents sont automatiquement supprimés 30 jours après l'analyse.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">Comment ça marche ?</h2>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-number">1</div>
+          <h3 class="timeline-title">Vous déposez</h3>
+          <p class="timeline-text">Uploadez votre facture actuelle en quelques clics</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-number">2</div>
+          <h3 class="timeline-title">On analyse</h3>
+          <p class="timeline-text">Notre algorithme extrait et compare automatiquement</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-number">3</div>
+          <h3 class="timeline-title">Vous économisez</h3>
+          <p class="timeline-text">Découvrez instantanément vos opportunités d'économies</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-number">4</div>
+          <h3 class="timeline-title">On s'occupe de tout</h3>
+          <p class="timeline-text">Un conseiller vous rappelle pour finaliser le changement</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Contact -->
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <h2 class="modal-title">Être rappelé par LILIWATT</h2>
+      <p style="color: var(--steel); margin-bottom: var(--spacing-md);">Un conseiller vous contactera sous 24h pour valider votre opportunité d'économies.</p>
+
+      <form>
+        <div class="form-group">
+          <label class="form-label">Nom complet *</label>
+          <input type="text" class="form-input" required placeholder="Jean Dupont">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Société *</label>
+          <input type="text" class="form-input" required placeholder="Ma Boulangerie">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Téléphone *</label>
+          <input type="tel" class="form-input" required placeholder="06 12 34 56 78">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input type="email" class="form-input" required placeholder="contact@monentreprise.fr">
+        </div>
+
+        <div class="form-group">
+          <div class="form-checkbox">
+            <input type="checkbox" id="rgpd" required>
+            <label for="rgpd">J'accepte que LILIWATT traite mes données pour me recontacter. <a href="#" style="color: var(--violet-l);">En savoir plus</a></label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Envoyer ma demande</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <a href="index.html">
+              <img src="assets/images/logo-liliwatt.png" alt="LILIWATT" class="footer-logo-img">
+            </a>
+          </div>
+          <p class="footer-tagline">Votre courtier en énergie B2B. Plus de pouvoir d'achat, moins de factures.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="offres.html">Nos offres</a></li>
+            <li><a href="/extracteur">Extracteur de factures</a></li>
+            <li><a href="apropos.html">À propos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="recrutement.html">Recrutement</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Nos partenaires</h4>
+          <ul>
+            <li>OHM Énergie</li>
+            <li>MINT Énergie</li>
+            <li>Ilek</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+            <li>Tél : +33 (0)1 XX XX XX XX</li>
+            <li>Lun-Ven : 9h-18h</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 LILIWATT — Tous droits réservés · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a> · <a href="#">RGPD</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
