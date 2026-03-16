@@ -1196,7 +1196,6 @@ img {
   top: 50%;
   left: 50%;
   margin: -55px 0 0 -55px;
-  animation: counter-rotate 60s linear infinite;
 }
 
 .orbital-logo:hover {
@@ -1212,6 +1211,7 @@ img {
   object-fit: contain;
   filter: brightness(0.9);
   transition: filter 0.3s ease;
+  animation: counter-rotate 60s linear infinite;
 }
 
 .orbital-logo:hover img {
