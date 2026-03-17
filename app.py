@@ -963,7 +963,12 @@ def submit_lead():
 def contact_form():
     """Endpoint pour formulaire de contact générique"""
     try:
+        print("📧 Réception requête /api/contact")
         data = request.get_json()
+
+        if not data:
+            print("❌ Aucune donnée JSON reçue")
+            return jsonify({"success": False, "error": "Aucune donnée reçue"}), 400
 
         nom = data.get('nom', '')
         email = data.get('email', '')
@@ -971,17 +976,24 @@ def contact_form():
         message = data.get('message', '')
         sujet = data.get('sujet', 'Nouveau message LILIWATT')
 
+        print(f"📨 Envoi email pour: {nom} ({email})")
+        print(f"📝 Sujet: {sujet}")
+
         # Envoi email à contact@liliwatt.fr
         success = send_contact_email(nom, email, telephone, message, sujet)
 
         if success:
+            print("✅ Email envoyé avec succès")
             return jsonify({"success": True, "message": "Message envoyé avec succès"})
         else:
-            return jsonify({"success": False, "error": "Erreur lors de l'envoi"}), 500
+            print("❌ Échec envoi email")
+            return jsonify({"success": False, "error": "Erreur lors de l'envoi de l'email"}), 500
 
     except Exception as e:
-        print(f"❌ Erreur API contact : {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
+        print(f"❌ ERREUR API contact : {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
 
 @app.route("/admin/leads")
 def admin_leads():

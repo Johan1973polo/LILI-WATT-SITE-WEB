@@ -109,7 +109,7 @@ function initScrollReveal() {
 }
 
 // ========================================
-// Count Up Animation
+// Count Up Animation - Bidirectionnelle
 // ========================================
 function initCountUp() {
   const countElements = document.querySelectorAll('[data-count]');
@@ -123,8 +123,14 @@ function initCountUp() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        // Élément entre dans le viewport - lancer l'animation
         animateCount(entry.target);
-        observer.unobserve(entry.target);
+      } else {
+        // Élément sort du viewport - réinitialiser à 0
+        entry.target.textContent = '0';
+        if (entry.target.animationFrame) {
+          cancelAnimationFrame(entry.target.animationFrame);
+        }
       }
     });
   }, observerOptions);
@@ -140,14 +146,20 @@ function animateCount(element) {
   const increment = target / (duration / 16);
   let current = 0;
 
+  // Annuler l'animation précédente si elle existe
+  if (element.animationFrame) {
+    cancelAnimationFrame(element.animationFrame);
+  }
+
   const updateCount = () => {
     current += increment;
 
     if (current < target) {
       element.textContent = Math.floor(current);
-      requestAnimationFrame(updateCount);
+      element.animationFrame = requestAnimationFrame(updateCount);
     } else {
       element.textContent = target;
+      element.animationFrame = null;
     }
   };
 
