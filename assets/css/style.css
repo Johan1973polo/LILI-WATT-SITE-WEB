@@ -228,6 +228,13 @@ img {
   opacity: 0.9;
 }
 
+/* Logo vidéo animé Jitter */
+.navbar-logo-video {
+  height: 45px;
+  width: auto;
+  display: block;
+}
+
 /* Logo icon SVG (éclair) - fallback ou décoratif */
 .logo-icon {
   width: 24px;
