@@ -157,41 +157,68 @@
   </section>
 
   <!-- Fournisseurs Partenaires -->
-  <section class="section" style="background: linear-gradient(180deg, var(--noir) 0%, #0a0a14 100%);">
+  <!-- Section Fournisseurs -->
+  <section class="section fournisseurs-section" style="background: #06060F; overflow: hidden;">
     <div class="container">
       <h2 class="section-title reveal">Accès aux meilleurs fournisseurs du marché</h2>
-      <p class="section-subtitle reveal">LILIWATT compare l'ensemble des offres disponibles pour vous obtenir le meilleur tarif</p>
+      <p class="section-subtitle reveal">LILIWATT analyse et compare l'ensemble des offres disponibles pour vous obtenir le meilleur tarif</p>
 
-      <div class="orbital-carousel reveal">
-        <!-- Centre orbital -->
-        <div class="orbital-center">
-          <div style="text-align: center; font-size: 0.85rem; line-height: 1.5; color: var(--white);">
-            Parmi 18+ fournisseurs<br>
-            <strong style="display: block; font-size: 1.4rem; font-weight: 700; margin: 8px 0; background: linear-gradient(135deg, var(--violet-l), var(--fuchsia-l)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">LILIWATT</strong>
-            sélectionne le meilleur<br>tarif pour vous
+      <!-- Constellation Canvas -->
+      <div class="constellation-container reveal">
+        <canvas id="constellationCanvas"></canvas>
+        <div id="tooltip" class="constellation-tooltip"></div>
+      </div>
+
+      <!-- Infinite Scroll Horizontal -->
+      <div class="infinite-scroll-section">
+        <!-- Rangée 1 - Défile vers la gauche -->
+        <div class="scroll-container">
+          <div class="scroll-track scroll-left">
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_Alpiq.svg" alt="Alpiq"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_Octopus_Energy.png" alt="Octopus Energy"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_TotalEnergies.svg.png" alt="TotalEnergies"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_ilek.svg.png" alt="Ilek"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/alterna.webp" alt="Alterna"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/eni.png" alt="ENI"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/gazel-energie.png" alt="Gazel Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/iberdrola.svg" alt="Iberdrola"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo ekwateur.png" alt="Ekwateur"></div>
+            <!-- Duplication pour scroll infini -->
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_Alpiq.svg" alt="Alpiq"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_Octopus_Energy.png" alt="Octopus Energy"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_TotalEnergies.svg.png" alt="TotalEnergies"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/Logo_ilek.svg.png" alt="Ilek"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/alterna.webp" alt="Alterna"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/eni.png" alt="ENI"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/gazel-energie.png" alt="Gazel Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/iberdrola.svg" alt="Iberdrola"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo ekwateur.png" alt="Ekwateur"></div>
           </div>
         </div>
 
-        <!-- Track orbital -->
-        <div class="orbital-track">
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/Logo_Alpiq.svg" alt="Alpiq" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/Logo_Octopus_Energy.png" alt="Octopus Energy" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/Logo_TotalEnergies.svg.png" alt="TotalEnergies" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/Logo_ilek.svg.png" alt="Ilek" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/alterna.webp" alt="Alterna" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/eni.png" alt="ENI" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/gazel-energie.png" alt="Gazel Énergie" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/iberdrola.svg" alt="Iberdrola" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/logo ekwateur.png" alt="Ekwateur" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/logo engie.png" alt="Engie" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/logo-endesa.png" alt="Endesa" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/logo-vattenfall.png" alt="Vattenfall" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/met-logo.svg" alt="MET" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/mint-energie.webp" alt="Mint Énergie" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/ohm-energie.png" alt="OHM Énergie" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/primeo_energie.png" alt="Primeo Énergie" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/wekiwi.png" alt="Wekiwi" /></div>
-          <div class="orbital-logo"><img src="assets/images/fournisseurs/png-clipart-logo-de-l-electricite-energie-edf-energie-nucleaire-reseaux-internationaux-edf-systeme-energetique-entreprise-compteur-intelligent-energie-renouvelable-thumbnail.png" alt="EDF" /></div>
+        <!-- Rangée 2 - Défile vers la droite -->
+        <div class="scroll-container">
+          <div class="scroll-track scroll-right">
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo engie.png" alt="Engie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo-endesa.png" alt="Endesa"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo-vattenfall.png" alt="Vattenfall"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/met-logo.svg" alt="MET"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/mint-energie.webp" alt="Mint Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/ohm-energie.png" alt="OHM Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/primeo_energie.png" alt="Primeo Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/wekiwi.png" alt="Wekiwi"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/png-clipart-logo-de-l-electricite-energie-edf-energie-nucleaire-reseaux-internationaux-edf-systeme-energetique-entreprise-compteur-intelligent-energie-renouvelable-thumbnail.png" alt="EDF"></div>
+            <!-- Duplication pour scroll infini -->
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo engie.png" alt="Engie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo-endesa.png" alt="Endesa"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/logo-vattenfall.png" alt="Vattenfall"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/met-logo.svg" alt="MET"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/mint-energie.webp" alt="Mint Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/ohm-energie.png" alt="OHM Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/primeo_energie.png" alt="Primeo Énergie"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/wekiwi.png" alt="Wekiwi"></div>
+            <div class="provider-card"><img src="assets/images/fournisseurs/png-clipart-logo-de-l-electricite-energie-edf-energie-nucleaire-reseaux-internationaux-edf-systeme-energetique-entreprise-compteur-intelligent-energie-renouvelable-thumbnail.png" alt="EDF"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -357,5 +384,6 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/constellation.js"></script>
 </body>
 </html>
