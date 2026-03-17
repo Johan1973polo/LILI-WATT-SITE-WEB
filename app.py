@@ -554,6 +554,48 @@ def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=Non
         print(f"Erreur email conseiller : {e}")
         return False
 
+def send_contact_email(nom, email, telephone, message, sujet):
+    """Email pour formulaire de contact générique"""
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"[LILIWATT] {sujet} — {nom}"
+        msg["From"]    = f"LILIWATT <{GMAIL_USER}>"
+        msg["To"]      = "contact@liliwatt.fr"
+        msg["Reply-To"] = email
+
+        html = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: #7C3AED; padding: 20px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-family: monospace; letter-spacing: 4px;">LILIWATT</h1>
+            <p style="color: #A78BFA; margin: 5px 0; font-size: 12px; letter-spacing: 2px;">
+              Nouveau message reçu
+            </p>
+          </div>
+          <div style="background: #0D0D1F; padding: 30px; color: #F0EEFF;">
+            <p><strong style="color: #A78BFA;">Nom :</strong> {nom}</p>
+            <p><strong style="color: #A78BFA;">Email :</strong> <a href="mailto:{email}" style="color: #D946EF;">{email}</a></p>
+            <p><strong style="color: #A78BFA;">Téléphone :</strong> {telephone if telephone else 'Non fourni'}</p>
+            <p><strong style="color: #A78BFA;">Sujet :</strong> {sujet}</p>
+            <div style="background: #1E1B4B; padding: 15px; border-radius: 8px; margin-top: 15px;">
+              <p style="margin: 0; white-space: pre-wrap;">{message}</p>
+            </div>
+          </div>
+          <div style="background: #06060F; padding: 15px; text-align: center; color: #6B7280; font-size: 12px;">
+            LILIWATT · contact@liliwatt.fr · <a href="https://liliwatt.fr" style="color: #A78BFA;">liliwatt.fr</a>
+          </div>
+        </div>
+        """
+
+        msg.attach(MIMEText(html, "html"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.sendmail(GMAIL_USER, "contact@liliwatt.fr", msg.as_string())
+        return True
+    except Exception as e:
+        print(f"Erreur email contact : {e}")
+        return False
+
 # ─── CLAUDE VISION — ANALYSE DE FACTURE ────────────────────
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -915,6 +957,30 @@ def submit_lead():
         print(f"❌ Erreur submit_lead : {e}")
         import traceback
         traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/api/contact", methods=["POST"])
+def contact_form():
+    """Endpoint pour formulaire de contact générique"""
+    try:
+        data = request.get_json()
+
+        nom = data.get('nom', '')
+        email = data.get('email', '')
+        telephone = data.get('telephone', '')
+        message = data.get('message', '')
+        sujet = data.get('sujet', 'Nouveau message LILIWATT')
+
+        # Envoi email à contact@liliwatt.fr
+        success = send_contact_email(nom, email, telephone, message, sujet)
+
+        if success:
+            return jsonify({"success": True, "message": "Message envoyé avec succès"})
+        else:
+            return jsonify({"success": False, "error": "Erreur lors de l'envoi"}), 500
+
+    except Exception as e:
+        print(f"❌ Erreur API contact : {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/admin/leads")

@@ -118,20 +118,22 @@
           <h2 style="margin-bottom: var(--spacing-md);">Demande d'analyse</h2>
           <p style="color: var(--steel); margin-bottom: var(--spacing-md);">Tous les champs marqués d'un astérisque (*) sont obligatoires.</p>
 
-          <form>
+          <form class="contact-form">
+            <input type="hidden" name="sujet" value="Demande d'analyse de facture">
+
             <div class="form-group">
               <label class="form-label">Nom complet *</label>
-              <input type="text" class="form-input" required placeholder="Jean Dupont">
+              <input type="text" name="nom" class="form-input" required placeholder="Jean Dupont">
             </div>
 
             <div class="form-group">
               <label class="form-label">Nom de la société *</label>
-              <input type="text" class="form-input" required placeholder="Ma Boulangerie SARL">
+              <input type="text" name="societe" class="form-input" required placeholder="Ma Boulangerie SARL">
             </div>
 
             <div class="form-group">
               <label class="form-label">Secteur d'activité *</label>
-              <select class="form-select" required>
+              <select name="secteur" class="form-select" required>
                 <option value="">Sélectionnez votre secteur</option>
                 <option value="hotel">Hôtel / Hébergement</option>
                 <option value="restaurant">Restaurant / Café</option>
@@ -146,17 +148,17 @@
 
             <div class="form-group">
               <label class="form-label">Email *</label>
-              <input type="email" class="form-input" required placeholder="contact@monentreprise.fr">
+              <input type="email" name="email" class="form-input" required placeholder="contact@monentreprise.fr">
             </div>
 
             <div class="form-group">
               <label class="form-label">Téléphone *</label>
-              <input type="tel" class="form-input" required placeholder="06 12 34 56 78">
+              <input type="tel" name="telephone" class="form-input" required placeholder="06 12 34 56 78">
             </div>
 
             <div class="form-group">
               <label class="form-label">Votre fournisseur actuel</label>
-              <select class="form-select">
+              <select name="fournisseur" class="form-select">
                 <option value="">Sélectionnez votre fournisseur</option>
                 <option value="edf">EDF</option>
                 <option value="engie">Engie</option>
@@ -170,7 +172,7 @@
 
             <div class="form-group">
               <label class="form-label">Montant mensuel estimé de votre facture</label>
-              <select class="form-select">
+              <select name="montant" class="form-select">
                 <option value="">Sélectionnez une tranche</option>
                 <option value="<200">Moins de 200€</option>
                 <option value="200-500">200€ - 500€</option>
@@ -181,7 +183,7 @@
 
             <div class="form-group">
               <label class="form-label">Message (optionnel)</label>
-              <textarea class="form-textarea" placeholder="Parlez-nous de votre situation énergétique, vos besoins spécifiques..."></textarea>
+              <textarea name="message" class="form-textarea" placeholder="Parlez-nous de votre situation énergétique, vos besoins spécifiques..."></textarea>
             </div>
 
             <div class="form-group">
@@ -381,5 +383,6 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/contact-form.js"></script>
 </body>
 </html>
