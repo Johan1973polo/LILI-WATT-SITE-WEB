@@ -77,7 +77,7 @@ function initMobileMenu() {
 }
 
 // ========================================
-// Scroll Reveal Animation
+// Scroll Reveal Animation - Bidirectionnelle
 // ========================================
 function initScrollReveal() {
   const revealElements = document.querySelectorAll('.reveal');
@@ -90,12 +90,15 @@ function initScrollReveal() {
   };
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach(entry => {
       if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('active');
-        }, index * CONFIG.scrollRevealDelay);
-        observer.unobserve(entry.target);
+        // Élément entre dans le viewport
+        entry.target.classList.add('animate-in');
+        entry.target.classList.remove('animate-out');
+      } else {
+        // Élément sort du viewport
+        entry.target.classList.remove('animate-in');
+        entry.target.classList.add('animate-out');
       }
     });
   }, observerOptions);

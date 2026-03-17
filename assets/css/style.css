@@ -1005,12 +1005,31 @@ img {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS SCROLL BIDIRECTIONNELLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* État initial — caché */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* Entrée dans le viewport — visible */
+.reveal.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Sortie du viewport — disparaît vers le haut */
+.reveal.animate-out {
+  opacity: 0 !important;
+  transform: translateY(-20px) !important;
+  transition: opacity 0.4s ease, transform 0.4s ease !important;
+}
+
+/* Support ancien système pour compatibilité */
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
