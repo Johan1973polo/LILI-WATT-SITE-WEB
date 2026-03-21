@@ -17,7 +17,7 @@ from moviepy import (
     CompositeAudioClip, concatenate_videoclips
 )
 from moviepy.video.fx import CrossFadeIn, CrossFadeOut
-from moviepy.audio.fx import MultiplyVolume, AudioLoop
+from moviepy.audio.fx import MultiplyVolume, AudioLoop, AudioFadeOut
 
 W, H = 1280, 720
 FPS = 25
@@ -32,8 +32,8 @@ BLANC = (255, 255, 255)
 BASE = os.path.expanduser("~/Desktop/liliwatt-website")
 VIDEO_DIR = os.path.expanduser("~/Desktop/video liliwatt")
 LOGO_PATH = os.path.join(VIDEO_DIR, "logo sans fond.png")
-MUSIC_PATH = os.path.join(BASE, "musique_v4.mp3")
-VOIX_PATH = os.path.join(BASE, "voix_liliwatt_v4.mp3")
+MUSIC_PATH = os.path.join(BASE, "musique_douce.mp3")
+VOIX_PATH = os.path.join(BASE, "voix_liliwatt_femme.mp3")
 OUTPUT = os.path.expanduser("~/Desktop/pub_liliwatt_finale.mp4")
 
 
@@ -397,15 +397,19 @@ def main():
             music = music.with_effects([AudioLoop(duration=video.duration)])
         else:
             music = music.subclipped(0, video.duration)
-        music = music.with_effects([MultiplyVolume(0.12)])
+        # Volume 15% + fade out 4 seconds at the very end → stops exactly with video
+        fade_out_dur = 4.0
+        music = music.with_effects([
+            MultiplyVolume(0.15),
+            AudioFadeOut(fade_out_dur)
+        ])
         audio_tracks.append(music)
-        print(f"   ✅ Musique: {music.duration:.1f}s (12%)")
+        print(f"   ✅ Musique douce: {music.duration:.1f}s (15%, fade out {fade_out_dur}s)")
 
     voix = AudioFileClip(VOIX_PATH)
-    # Voice only plays for its duration, silence after
     audio_tracks.append(voix)
     print(f"   ✅ Voix: {voix.duration:.2f}s")
-    print(f"   → Musique continue {video.duration - voix.duration:.1f}s après la voix")
+    print(f"   → Musique fade out pile à {video.duration:.1f}s")
 
     audio_final = CompositeAudioClip(audio_tracks)
     video = video.with_audio(audio_final)

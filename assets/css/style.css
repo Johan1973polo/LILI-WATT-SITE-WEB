@@ -9,15 +9,31 @@
    Variables CSS
    ======================================== */
 :root {
+  /* Couleurs fond */
+  --bg-primary: #F5F0FF;
+  --bg-secondary: #EDE8FF;
+  --bg-tertiary: #E8E0FF;
+  --bg-card: rgba(255, 255, 255, 0.85);
+
+  /* Couleurs texte */
+  --text-title: #2D1B69;
+  --text-body: #3D2B79;
+  --text-secondary: #6B46C1;
+  --text-muted: #9B8EC4;
+
   /* Couleurs principales */
-  --noir: #06060F;
   --violet: #7C3AED;
-  --violet-l: #C4B5FD;  /* Éclairci de #A78BFA à #C4B5FD */
   --elec: #D946EF;
-  --white: #F0EEFF;
-  --steel: #9CA3AF;  /* Éclairci de #6B7280 à #9CA3AF */
-  --card-bg: #0D0D1F;
-  --border: #2D2A5E;  /* Éclairci de #1E1B4B à #2D2A5E */
+  --violet-dark: #4C1D95;
+  --violet-light: #A78BFA;
+  --violet-l: #C4B5FD;
+
+  /* Anciennes variables (compatibilité) */
+  --noir: #2D1B69;
+  --white: #2D1B69;
+  --steel: #6B46C1;
+  --card-bg-old: #0D0D1F;
+  --border: rgba(124, 58, 237, 0.2);
 
   /* Typographies */
   --font-heading: 'Orbitron', sans-serif;
@@ -42,6 +58,7 @@
   --shadow-md: 0 4px 16px rgba(124, 58, 237, 0.2);
   --shadow-lg: 0 8px 32px rgba(124, 58, 237, 0.3);
   --glow: 0 0 20px rgba(124, 58, 237, 0.4);
+  --shadow: rgba(124, 58, 237, 0.15);
 }
 
 /* ========================================
@@ -60,11 +77,19 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--noir);
-  color: var(--white);
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #F5F0FF 20%,
+    #EDE8FF 50%,
+    #E8E0FF 80%,
+    #DDD5FF 100%
+  );
+  color: var(--text-body);
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  min-height: 100vh;
 }
 
 /* Grille géométrique en arrière-plan */
@@ -76,10 +101,10 @@ body::before {
   width: 100%;
   height: 100%;
   background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.08) 1px, transparent 1px);
   background-size: 48px 48px;
-  opacity: 0.07;
+  opacity: 0.5;
   z-index: 0;
   pointer-events: none;
 }
@@ -2006,4 +2031,304 @@ body.light-theme .video-play-overlay {
 
 body.light-theme .video-pub-caption {
   color: #4B5563;
+}
+
+/* ======================================================================
+   REFONTE COLORIMÉTRIE COMPLÈTE - FOND CLAIR DÉGRADÉ VIOLET/LAVANDE
+   ====================================================================== */
+
+/* Sections alternées pour profondeur */
+section:nth-child(even) {
+  background: rgba(124, 58, 237, 0.04);
+}
+
+section:nth-child(odd) {
+  background: transparent;
+}
+
+/* ========================================
+   TYPOGRAPHIE - Titres en violet foncé
+   ======================================== */
+h1, h2, h3, h4, h5, h6,
+.hero-title,
+.section-title,
+.card-title,
+.inaction-title,
+.feature-title {
+  color: #2D1B69 !important;
+}
+
+/* Titres avec dégradé */
+.gradient-title,
+.hero-title,
+.section-title {
+  background: linear-gradient(135deg, #2D1B69 0%, #4C1D95 50%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Textes corps */
+p, li, span, .card-text, .hero-subtitle, .section-subtitle {
+  color: #3D2B79 !important;
+}
+
+/* Textes secondaires */
+.text-secondary, .subtitle {
+  color: #6B46C1 !important;
+}
+
+/* ========================================
+   NAVBAR - Fond blanc transparent
+   ======================================== */
+.header {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.15) !important;
+  box-shadow: 0 2px 20px rgba(124, 58, 237, 0.1) !important;
+}
+
+.nav-link {
+  color: #2D1B69 !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #7C3AED !important;
+}
+
+/* Logo navbar - transparent */
+.navbar-logo-video,
+.logo img,
+.logo video {
+  background: transparent !important;
+  mix-blend-mode: normal !important;
+}
+
+/* ========================================
+   BOUTONS - Adaptés au fond clair
+   ======================================== */
+.btn-primary {
+  background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4) !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6) !important;
+  transform: translateY(-2px);
+}
+
+.btn-secondary,
+.btn-outline {
+  background: transparent !important;
+  color: #7C3AED !important;
+  border: 2px solid #7C3AED !important;
+}
+
+.btn-outline:hover {
+  background: rgba(124, 58, 237, 0.1) !important;
+}
+
+/* ========================================
+   CARTES - Fond blanc avec ombre violette
+   ======================================== */
+.card,
+.feature-card,
+.testimonial-card,
+.sector-card,
+.service-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+  box-shadow: 
+    0 4px 20px rgba(124, 58, 237, 0.1),
+    0 1px 4px rgba(124, 58, 237, 0.05) !important;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover,
+.feature-card:hover,
+.testimonial-card:hover {
+  box-shadow: 0 8px 40px rgba(124, 58, 237, 0.2) !important;
+  transform: translateY(-4px);
+  border-color: rgba(124, 58, 237, 0.4) !important;
+}
+
+.card h3,
+.card h4,
+.feature-card h3,
+.testimonial-card h3 {
+  color: #2D1B69 !important;
+}
+
+.card p,
+.feature-card p,
+.testimonial-card p {
+  color: #4C3D8A !important;
+}
+
+/* ========================================
+   SECTION HERO
+   ======================================== */
+.hero,
+.section-hero {
+  background: linear-gradient(135deg, #F5F0FF 0%, #EDE8FF 100%) !important;
+  padding-top: 120px;
+}
+
+.hero h1 {
+  color: #2D1B69 !important;
+}
+
+.hero p {
+  color: #6B46C1 !important;
+}
+
+/* ========================================
+   SECTION COÛT DE L'INACTION
+   ======================================== */
+.inaction-section {
+  background: linear-gradient(180deg, #F5F0FF 0%, #EDE8FF 50%, #F5F0FF 100%) !important;
+}
+
+.inaction-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(124, 58, 237, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15) !important;
+}
+
+.inaction-card:hover {
+  box-shadow: 0 8px 40px rgba(124, 58, 237, 0.25) !important;
+}
+
+.inaction-number {
+  color: #2D1B69 !important;
+}
+
+.inaction-label-card {
+  color: #4C3D8A !important;
+}
+
+.inaction-detail {
+  color: #6B46C1 !important;
+}
+
+.inaction-label {
+  color: #7C3AED !important;
+}
+
+/* ========================================
+   INFINITE SCROLL FOURNISSEURS
+   ======================================== */
+.provider-card,
+.scroll-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+
+.provider-card img,
+.scroll-card img {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.fournisseurs-section {
+  background: linear-gradient(180deg, #EDE8FF 0%, #DDD5FF 100%) !important;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  background: linear-gradient(180deg, #EDE8FF 0%, #DDD5FF 100%) !important;
+  border-top: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+
+.footer p,
+.footer a,
+.footer-text,
+.footer-tagline {
+  color: #4C3D8A !important;
+}
+
+.footer a:hover {
+  color: #7C3AED !important;
+}
+
+/* ========================================
+   FORMULAIRES
+   ======================================== */
+input, textarea, select,
+.form-input,
+.form-textarea,
+.form-select {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(124, 58, 237, 0.3) !important;
+  color: #2D1B69 !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #7C3AED !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9B8EC4 !important;
+}
+
+/* ========================================
+   BADGES
+   ======================================== */
+.badge {
+  background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
+  color: white !important;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #10B981, #059669) !important;
+}
+
+/* ========================================
+   VIDÉO PUBLICITAIRE
+   ======================================== */
+.video-pub-section {
+  background: linear-gradient(180deg, #F5F0FF 0%, #EDE8FF 50%, #F5F0FF 100%) !important;
+}
+
+.video-pub-wrapper {
+  background: linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+              linear-gradient(135deg, #7C3AED, #D946EF) border-box !important;
+}
+
+.video-pub-caption {
+  color: #6B46C1 !important;
+}
+
+/* ========================================
+   BLOG & ARTICLES
+   ======================================== */
+article h2, article h3 {
+  color: #2D1B69 !important;
+}
+
+article p {
+  color: #3D2B79 !important;
+}
+
+/* ========================================
+   SUPPRESSION THÈME LIGHT-THEME
+   ======================================== */
+/* Tout est maintenant en mode clair par défaut */
+body.light-theme {
+  /* Plus besoin - tout est clair */
+}
+
+/* ========================================
+   SÉLECTEUR DE THÈME - MASQUÉ
+   ======================================== */
+.theme-selector {
+  display: none !important;
 }
