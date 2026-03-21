@@ -12,12 +12,12 @@
   /* Couleurs principales */
   --noir: #06060F;
   --violet: #7C3AED;
-  --violet-l: #A78BFA;
+  --violet-l: #C4B5FD;  /* Éclairci de #A78BFA à #C4B5FD */
   --elec: #D946EF;
   --white: #F0EEFF;
-  --steel: #6B7280;
+  --steel: #9CA3AF;  /* Éclairci de #6B7280 à #9CA3AF */
   --card-bg: #0D0D1F;
-  --border: #1E1B4B;
+  --border: #2D2A5E;  /* Éclairci de #1E1B4B à #2D2A5E */
 
   /* Typographies */
   --font-heading: 'Orbitron', sans-serif;
@@ -1481,5 +1481,165 @@ img {
     width: 70px;
     height: 50px;
     padding: 8px;
+  }
+}
+
+/* ========================================
+   SYSTÈME DE THÈMES — Dégradés de fond
+   Test A/B/C/D/E pour alléger le fond
+   ======================================== */
+
+/* OPTION A — Dégradé vertical subtil */
+body.theme-a {
+  background: linear-gradient(
+    180deg,
+    #06060F 0%,
+    #0D0B1A 30%,
+    #100C1F 60%,
+    #06060F 100%
+  );
+}
+
+/* OPTION B — Dégradé avec touche violette */
+body.theme-b {
+  background: linear-gradient(
+    135deg,
+    #06060F 0%,
+    #0A0718 40%,
+    #0D0920 70%,
+    #06060F 100%
+  );
+}
+
+/* OPTION C — Sections alternées clair/sombre */
+body.theme-c section:nth-child(even) {
+  background: #0D0B1A;
+}
+body.theme-c section:nth-child(odd) {
+  background: #06060F;
+}
+
+/* OPTION D — Fond avec grain et profondeur (radial gradients) */
+body.theme-d {
+  background: 
+    radial-gradient(
+      ellipse at top left,
+      #1A0A2E 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      #0D0520 0%,
+      transparent 50%
+    ),
+    #06060F;
+}
+
+/* OPTION E — La plus lumineuse */
+body.theme-e .section-hero {
+  background: linear-gradient(
+    180deg,
+    #12082A 0%,
+    #0A0520 50%,
+    #06060F 100%
+  );
+}
+body.theme-e section {
+  background: linear-gradient(
+    180deg,
+    #0D0B1A 0%,
+    #08060F 100%
+  );
+}
+
+/* ========================================
+   GLASSMORPHISM — Cartes modernes
+   ======================================== */
+.feature-card,
+.card.reveal {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.feature-card:hover,
+.card.reveal:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(124, 58, 237, 0.4) !important;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* ========================================
+   SÉLECTEUR DE THÈME — Widget temporaire
+   ======================================== */
+.theme-selector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  background: rgba(13, 13, 31, 0.95);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 12px;
+  padding: 12px 16px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+
+.theme-selector-label {
+  font-size: 11px;
+  color: #A78BFA;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.theme-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  background: rgba(124, 58, 237, 0.1);
+  border-radius: 6px;
+  color: #A78BFA;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.theme-btn:hover {
+  background: rgba(124, 58, 237, 0.25);
+  border-color: #7C3AED;
+  color: #D946EF;
+  transform: scale(1.05);
+}
+
+.theme-btn.active {
+  background: linear-gradient(135deg, #7C3AED, #D946EF);
+  border-color: #7C3AED;
+  color: white;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
+}
+
+@media (max-width: 768px) {
+  .theme-selector {
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+  }
+  
+  .theme-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  
+  .theme-selector-label {
+    font-size: 10px;
   }
 }

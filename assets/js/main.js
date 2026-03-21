@@ -494,3 +494,61 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+// ========================================
+// Sélecteur de thème — Test A/B/C/D/E
+// ========================================
+function initThemeSelector() {
+  const buttons = document.querySelectorAll('.theme-btn');
+  const body = document.body;
+  
+  // Appliquer le thème E par défaut
+  body.classList.add('theme-e');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Retirer toutes les classes de thème
+      body.className = '';
+      
+      // Retirer la classe active de tous les boutons
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      // Ajouter la classe active au bouton cliqué
+      button.classList.add('active');
+      
+      // Appliquer le nouveau thème
+      const theme = button.dataset.theme;
+      if (theme) {
+        body.classList.add(theme);
+      }
+      
+      // Sauvegarder le choix dans localStorage
+      localStorage.setItem('liliwatt-theme', theme);
+      
+      // Effet visuel de feedback
+      button.style.transform = 'scale(1.15)';
+      setTimeout(() => {
+        button.style.transform = '';
+      }, 200);
+    });
+  });
+  
+  // Restaurer le thème sauvegardé si disponible
+  const savedTheme = localStorage.getItem('liliwatt-theme');
+  if (savedTheme !== null) {
+    body.className = '';
+    if (savedTheme) {
+      body.classList.add(savedTheme);
+    }
+    
+    // Mettre à jour le bouton actif
+    buttons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.theme === savedTheme) {
+        btn.classList.add('active');
+      }
+    });
+  }
+}
+
+// Initialiser le sélecteur de thème
+document.addEventListener('DOMContentLoaded', initThemeSelector);
