@@ -2332,3 +2332,76 @@ body.light-theme {
 .theme-selector {
   display: none !important;
 }
+
+/* ========================================
+   LOGO TRANSPARENT - NAVBAR & FOOTER
+   ======================================== */
+
+/* Logo dans la navbar - Fond transparent */
+.navbar-logo,
+.navbar-logo-video,
+.logo-liliwatt,
+.header .logo img,
+.header .logo video {
+  background: transparent !important;
+  background-color: transparent !important;
+  mix-blend-mode: normal;
+  object-fit: contain;
+}
+
+/* Conteneur du logo dans la navbar */
+.header .logo {
+  display: flex;
+  align-items: center;
+  background: transparent !important;
+}
+
+/* Logo dans le footer */
+.footer-logo,
+.footer-logo img,
+.footer-logo video,
+.footer-logo-img,
+.footer-logo-large img,
+.footer-logo-large video {
+  background: transparent !important;
+  background-color: transparent !important;
+  mix-blend-mode: normal;
+  object-fit: contain;
+}
+
+/* Assurer que la navbar a bien un fond clair pour contraster avec le logo */
+.header {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Footer avec fond qui contraste */
+.footer {
+  background: linear-gradient(180deg, #06060F 0%, #0A0A1F 100%) !important;
+}
+
+/* Logo transparent centré dans footer */
+.footer-logo,
+.footer-logo-large {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.footer-logo-img {
+  height: 80px;
+  width: auto;
+}
+
+.navbar-logo {
+  height: 45px;
+  width: auto;
+}
+
+/* Assurer que le logo est toujours visible */
+img[src*="logo-transparent"] {
+  background: transparent !important;
+  max-width: 100%;
+  height: auto;
+}
