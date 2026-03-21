@@ -495,35 +495,38 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 // ========================================
-// Sélecteur de thème — Test A/B/C/D/E
+// Sélecteur de thème — Dark / Light
 // ========================================
 function initThemeSelector() {
   const buttons = document.querySelectorAll('.theme-btn');
   const body = document.body;
-  
-  // Appliquer le thème E par défaut
-  body.classList.add('theme-e');
-  
+
+  // Appliquer le thème dark par défaut
+  // (pas besoin de classe, le dark est le style par défaut)
+
   buttons.forEach(button => {
     button.addEventListener('click', () => {
-      // Retirer toutes les classes de thème
-      body.className = '';
-      
       // Retirer la classe active de tous les boutons
       buttons.forEach(btn => btn.classList.remove('active'));
-      
+
       // Ajouter la classe active au bouton cliqué
       button.classList.add('active');
-      
+
       // Appliquer le nouveau thème
       const theme = button.dataset.theme;
-      if (theme) {
-        body.classList.add(theme);
+
+      // Retirer les anciennes classes de thème
+      body.classList.remove('dark-theme', 'light-theme');
+
+      // Ajouter la nouvelle classe de thème si ce n'est pas dark (dark est le défaut)
+      if (theme === 'light') {
+        body.classList.add('light-theme');
       }
-      
+      // Pour dark, on ne fait rien car c'est le style par défaut
+
       // Sauvegarder le choix dans localStorage
       localStorage.setItem('liliwatt-theme', theme);
-      
+
       // Effet visuel de feedback
       button.style.transform = 'scale(1.15)';
       setTimeout(() => {
@@ -531,19 +534,26 @@ function initThemeSelector() {
       }, 200);
     });
   });
-  
+
   // Restaurer le thème sauvegardé si disponible
   const savedTheme = localStorage.getItem('liliwatt-theme');
-  if (savedTheme !== null) {
-    body.className = '';
-    if (savedTheme) {
-      body.classList.add(savedTheme);
+  if (savedTheme) {
+    body.classList.remove('dark-theme', 'light-theme');
+    if (savedTheme === 'light') {
+      body.classList.add('light-theme');
     }
-    
+
     // Mettre à jour le bouton actif
     buttons.forEach(btn => {
       btn.classList.remove('active');
       if (btn.dataset.theme === savedTheme) {
+        btn.classList.add('active');
+      }
+    });
+  } else {
+    // Par défaut, activer le bouton dark
+    buttons.forEach(btn => {
+      if (btn.dataset.theme === 'dark') {
         btn.classList.add('active');
       }
     });

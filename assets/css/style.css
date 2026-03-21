@@ -1597,7 +1597,7 @@ body.theme-e section {
 }
 
 .inaction-label {
-  color: #EF4444;
+  color: #A78BFA;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -1632,48 +1632,15 @@ body.theme-e section {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #0D0520, #0D0B1A);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .inaction-card:hover {
   transform: translateY(-8px);
-}
-
-/* Variantes de couleur */
-.red-card {
-  background: linear-gradient(135deg, #1A0505, #0D0B1A);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.1);
-}
-.red-card:hover {
-  box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2);
-}
-
-.orange-card {
-  background: linear-gradient(135deg, #1A0A00, #0D0B1A);
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  box-shadow: 0 0 30px rgba(249, 115, 22, 0.1);
-}
-.orange-card:hover {
-  box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
-}
-
-.purple-card {
-  background: linear-gradient(135deg, #0D0520, #0D0B1A);
-  border: 1px solid rgba(124, 58, 237, 0.4);
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
-}
-.purple-card:hover {
   box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
-}
-
-.dark-card {
-  background: linear-gradient(135deg, #0A0A0A, #0D0B1A);
-  border: 1px solid rgba(217, 70, 239, 0.3);
-  box-shadow: 0 0 30px rgba(217, 70, 239, 0.1);
-}
-.dark-card:hover {
-  box-shadow: 0 20px 40px rgba(217, 70, 239, 0.2);
 }
 
 .inaction-icon {
@@ -1686,15 +1653,10 @@ body.theme-e section {
   font-family: 'Orbitron', sans-serif;
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 900;
-  color: #F0EEFF;
+  color: #A78BFA;
   margin-bottom: 16px;
   line-height: 1;
 }
-
-.red-card .inaction-number { color: #FCA5A5; }
-.orange-card .inaction-number { color: #FED7AA; }
-.purple-card .inaction-number { color: #A78BFA; }
-.dark-card .inaction-number { color: #F0ABFC; }
 
 .inaction-label-card {
   color: #9CA3AF;
@@ -1800,14 +1762,106 @@ body.theme-e section {
     right: 10px;
     padding: 8px 12px;
   }
-  
+
   .theme-btn {
     width: 28px;
     height: 28px;
     font-size: 11px;
   }
-  
+
   .theme-selector-label {
     font-size: 10px;
   }
+}
+
+/* ========================================
+   LIGHT THEME
+   ======================================== */
+body.light-theme {
+  --bg: #FFFFFF;
+  --text: #2D1B69;
+  --violet: #7C3AED;
+  --elec: #A855F7;
+  --card-bg: #F9FAFB;
+  --border: rgba(124, 58, 237, 0.2);
+  --glow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+body.light-theme .header {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+body.light-theme .nav-link {
+  color: #2D1B69;
+}
+
+body.light-theme .nav-link:hover {
+  color: #7C3AED;
+}
+
+body.light-theme .hero {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 50%, #FFFFFF 100%);
+}
+
+body.light-theme .hero-title,
+body.light-theme .section-title,
+body.light-theme h1, body.light-theme h2, body.light-theme h3 {
+  color: #2D1B69;
+}
+
+body.light-theme .hero-subtitle,
+body.light-theme .section-subtitle,
+body.light-theme p {
+  color: #4B5563;
+}
+
+body.light-theme .card {
+  background: #FFFFFF;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
+}
+
+body.light-theme .card:hover {
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.2);
+}
+
+body.light-theme .inaction-section {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 50%, #FFFFFF 100%);
+}
+
+body.light-theme .inaction-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
+}
+
+body.light-theme .inaction-card:hover {
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.25);
+}
+
+body.light-theme .inaction-title {
+  color: #2D1B69;
+}
+
+body.light-theme .inaction-label-card {
+  color: #4B5563;
+}
+
+body.light-theme .inaction-detail {
+  color: #6B7280;
+}
+
+body.light-theme .theme-selector {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+body.light-theme .footer {
+  background: #F9FAFB;
+  border-top: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+body.light-theme .footer-text {
+  color: #4B5563;
 }
