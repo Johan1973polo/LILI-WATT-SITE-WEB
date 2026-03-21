@@ -34,14 +34,31 @@
     .team-photo {
       width: 100%;
       height: 280px;
-      background: #1E1B4B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--steel);
-      font-size: 0.9rem;
-      text-align: center;
-      padding: var(--spacing-md);
+      overflow: hidden;
+      position: relative;
+      border: 3px solid transparent;
+      background: linear-gradient(#1E1B4B, #1E1B4B) padding-box,
+                  linear-gradient(135deg, #7C3AED, #D946EF) border-box;
+      box-shadow:
+        0 4px 20px rgba(124, 58, 237, 0.3),
+        0 0 0 4px rgba(124, 58, 237, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .team-photo:hover {
+      transform: scale(1.02);
+      box-shadow:
+        0 8px 30px rgba(124, 58, 237, 0.4),
+        0 0 0 6px rgba(124, 58, 237, 0.15);
+    }
+
+    .team-photo img {
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .team-photo:hover img {
+      transform: scale(1.05);
     }
 
     .team-info {
@@ -177,8 +194,8 @@
 
       <div class="team-grid">
         <div class="team-member reveal">
-          <div class="team-photo" style="background: linear-gradient(135deg, #7C3AED, #D946EF); font-size: 4rem; font-weight: 900; color: white; font-family: var(--font-heading);">
-            JM
+          <div class="team-photo">
+            <img src="/assets/images/johan-m.png" alt="Johan M. — Directeur Commercial LILIWATT" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
           </div>
           <div class="team-info">
             <h3 class="team-name">Johan M.</h3>
@@ -188,8 +205,8 @@
         </div>
 
         <div class="team-member reveal">
-          <div class="team-photo" style="background: linear-gradient(135deg, #4C1D95, #7C3AED); font-size: 4rem; font-weight: 900; color: white; font-family: var(--font-heading);">
-            KM
+          <div class="team-photo">
+            <img src="/assets/images/kevin-m.png" alt="Kevin M. — Président LILIWATT" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
           </div>
           <div class="team-info">
             <h3 class="team-name">Kevin M.</h3>
@@ -199,8 +216,8 @@
         </div>
 
         <div class="team-member reveal">
-          <div class="team-photo" style="background: linear-gradient(135deg, #6B21A8, #A855F7); font-size: 4rem; font-weight: 900; color: white; font-family: var(--font-heading);">
-            EL
+          <div class="team-photo">
+            <img src="/assets/images/emmanuel-l.png" alt="Emmanuel L. — Ressources Humaines LILIWATT" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
           </div>
           <div class="team-info">
             <h3 class="team-name">Emmanuel L.</h3>
