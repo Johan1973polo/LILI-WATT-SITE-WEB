@@ -453,6 +453,30 @@ img {
   line-height: 1.7;
 }
 
+/* Feature Cards avec Images */
+.feature-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.feature-card .card-content {
+  padding: 24px;
+}
+
+.feature-card .card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card .card-image img {
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.feature-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
 /* ========================================
    Grilles
    ======================================== */
