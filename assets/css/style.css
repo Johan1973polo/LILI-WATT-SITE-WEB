@@ -1578,6 +1578,168 @@ body.theme-e section {
 }
 
 /* ========================================
+   SECTION LE COÛT DE L'INACTION
+   ======================================== */
+.inaction-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    #06060F 0%,
+    #0D0515 50%,
+    #06060F 100%
+  );
+}
+
+.inaction-header {
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.inaction-label {
+  color: #EF4444;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.inaction-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(24px, 4vw, 42px);
+  color: #F0EEFF;
+  line-height: 1.3;
+}
+
+.inaction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto 60px;
+}
+
+.inaction-card {
+  padding: 40px 30px;
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inaction-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Variantes de couleur */
+.red-card {
+  background: linear-gradient(135deg, #1A0505, #0D0B1A);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.1);
+}
+.red-card:hover {
+  box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2);
+}
+
+.orange-card {
+  background: linear-gradient(135deg, #1A0A00, #0D0B1A);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.1);
+}
+.orange-card:hover {
+  box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
+}
+
+.purple-card {
+  background: linear-gradient(135deg, #0D0520, #0D0B1A);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+}
+.purple-card:hover {
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
+}
+
+.dark-card {
+  background: linear-gradient(135deg, #0A0A0A, #0D0B1A);
+  border: 1px solid rgba(217, 70, 239, 0.3);
+  box-shadow: 0 0 30px rgba(217, 70, 239, 0.1);
+}
+.dark-card:hover {
+  box-shadow: 0 20px 40px rgba(217, 70, 239, 0.2);
+}
+
+.inaction-icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.inaction-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  color: #F0EEFF;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.red-card .inaction-number { color: #FCA5A5; }
+.orange-card .inaction-number { color: #FED7AA; }
+.purple-card .inaction-number { color: #A78BFA; }
+.dark-card .inaction-number { color: #F0ABFC; }
+
+.inaction-label-card {
+  color: #9CA3AF;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.inaction-detail {
+  font-size: 12px;
+  color: #6B7280;
+  font-style: italic;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.inaction-cta {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.inaction-cta-text {
+  color: #A78BFA;
+  font-size: 16px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .inaction-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .inaction-number {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inaction-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
    SÉLECTEUR DE THÈME — Widget temporaire
    ======================================== */
 .theme-selector {

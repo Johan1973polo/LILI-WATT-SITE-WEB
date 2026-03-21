@@ -552,3 +552,76 @@ function initThemeSelector() {
 
 // Initialiser le sélecteur de thème
 document.addEventListener('DOMContentLoaded', initThemeSelector);
+
+// ========================================
+// Section Le coût de l'inaction — Animation compteurs
+// ========================================
+function initInactionCounters() {
+  const inactionCards = document.querySelectorAll('.inaction-card');
+
+  if (!inactionCards.length) return;
+
+  const observerOptions = {
+    threshold: 0.3
+  };
+
+  const inactionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateInactionCounter(entry.target);
+      } else {
+        // Reset quand la carte sort du viewport
+        const el = entry.target.querySelector('.inaction-number');
+        if (el) {
+          el.textContent = '0' + (el.dataset.suffix || '');
+        }
+      }
+    });
+  }, observerOptions);
+
+  inactionCards.forEach(card => inactionObserver.observe(card));
+}
+
+function animateInactionCounter(card) {
+  const el = card.querySelector('.inaction-number');
+  if (!el) return;
+
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const duration = 2000;
+  const step = target / (duration / 16);
+  let current = 0;
+
+  // Ne pas animer 2007 (juste l'afficher directement)
+  if (target === 2007) {
+    el.textContent = '2007';
+    return;
+  }
+
+  // Annuler l'animation précédente si elle existe
+  if (card.animationTimer) {
+    clearInterval(card.animationTimer);
+  }
+
+  card.animationTimer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      if (suffix === '€') {
+        el.textContent = target.toLocaleString('fr-FR') + suffix;
+      } else {
+        el.textContent = target + suffix;
+      }
+      clearInterval(card.animationTimer);
+      card.animationTimer = null;
+    } else {
+      if (suffix === '€') {
+        el.textContent = Math.floor(current).toLocaleString('fr-FR') + suffix;
+      } else {
+        el.textContent = Math.floor(current) + suffix;
+      }
+    }
+  }, 16);
+}
+
+// Initialiser au chargement de la page
+document.addEventListener('DOMContentLoaded', initInactionCounters);
