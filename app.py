@@ -82,6 +82,12 @@ def serve_html(filename):
         from flask import abort
         abort(404)
 
+@app.route('/images/<path:filename>')
+def serve_images(filename):
+    """Sert les images depuis le dossier images"""
+    from flask import send_from_directory
+    return send_from_directory('images', filename)
+
 # ─── GOOGLE SHEETS ─────────────────────────────────────────
 def get_sheet():
     scopes = [
