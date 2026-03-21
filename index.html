@@ -42,7 +42,6 @@
         <ul class="nav-menu">
           <li><a href="/" class="nav-link">Accueil</a></li>
           <li><a href="/offres" class="nav-link">Nos offres</a></li>
-          <li><a href="/extracteur" class="nav-link badge">Extracteur de factures</a></li>
           <li><a href="/apropos" class="nav-link">À propos</a></li>
           <li><a href="/blog" class="nav-link">Blog</a></li>
           <li><a href="/contact" class="nav-link">Contact</a></li>
@@ -75,66 +74,77 @@
     </div>
   </section>
 
-  <!-- Vidéo publicitaire LILIWATT -->
-  <section class="video-pub-section">
-    <div class="video-pub-container">
+  <!-- Section Vidéo Premium - Layout côte-à-côte -->
+  <section class="video-premium-section">
+    <div class="container">
+      <div class="video-premium-grid">
 
-      <!-- Titre au-dessus -->
-      <div class="video-pub-header">
-        <p class="video-pub-label">
-          ▶ DÉCOUVREZ LILIWATT EN VIDÉO
-        </p>
-      </div>
+        <!-- Colonne Gauche - Texte -->
+        <div class="video-premium-content">
+          <span class="video-premium-tag">▶ VIDÉO</span>
+          <h2 class="video-premium-title">Découvrez LILIWATT en action</h2>
+          <p class="video-premium-description">
+            Réduisez vos factures d'énergie jusqu'à 18% sans effort. Notre service 100% gratuit compare les meilleurs fournisseurs et gère toute la paperasse pour vous.
+          </p>
 
-      <!-- Lecteur vidéo avec contour violet -->
-      <div class="video-pub-wrapper">
-        <video
-          id="pub-liliwatt"
-          class="video-pub-player"
-          controls
-          poster="/assets/images/logo-liliwatt.png"
-          preload="metadata">
-          <source
-            src="/assets/videos/pub_liliwatt.mp4"
-            type="video/mp4">
-          Votre navigateur ne supporte pas la vidéo.
-        </video>
+          <ul class="video-premium-benefits">
+            <li>
+              <span class="benefit-icon">✓</span>
+              <span class="benefit-text">Comparaison de 18+ fournisseurs en temps réel</span>
+            </li>
+            <li>
+              <span class="benefit-icon">✓</span>
+              <span class="benefit-text">Zéro frais, zéro coupure, zéro paperasse</span>
+            </li>
+            <li>
+              <span class="benefit-icon">✓</span>
+              <span class="benefit-text">Économies garanties dès le 1er mois</span>
+            </li>
+            <li>
+              <span class="benefit-icon">✓</span>
+              <span class="benefit-text">Accompagnement dédié de A à Z</span>
+            </li>
+          </ul>
 
-        <!-- Bouton play custom -->
-        <div class="video-play-overlay"
-             id="playOverlay">
-          <div class="video-play-btn">
-            <svg viewBox="0 0 80 80"
-                 fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="40" r="38"
-                      stroke="url(#grad)"
-                      stroke-width="2"/>
-              <path d="M32 26L56 40L32 54V26Z"
-                    fill="url(#grad)"/>
-              <defs>
-                <linearGradient id="grad"
-                  x1="0" y1="0"
-                  x2="80" y2="80">
-                  <stop offset="0%"
-                        stop-color="#7C3AED"/>
-                  <stop offset="100%"
-                        stop-color="#D946EF"/>
-                </linearGradient>
-              </defs>
-            </svg>
+          <a href="/extracteur" class="btn btn-primary btn-lg">
+            Analyser ma facture →
+          </a>
+        </div>
+
+        <!-- Colonne Droite - Vidéo -->
+        <div class="video-premium-player-wrapper">
+          <div class="video-premium-card">
+            <video
+              id="pub-liliwatt"
+              class="video-premium-player"
+              controls
+              poster="/assets/images/logo-liliwatt.png"
+              preload="metadata">
+              <source
+                src="/assets/videos/pub_liliwatt.mp4"
+                type="video/mp4">
+              Votre navigateur ne supporte pas la vidéo.
+            </video>
+
+            <!-- Bouton play custom -->
+            <div class="video-play-overlay" id="playOverlay">
+              <div class="video-play-btn">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="40" cy="40" r="38" stroke="url(#grad)" stroke-width="2"/>
+                  <path d="M32 26L56 40L32 54V26Z" fill="url(#grad)"/>
+                  <defs>
+                    <linearGradient id="grad" x1="0" y1="0" x2="80" y2="80">
+                      <stop offset="0%" stop-color="#7C3AED"/>
+                      <stop offset="100%" stop-color="#D946EF"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
-
-      <!-- Texte sous la vidéo -->
-      <p class="video-pub-caption">
-        Découvrez comment LILIWATT réduit
-        vos factures d'énergie —
-        sans frais, sans coupure, en 3 semaines.
-      </p>
-
     </div>
   </section>
 
@@ -179,6 +189,21 @@
             <p class="card-text">Un conseiller dédié du contrat jusqu'à la mise en service. Changement sans coupure, démarches simplifiées.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Diagonale 1 - Excellence & Innovation -->
+  <section class="diagonal-section diagonal-section-1">
+    <div class="diagonal-overlay"></div>
+    <div class="container diagonal-content">
+      <div class="diagonal-text-wrapper">
+        <span class="diagonal-tag">NOTRE ENGAGEMENT</span>
+        <h2 class="diagonal-title">L'excellence au service de vos économies</h2>
+        <p class="diagonal-description">
+          Depuis notre création, nous accompagnons les entreprises dans leur transition énergétique. Notre expertise du marché de l'énergie et notre réseau de partenaires nous permettent de vous garantir les meilleures conditions tarifaires.
+        </p>
+        <a href="/apropos" class="btn btn-primary btn-lg">En savoir plus</a>
       </div>
     </div>
   </section>
@@ -404,6 +429,21 @@
             <div class="provider-card"><img src="assets/images/fournisseurs/png-clipart-logo-de-l-electricite-energie-edf-energie-nucleaire-reseaux-internationaux-edf-systeme-energetique-entreprise-compteur-intelligent-energie-renouvelable-thumbnail.png" alt="EDF"></div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Diagonale 2 - Transition Énergétique -->
+  <section class="diagonal-section diagonal-section-2">
+    <div class="diagonal-overlay"></div>
+    <div class="container diagonal-content">
+      <div class="diagonal-text-wrapper">
+        <span class="diagonal-tag">TRANSITION ÉNERGÉTIQUE</span>
+        <h2 class="diagonal-title">Prêts pour l'énergie de demain</h2>
+        <p class="diagonal-description">
+          Le marché de l'énergie évolue rapidement. Nous vous accompagnons dans votre transition vers des solutions plus durables et plus économiques, en anticipant les évolutions réglementaires et tarifaires.
+        </p>
+        <a href="/contact" class="btn btn-primary btn-lg">Nous contacter</a>
       </div>
     </div>
   </section>

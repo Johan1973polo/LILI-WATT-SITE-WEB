@@ -1892,65 +1892,118 @@ body.light-theme .footer-text {
 }
 
 /* ========================================
-   SECTION VIDÉO PUBLICITAIRE
+   SECTION VIDÉO PREMIUM - LAYOUT CÔTE-À-CÔTE
    ======================================== */
-.video-pub-section {
-  padding: 60px 20px;
-  background: linear-gradient(
-    180deg,
-    #06060F 0%,
-    #0A0618 50%,
-    #06060F 100%
-  );
+.video-premium-section {
+  padding: 80px 20px;
+  background: linear-gradient(180deg, #F5F0FF 0%, #EDE8FF 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-.video-pub-container {
-  max-width: 900px;
+.video-premium-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
 }
 
-.video-pub-header {
-  margin-bottom: 24px;
+/* Colonne Gauche - Texte */
+.video-premium-content {
+  padding-right: 20px;
 }
 
-.video-pub-label {
-  color: #A78BFA;
-  font-size: 13px;
+.video-premium-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  color: #7C3AED;
+  background: rgba(124, 58, 237, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
 }
 
-.video-pub-wrapper {
+.video-premium-title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  color: #2D1B69;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.video-premium-description {
+  font-size: 18px;
+  color: #3D2B79;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.video-premium-benefits {
+  list-style: none;
+  margin-bottom: 40px;
+}
+
+.video-premium-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #3D2B79;
+}
+
+.benefit-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #7C3AED, #D946EF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.benefit-text {
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* Colonne Droite - Vidéo */
+.video-premium-player-wrapper {
+  position: relative;
+}
+
+.video-premium-card {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-
-  /* Contour dégradé violet → fuchsia */
   border: 2px solid transparent;
-  background: linear-gradient(#06060F, #06060F)
-              padding-box,
-              linear-gradient(135deg,
-                #7C3AED, #D946EF)
-              border-box;
-
-  /* Glow violet autour */
+  background: linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+              linear-gradient(135deg, #7C3AED, #D946EF) border-box;
   box-shadow:
-    0 0 40px rgba(124, 58, 237, 0.3),
-    0 0 80px rgba(217, 70, 239, 0.15),
-    inset 0 0 30px rgba(124, 58, 237, 0.05);
-
-  transition: box-shadow 0.3s ease;
+    0 20px 60px rgba(124, 58, 237, 0.25),
+    0 8px 20px rgba(124, 58, 237, 0.15);
+  transition: all 0.3s ease;
 }
 
-.video-pub-wrapper:hover {
+.video-premium-card:hover {
+  transform: translateY(-8px);
   box-shadow:
-    0 0 60px rgba(124, 58, 237, 0.5),
-    0 0 120px rgba(217, 70, 239, 0.25);
+    0 30px 80px rgba(124, 58, 237, 0.35),
+    0 12px 30px rgba(124, 58, 237, 0.2);
 }
 
-.video-pub-player {
+.video-premium-player {
   width: 100%;
   height: auto;
   display: block;
@@ -1967,7 +2020,8 @@ body.light-theme .footer-text {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 6, 15, 0.4);
+  background: rgba(124, 58, 237, 0.15);
+  backdrop-filter: blur(2px);
   cursor: pointer;
   transition: opacity 0.3s ease;
   border-radius: 18px;
@@ -1986,51 +2040,50 @@ body.light-theme .footer-text {
 }
 
 .video-play-btn:hover {
-  transform: scale(1.1);
-}
-
-.video-pub-caption {
-  margin-top: 20px;
-  color: #9CA3AF;
-  font-size: 15px;
-  line-height: 1.6;
+  transform: scale(1.15);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .video-pub-section {
-    padding: 40px 15px;
+@media (max-width: 992px) {
+  .video-premium-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
+
+  .video-premium-content {
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .video-premium-tag {
+    display: inline-block;
+  }
+
+  .video-premium-benefits {
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-premium-section {
+    padding: 60px 20px;
+  }
+
+  .video-premium-title {
+    font-size: 28px;
+  }
+
+  .video-premium-description {
+    font-size: 16px;
+  }
+
   .video-play-btn {
     width: 60px;
     height: 60px;
   }
-}
-
-/* Light theme adjustments */
-body.light-theme .video-pub-section {
-  background: linear-gradient(
-    180deg,
-    #FFFFFF 0%,
-    #F3E8FF 50%,
-    #FFFFFF 100%
-  );
-}
-
-body.light-theme .video-pub-wrapper {
-  background: linear-gradient(#FFFFFF, #FFFFFF)
-              padding-box,
-              linear-gradient(135deg,
-                #7C3AED, #D946EF)
-              border-box;
-}
-
-body.light-theme .video-play-overlay {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-body.light-theme .video-pub-caption {
-  color: #4B5563;
 }
 
 /* ======================================================================
@@ -2292,6 +2345,134 @@ textarea::placeholder {
 }
 
 /* ========================================
+   SECTIONS DIAGONALES AVEC IMAGES
+   ======================================== */
+.diagonal-section {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding: 120px 20px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  clip-path: polygon(0 5%, 100% 0%, 100% 95%, 0% 100%);
+}
+
+/* Section 1 - Image d'énergie moderne */
+.diagonal-section-1 {
+  background-image: url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=80');
+  margin: 60px 0;
+}
+
+/* Section 2 - Image de panneaux solaires/ville moderne */
+.diagonal-section-2 {
+  background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&q=80');
+  margin: 60px 0;
+  clip-path: polygon(0 0%, 100% 5%, 100% 100%, 0% 95%);
+}
+
+/* Overlay avec dégradé violet */
+.diagonal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.85) 0%,
+    rgba(76, 29, 149, 0.75) 50%,
+    rgba(217, 70, 239, 0.70) 100%
+  );
+  z-index: 1;
+}
+
+.diagonal-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.diagonal-text-wrapper {
+  text-align: center;
+  color: white;
+}
+
+.diagonal-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.diagonal-title {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  color: white !important;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.diagonal-description {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.95) !important;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.diagonal-section .btn-primary {
+  background: white !important;
+  color: #7C3AED !important;
+  -webkit-text-fill-color: #7C3AED !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+.diagonal-section .btn-primary:hover {
+  background: #F5F0FF !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .diagonal-section {
+    min-height: 400px;
+    padding: 80px 20px;
+    background-attachment: scroll;
+    clip-path: polygon(0 3%, 100% 0%, 100% 97%, 0% 100%);
+  }
+
+  .diagonal-section-2 {
+    clip-path: polygon(0 0%, 100% 3%, 100% 100%, 0% 97%);
+  }
+
+  .diagonal-title {
+    font-size: 28px;
+  }
+
+  .diagonal-description {
+    font-size: 16px;
+  }
+}
+
+/* ========================================
    VIDÉO PUBLICITAIRE
    ======================================== */
 .video-pub-section {
@@ -2446,7 +2627,7 @@ img[src*="logo-transparent"] {
 .navbar-logo,
 .header .logo img,
 .header .logo video {
-  height: 58px !important;
+  height: 65px !important;
   width: auto !important;
   background: transparent !important;
   object-fit: contain !important;
@@ -2526,11 +2707,12 @@ a.nav-link[href="/extracteur"]:not(.btn):hover {
 .nav .btn-primary,
 a.btn.btn-primary[href="/extracteur"] {
   background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
-  color: white !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
   padding: 9px 16px !important;
   border-radius: 8px !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   white-space: nowrap !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
