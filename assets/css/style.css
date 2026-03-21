@@ -2887,3 +2887,73 @@ body.extracteur-page {
   border-color: #7C3AED !important;
   background: rgba(124, 58, 237, 0.1) !important;
 }
+
+/* ━━━━ HERO BACKGROUNDS ━━━━ */
+
+/* Mixin réutilisable pour tous les heroes */
+.page-hero {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 20px 60px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+/* Overlay violet semi-transparent pour lisibilité du texte */
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(245, 240, 255, 0.82) 0%,
+    rgba(237, 232, 255, 0.88) 60%,
+    rgba(237, 232, 255, 0.95) 100%
+  );
+  z-index: 0;
+}
+
+/* Contenu toujours au-dessus */
+.page-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.page-hero h1 {
+  color: #2D1B69;
+}
+
+.page-hero p {
+  color: #4C3D8A;
+}
+
+/* Effet de fondu entre hero et section suivante */
+.page-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #F5F0FF
+  );
+  z-index: 1;
+}
+
+/* Mobile — désactive parallax */
+@media (max-width: 768px) {
+  .page-hero {
+    background-attachment: scroll;
+    min-height: 280px;
+  }
+}
