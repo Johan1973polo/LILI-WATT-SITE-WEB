@@ -2405,3 +2405,303 @@ img[src*="logo-transparent"] {
   max-width: 100%;
   height: auto;
 }
+
+/* ========================================
+   REFONTE NAVBAR - LOGO GRAND + COMPACT
+   ======================================== */
+
+/* Navbar fixe en haut */
+.header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 70px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.12) !important;
+  z-index: 9999 !important;
+  padding: 0 !important;
+}
+
+.header .container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  gap: 16px !important;
+  padding: 0 24px !important;
+  max-width: 100% !important;
+}
+
+/* LOGO - BEAUCOUP PLUS GRAND */
+.header .logo {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.navbar-logo,
+.header .logo img,
+.header .logo video {
+  height: 58px !important;
+  width: auto !important;
+  background: transparent !important;
+  object-fit: contain !important;
+}
+
+/* NAV - LIENS COMPACTS SUR UNE LIGNE */
+.header .nav {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  height: 100% !important;
+}
+
+.nav-menu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-wrap: nowrap !important;
+}
+
+.nav-menu li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* LIENS - COMPACTS */
+.nav-link {
+  color: #2D1B69 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  padding: 6px 10px !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  display: inline-block !important;
+}
+
+.nav-link:hover {
+  color: #7C3AED !important;
+  background: rgba(124, 58, 237, 0.08) !important;
+}
+
+/* FORCER À PROPOS SUR UNE LIGNE */
+a[href="/apropos"],
+a[href*="apropos"] {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
+/* EXTRACTEUR - BADGE VIOLET COMPACT */
+a.nav-link.badge,
+a.nav-link[href="/extracteur"]:not(.btn) {
+  background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
+  color: white !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+a.nav-link.badge:hover,
+a.nav-link[href="/extracteur"]:not(.btn):hover {
+  background: linear-gradient(135deg, #6828D6, #C535D8) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3) !important;
+}
+
+/* BOUTON CTA ANALYSER MA FACTURE - COMPACT */
+.btn-primary,
+.navbar-cta,
+.nav .btn-primary,
+a.btn.btn-primary[href="/extracteur"] {
+  background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
+  color: white !important;
+  padding: 9px 16px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  line-height: 1.3 !important;
+  min-width: auto !important;
+  height: auto !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover,
+.nav .btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4) !important;
+}
+
+/* RESPONSIVE - CACHER LIENS SUR PETITS ÉCRANS */
+@media (max-width: 1200px) {
+  a.nav-link[href="/recrutement"],
+  a.nav-link[href="/blog"] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-menu {
+    display: none !important;
+  }
+  
+  .menu-toggle {
+    display: flex !important;
+  }
+}
+
+/* ========================================
+   FOOTER - TEXTES EN BLANC
+   ======================================== */
+
+.footer {
+  background: linear-gradient(180deg, #06060F 0%, #0A0A1F 100%) !important;
+  color: #F0EEFF !important;
+}
+
+.footer p,
+.footer span,
+.footer li,
+.footer h3,
+.footer h4,
+.footer-tagline,
+.footer-section p,
+.footer-section span {
+  color: #F0EEFF !important;
+}
+
+.footer a {
+  color: #C4B5FD !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.footer a:hover {
+  color: #D946EF !important;
+}
+
+.footer-bottom p,
+.footer-copyright {
+  color: #9CA3AF !important;
+}
+
+.footer-bottom a {
+  color: #A78BFA !important;
+}
+
+.footer-bottom a:hover {
+  color: #C4B5FD !important;
+}
+
+/* Titres de colonnes footer */
+.footer h3,
+.footer h4 {
+  color: white !important;
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+}
+
+/* ========================================
+   EXTRACTEUR - CONTOURS VIOLETS LÉGERS
+   ======================================== */
+
+/* Page extracteur - Fond sombre */
+.extracteur-page,
+.tunnel-container,
+body.extracteur-page {
+  background: #06060F !important;
+  color: #F0EEFF !important;
+}
+
+/* Champs de formulaire */
+.extracteur-page input,
+.extracteur-page select,
+.extracteur-page textarea,
+.tunnel-step input,
+.tunnel-step select,
+.tunnel-step textarea {
+  background: #0D0D1F !important;
+  border: 1px solid rgba(124, 58, 237, 0.4) !important;
+  color: #F0EEFF !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+}
+
+.extracteur-page input:focus,
+.extracteur-page select:focus,
+.extracteur-page textarea:focus {
+  border-color: #7C3AED !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2) !important;
+  outline: none !important;
+}
+
+/* Contours des étapes/cards */
+.tunnel-step,
+.result-card,
+.upload-zone,
+.extracteur-card {
+  border: 1px solid rgba(124, 58, 237, 0.35) !important;
+  background: #0D0D1F !important;
+  border-radius: 12px !important;
+}
+
+/* Labels */
+.extracteur-page label,
+.tunnel-step label {
+  color: #A78BFA !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* Boutons extracteur */
+.extracteur-page button,
+.tunnel-step button {
+  background: linear-gradient(135deg, #7C3AED, #D946EF) !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.extracteur-page button:hover,
+.tunnel-step button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4) !important;
+}
+
+/* Zone de drop */
+.upload-zone {
+  border: 2px dashed rgba(124, 58, 237, 0.5) !important;
+  background: rgba(124, 58, 237, 0.05) !important;
+  transition: all 0.2s ease !important;
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: #7C3AED !important;
+  background: rgba(124, 58, 237, 0.1) !important;
+}

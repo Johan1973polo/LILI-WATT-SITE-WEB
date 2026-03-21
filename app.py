@@ -808,18 +808,22 @@ Si une valeur est introuvable, mets null."""
 def index():
     return serve_html('index.html')
 
+@app.route('/apropos')
 @app.route('/apropos.html')
 def apropos():
     return serve_html('apropos.html')
 
+@app.route('/offres')
 @app.route('/offres.html')
 def offres():
     return serve_html('offres.html')
 
+@app.route('/recrutement')
 @app.route('/recrutement.html')
 def recrutement():
     return serve_html('recrutement.html')
 
+@app.route('/contact')
 @app.route('/contact.html')
 def contact():
     return serve_html('contact.html')
