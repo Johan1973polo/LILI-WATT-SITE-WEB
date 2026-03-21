@@ -75,6 +75,69 @@
     </div>
   </section>
 
+  <!-- Vidéo publicitaire LILIWATT -->
+  <section class="video-pub-section">
+    <div class="video-pub-container">
+
+      <!-- Titre au-dessus -->
+      <div class="video-pub-header">
+        <p class="video-pub-label">
+          ▶ DÉCOUVREZ LILIWATT EN VIDÉO
+        </p>
+      </div>
+
+      <!-- Lecteur vidéo avec contour violet -->
+      <div class="video-pub-wrapper">
+        <video
+          id="pub-liliwatt"
+          class="video-pub-player"
+          controls
+          poster="/assets/images/logo-liliwatt.png"
+          preload="metadata">
+          <source
+            src="/assets/videos/pub_liliwatt.mp4"
+            type="video/mp4">
+          Votre navigateur ne supporte pas la vidéo.
+        </video>
+
+        <!-- Bouton play custom -->
+        <div class="video-play-overlay"
+             id="playOverlay">
+          <div class="video-play-btn">
+            <svg viewBox="0 0 80 80"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="38"
+                      stroke="url(#grad)"
+                      stroke-width="2"/>
+              <path d="M32 26L56 40L32 54V26Z"
+                    fill="url(#grad)"/>
+              <defs>
+                <linearGradient id="grad"
+                  x1="0" y1="0"
+                  x2="80" y2="80">
+                  <stop offset="0%"
+                        stop-color="#7C3AED"/>
+                  <stop offset="100%"
+                        stop-color="#D946EF"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Texte sous la vidéo -->
+      <p class="video-pub-caption">
+        Découvrez comment LILIWATT réduit
+        vos factures d'énergie —
+        sans frais, sans coupure, en 3 semaines.
+      </p>
+
+    </div>
+  </section>
+
   <!-- Pourquoi LILIWATT Section -->
   <section class="section">
     <div class="container">

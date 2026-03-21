@@ -635,3 +635,37 @@ function animateInactionCounter(card) {
 
 // Initialiser au chargement de la page
 document.addEventListener('DOMContentLoaded', initInactionCounters);
+
+// ========================================
+// Gestion vidéo publicitaire - Bouton play custom
+// ========================================
+function initVideoPub() {
+  const overlay = document.getElementById('playOverlay');
+  const video = document.getElementById('pub-liliwatt');
+
+  if (overlay && video) {
+    // Click sur l'overlay pour lancer la vidéo
+    overlay.addEventListener('click', () => {
+      video.play();
+      overlay.classList.add('hidden');
+    });
+
+    // Quand la vidéo est mise en pause, réafficher l'overlay
+    video.addEventListener('pause', () => {
+      overlay.classList.remove('hidden');
+    });
+
+    // Quand la vidéo se termine, réafficher l'overlay
+    video.addEventListener('ended', () => {
+      overlay.classList.remove('hidden');
+    });
+
+    // Quand la vidéo commence à jouer, masquer l'overlay
+    video.addEventListener('play', () => {
+      overlay.classList.add('hidden');
+    });
+  }
+}
+
+// Initialiser la vidéo au chargement de la page
+document.addEventListener('DOMContentLoaded', initVideoPub);
