@@ -749,87 +749,29 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
             media_type = "image/png"
             print(f"✅ Base64 créé : {len(image_b64)} caractères")
 
-        # Prompt d'extraction détaillé
-        prompt = """Tu es un expert en facturation d'énergie française (électricité et gaz).
-Analyse cette facture et extrais UNIQUEMENT ce JSON strict.
+        # Prompt d'extraction simplifié et robuste
+        prompt = """Tu es un expert en factures d'énergie françaises. Analyse cette facture et extrait TOUTES les informations suivantes en JSON. Si une info est absente, mets null.
 
-INSTRUCTIONS D'EXTRACTION :
-
-### IDENTIFICATION
-- type_energie : "electricite" ou "gaz" ou "les_deux"
-- fourn : EDF, Engie, TotalEnergies, Mint, GRDF, ou Autre
-- nom_offre : nom commercial de l'offre (ex: "Tarif Bleu", "Offre Verte")
-
-### CLIENT
-- prenom_client, nom_client : titulaire du contrat
-- nom_entreprise : raison sociale si présente en haut de facture (null si particulier)
-- siren : 9 chiffres si présent (chercher sous raison sociale)
-- adresse : adresse complète du point de livraison
-
-### CONTRAT ÉLECTRICITÉ (si électricité présente)
-- pdl : 14 chiffres (Point De Livraison)
-- puissance_kva : puissance souscrite en kVA (ex: 36)
-- segment : C1|C2|C3|C4|C5 si pro, "particulier" sinon
-- option_tarifaire : "BASE" si un seul prix kWh, "HPHC" si Heures Pleines/Creuses mentionnés
-- contrat : "indexe" (variable), "fixe", "trv" (réglementé), ou "inconnu"
-- date_fin_contrat : JJ/MM/AAAA ou "NA" si indéterminé
-
-### PRIX ÉLECTRICITÉ (en centimes par kWh)
-- prix_kwh_base_centimes : si option BASE
-- prix_kwh_hp_centimes : si option HPHC (Heures Pleines)
-- prix_kwh_hc_centimes : si option HPHC (Heures Creuses)
-- abonnement_elec_ht_mois : abonnement mensuel HT en euros
-- consommation_elec_kwh : consommation période en kWh
-
-### CONTRAT GAZ (si gaz présent)
-- pce : 14 chiffres (Point de Comptage et d'Estimation)
-- prix_kwh_gaz_centimes : prix kWh gaz en centimes
-- abonnement_gaz_ht_mois : abonnement mensuel HT en euros
-- consommation_gaz_kwh : consommation période en kWh
-- contrat_gaz : "indexe", "fixe", "trv", ou "inconnu"
-
-### FACTURATION
-- montant : Montant TTC en euros (nombre décimal)
-- periode : "mensuel", "bimestriel", ou "trimestriel"
-- nb_jours_periode : nombre de jours de la période facturée
-
-RÈGLES DE DÉTECTION :
-- BASE vs HPHC : si mention "HP/HC" ou "heures creuses" → HPHC, sinon BASE
-- Particulier vs Pro : si SIREN présent → pro, si juste "M." ou "Mme" → particulier
-- Segment selon puissance : ≤6kVA=particulier, 9-36kVA=C5, 36kVA=C4, >36kVA=C3/C2
-
-RÉPONDS UNIQUEMENT avec ce JSON :
 {
-  "type_energie": "electricite|gaz|les_deux",
-  "fourn": "EDF|Engie|TotalEnergies|Mint|GRDF|Autre",
-  "nom_offre": string ou null,
-  "prenom_client": string ou null,
-  "nom_client": string ou null,
-  "nom_entreprise": string ou null,
-  "siren": string ou null,
-  "adresse": string ou null,
-  "pdl": string ou null,
-  "puissance_kva": float ou null,
-  "segment": string ou null,
-  "option_tarifaire": "BASE|HPHC" ou null,
-  "contrat": "indexe|fixe|trv|inconnu",
-  "date_fin_contrat": string ou null,
-  "prix_kwh_base_centimes": float ou null,
-  "prix_kwh_hp_centimes": float ou null,
-  "prix_kwh_hc_centimes": float ou null,
-  "abonnement_elec_ht_mois": float ou null,
-  "consommation_elec_kwh": int ou null,
-  "pce": string ou null,
-  "prix_kwh_gaz_centimes": float ou null,
-  "abonnement_gaz_ht_mois": float ou null,
-  "consommation_gaz_kwh": int ou null,
-  "contrat_gaz": string ou null,
-  "montant": float,
-  "periode": "mensuel|bimestriel|trimestriel",
-  "nb_jours_periode": int ou null
+  "fournisseur": "nom du fournisseur",
+  "offre": "nom de l'offre commerciale",
+  "option_tarifaire": "BASE ou HPHC ou ZEN ou autre",
+  "puissance_souscrite": "valeur en kVA",
+  "pdl": "numéro PDL ou PCE sur 14 chiffres",
+  "abonnement_annuel_ht": "montant en euros HT/an",
+  "abonnement_mensuel_ht": "montant en euros HT/mois",
+  "consommation_annuelle_kwh": "consommation en kWh/an",
+  "consommation_periode_kwh": "consommation sur la période facturée",
+  "prix_kwh_ht": "prix unitaire en €/kWh HT",
+  "montant_facture_ttc": "montant total TTC",
+  "periode_debut": "date début période",
+  "periode_fin": "date fin période",
+  "type_contrat": "fixe ou variable ou indexé",
+  "date_fin_contrat": "date échéance contrat si mentionnée",
+  "energie": "electricite ou gaz"
 }
 
-Si une valeur est introuvable, mets null."""
+Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, sans backticks."""
 
         # Appel à Claude Vision avec retry logic
         max_retries = 3
@@ -933,11 +875,22 @@ Si une valeur est introuvable, mets null."""
         print(response_text)
         print("─" * 60)
 
-        # Nettoyer le texte pour extraire uniquement le JSON
+        # Nettoyer le texte pour extraire uniquement le JSON (regex robuste)
+        import re
+
+        # D'abord essayer de retirer les backticks markdown si présents
         if "```json" in response_text:
             response_text = response_text.split("```json")[1].split("```")[0].strip()
         elif "```" in response_text:
             response_text = response_text.split("```")[1].split("```")[0].strip()
+
+        # Ensuite utiliser regex pour extraire le JSON même s'il y a du texte autour
+        json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+        if json_match:
+            response_text = json_match.group()
+            print(f"✅ JSON extrait par regex : {len(response_text)} caractères")
+        else:
+            print(f"⚠️ Aucun JSON détecté par regex, tentative parsing direct")
 
         # Parser le JSON
         try:
