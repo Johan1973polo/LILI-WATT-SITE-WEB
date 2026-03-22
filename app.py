@@ -554,14 +554,14 @@ def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=Non
           </div>
           <div style="background:#fff;padding:24px;border:1px solid #e5e7eb">
             <table style="width:100%;font-size:14px;border-collapse:collapse">
-              <tr><td style="color:#6B7280;padding:6px 0;width:40%">Nom</td><td style="font-weight:600">{data['prenom']} {data['nom']}</td></tr>
-              <tr><td style="color:#6B7280;padding:6px 0">Téléphone</td><td><a href="tel:{data['tel']}" style="color:#7C3AED;font-weight:600">{data['tel']}</a></td></tr>
-              <tr><td style="color:#6B7280;padding:6px 0">Email</td><td><a href="mailto:{data['email']}" style="color:#7C3AED">{data['email']}</a></td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0;width:40%">Nom</td><td style="font-weight:600">{data.get('prenom', '')} {data.get('nom', '')}</td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0">Téléphone</td><td><a href="tel:{data.get('tel', '')}" style="color:#7C3AED;font-weight:600">{data.get('tel', '')}</a></td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0">Email</td><td><a href="mailto:{data.get('email', '')}" style="color:#7C3AED">{data.get('email', '')}</a></td></tr>
               <tr><td colspan="2"><hr style="border:none;border-top:1px solid #e5e7eb;margin:8px 0"></td></tr>
-              <tr><td style="color:#6B7280;padding:6px 0">Facture</td><td>{data['montant']}€ / {data['periode']}</td></tr>
-              <tr><td style="color:#6B7280;padding:6px 0">Fournisseur</td><td>{data['fourn']}</td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0">Facture</td><td>{data.get('montant', 0)}€ / {data.get('periode', '1 mois')}</td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0">Fournisseur</td><td>{data.get('fourn', 'N/A')}</td></tr>
               <tr><td style="color:#6B7280;padding:6px 0">Secteur</td><td>{data.get('secteur', 'N/A')}</td></tr>
-              <tr><td style="color:#6B7280;padding:6px 0">Contrat</td><td>{data['contrat']}</td></tr>
+              <tr><td style="color:#6B7280;padding:6px 0">Contrat</td><td>{data.get('contrat', 'N/A')}</td></tr>
               <tr><td colspan="2"><hr style="border:none;border-top:1px solid #e5e7eb;margin:8px 0"></td></tr>
               <tr><td style="color:#6B7280;padding:6px 0">Économies estimées</td>
                   <td style="font-size:18px;font-weight:700;color:#7C3AED">{eco['eco_min']:,}€ — {eco['eco_max']:,}€/an</td></tr>

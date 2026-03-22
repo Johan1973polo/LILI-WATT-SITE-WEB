@@ -1769,18 +1769,30 @@ async function analyzeInvoiceContinue() {
       // Stocker TOUTES les données extraites dans l'objet D pour les utiliser plus tard
       Object.assign(D, data);
 
+      // Mapper les noms de champs de l'API vers les noms utilisés dans le code
+      if (data.fournisseur) D.fourn = data.fournisseur;
+      if (data.offre) D.nom_offre = data.offre;
+      if (data.puissance_souscrite) D.puissance_kva = data.puissance_souscrite;
+      if (data.consommation_periode_kwh) D.consommation_elec_kwh = data.consommation_periode_kwh;
+      if (data.abonnement_mensuel_ht) D.abonnement_elec_ht_mois = data.abonnement_mensuel_ht;
+      if (data.montant_facture_ttc) D.montant = data.montant_facture_ttc;
+      if (data.prix_kwh_ht) {
+        // Convertir en centimes si nécessaire
+        D.prix_kwh_base_centimes = (parseFloat(data.prix_kwh_ht) * 100).toFixed(2);
+      }
+
       // Pré-remplir les champs du formulaire
-      if (data.montant) {
-        document.getElementById('f-montant').value = data.montant;
+      if (data.montant_facture_ttc) {
+        document.getElementById('f-montant').value = data.montant_facture_ttc;
       }
       if (data.periode) {
         D.periode = data.periode;
       }
-      if (data.fourn) {
-        D.fourn = data.fourn;
+      if (data.fournisseur) {
+        D.fourn = data.fournisseur;
       }
-      if (data.contrat) {
-        D.contrat = data.contrat;
+      if (data.contrat || data.type_contrat) {
+        D.contrat = data.contrat || data.type_contrat;
       }
 
       // Si prenom/nom client extrait, pré-remplir aussi
