@@ -76,7 +76,7 @@
 
     .accordion-header {
       background: #7c3aed;
-      color: #ffffff;
+      color: #ffffff !important;
       font-weight: 600;
       padding: 18px 24px;
       cursor: pointer;
@@ -86,12 +86,16 @@
       transition: background 0.2s;
     }
 
+    .accordion-header span {
+      color: #ffffff !important;
+    }
+
     .accordion-header:hover {
       background: #6d28d9;
     }
 
     .accordion-icon {
-      color: #ffffff;
+      color: #ffffff !important;
       transition: transform 0.3s;
     }
 
@@ -1100,19 +1104,20 @@
   min-width: 200px;
 }
 #cookie-banner .cookie-text h3 {
+  color: #ffffff !important;
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 6px;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 #cookie-banner .cookie-text p {
   font-size: 13px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.90) !important;
   margin: 0;
   line-height: 1.5;
 }
 #cookie-banner .cookie-text a {
-  color: #a855f7;
+  color: #a855f7 !important;
   text-decoration: underline;
 }
 #cookie-banner .cookie-buttons {
