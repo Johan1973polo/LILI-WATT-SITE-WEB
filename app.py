@@ -378,6 +378,9 @@ def calcul_economies(montant, periode, contrat, type_energie="electricite", cont
     eco_elec_max = 0
     eco_gaz_min = 0
     eco_gaz_max = 0
+    montant_annuel = 0
+    pct_min = 0
+    pct_max = 0
 
     try:
         if type_energie == "electricite":
