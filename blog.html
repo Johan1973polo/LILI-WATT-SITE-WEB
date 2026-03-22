@@ -765,51 +765,46 @@
     /* ═══════════════════════════════════════════════════════════════════════ */
     
     /* ═══════════════════════════════════════════════════════════════════════ */
-    /* CHATBOT SMOOTH SCROLL & IDLE ANIMATION */
+    /* CHATBOT SPRING PHYSICS & IDLE ANIMATION */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
-      const chatbot = document.getElementById('lili-chat-widget');
-      if (!chatbot) return;
+      const chatWidget = document.getElementById('lili-chat-widget');
+      if (!chatWidget) return;
 
-      let targetY = window.innerHeight * 0.5;
-      let currentY = targetY;
+      let targetY = window.innerHeight / 2;
+      let currentY = window.innerHeight / 2;
+      let velocity = 0;
+      const stiffness = 0.08;
+      const damping = 0.75;
       let idleTimer;
 
-      // Mise à jour de la position cible lors du scroll
-      function updateTargetPosition() {
-        const scrolled = window.scrollY;
-        const windowH = window.innerHeight;
-        targetY = scrolled + windowH * 0.5;
-      }
-
-      // Animation fluide du chatbot
-      function animateChatbot() {
-        currentY += (targetY - currentY) * 0.08;
-        chatbot.style.top = currentY + 'px';
-        chatbot.style.transform = 'translateY(-50%)';
-        requestAnimationFrame(animateChatbot);
+      function updateWidgetPosition() {
+        targetY = window.scrollY + window.innerHeight / 2;
+        const force = (targetY - currentY) * stiffness;
+        velocity = (velocity + force) * damping;
+        currentY += velocity;
+        chatWidget.style.position = 'absolute';
+        chatWidget.style.top = currentY + 'px';
+        chatWidget.style.transform = 'translateY(-50%)';
+        chatWidget.style.right = '24px';
+        requestAnimationFrame(updateWidgetPosition);
       }
 
       // Gestion de l'animation idle (rebond)
       function resetIdleTimer() {
-        chatbot.classList.remove('chatbot-idle');
+        chatWidget.classList.remove('chatbot-idle');
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
-          chatbot.classList.add('chatbot-idle');
+          chatWidget.classList.add('chatbot-idle');
         }, 3000);
       }
 
-      // Initialisation
-      window.addEventListener('scroll', () => {
-        updateTargetPosition();
-        resetIdleTimer();
-      });
-
+      window.addEventListener('scroll', resetIdleTimer);
       window.addEventListener('mousemove', resetIdleTimer);
       window.addEventListener('click', resetIdleTimer);
 
-      updateTargetPosition();
-      animateChatbot();
+      chatWidget.style.position = 'absolute';
+      updateWidgetPosition();
       resetIdleTimer();
     })();
 
