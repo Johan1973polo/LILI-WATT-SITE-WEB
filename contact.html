@@ -222,8 +222,8 @@
             <h3 style="margin-bottom: 0.5rem; color: #ffffff; font-weight: 700;">Adresse</h3>
             <p style="color: rgba(255, 255, 255, 0.85);">
               LILIWATT<br>
-              [Adresse complète à compléter]<br>
-              [Code postal] [Ville]<br>
+              59 rue de Ponthieu, Bureau 326<br>
+              75008 Paris<br>
               France
             </p>
           </div>
@@ -315,12 +315,12 @@
   </section>
 
   <!-- CTA Final -->
-  <section class="cta-section reveal">
+  <section class="cta-section cta-section-diagonal reveal">
     <div class="container text-center">
-      <h2 style="color: var(--white); margin-bottom: var(--spacing-md);">
+      <h2>
         Vous préférez analyser votre facture directement ?
       </h2>
-      <p style="color: var(--white); margin-bottom: var(--spacing-md); font-size: 1.125rem;">
+      <p>
         Notre extracteur vous donne une estimation de vos économies en 60 secondes.
       </p>
       <a href="/extracteur" class="btn btn-white btn-lg">Accéder à l'extracteur de factures</a>
@@ -475,11 +475,12 @@
     /* CHATBOT LILI - STYLES */
     /* ═══════════════════════════════════════════════════════════════════════ */
     #lili-chat-widget {
-      position: fixed;
-      bottom: 20px;
+      position: absolute;
       right: 20px;
       z-index: 9999;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: none;
+      will-change: top;
     }
 
     /* Bouton flottant */
@@ -505,6 +506,18 @@
 
     @keyframes pulse {
       0%, 100% { box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4); }
+    /* Animation idle bounce pour chatbot */
+    @keyframes chatbot-bounce {
+      0%, 100% { transform: translateY(0px); }
+      25% { transform: translateY(-10px); }
+      50% { transform: translateY(0px); }
+      75% { transform: translateY(4px); }
+    }
+
+    #lili-chat-widget.chatbot-idle {
+      animation: chatbot-bounce 1.8s ease-in-out infinite;
+    }
+
       50% { box-shadow: 0 8px 32px rgba(124, 58, 237, 0.6); }
     }
 
@@ -792,6 +805,57 @@
     /* ═══════════════════════════════════════════════════════════════════════ */
     /* CHATBOT LILI - JAVASCRIPT */
     /* ═══════════════════════════════════════════════════════════════════════ */
+    
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    /* CHATBOT SMOOTH SCROLL & IDLE ANIMATION */
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    (function() {
+      const chatbot = document.getElementById('lili-chat-widget');
+      if (!chatbot) return;
+
+      let targetY = window.innerHeight * 0.5;
+      let currentY = targetY;
+      let idleTimer;
+
+      // Mise à jour de la position cible lors du scroll
+      function updateTargetPosition() {
+        const scrolled = window.scrollY;
+        const windowH = window.innerHeight;
+        targetY = scrolled + windowH * 0.5;
+      }
+
+      // Animation fluide du chatbot
+      function animateChatbot() {
+        currentY += (targetY - currentY) * 0.08;
+        chatbot.style.top = currentY + 'px';
+        chatbot.style.transform = 'translateY(-50%)';
+        requestAnimationFrame(animateChatbot);
+      }
+
+      // Gestion de l'animation idle (rebond)
+      function resetIdleTimer() {
+        chatbot.classList.remove('chatbot-idle');
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          chatbot.classList.add('chatbot-idle');
+        }, 3000);
+      }
+
+      // Initialisation
+      window.addEventListener('scroll', () => {
+        updateTargetPosition();
+        resetIdleTimer();
+      });
+
+      window.addEventListener('mousemove', resetIdleTimer);
+      window.addEventListener('click', resetIdleTimer);
+
+      updateTargetPosition();
+      animateChatbot();
+      resetIdleTimer();
+    })();
+
+
     let chatHistory = [];
 
     function toggleChat() {

@@ -3024,6 +3024,58 @@ body.extracteur-page {
   transform: translateY(-3px) !important;
 }
 
+/* Bouton blanc sur section CTA (candidature spontanée) → style violet avec gradient */
+.cta-section .btn-white {
+  background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  padding: 16px 40px !important;
+  border-radius: 50px !important;
+  transition: all 0.3s ease !important;
+}
+
+.cta-section .btn-white:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4) !important;
+}
+
+/* Section CTA diagonal (page contact) */
+.cta-section-diagonal {
+  background: linear-gradient(135deg, #6d28d9 0%, #a855f7 50%, #7c3aed 100%) !important;
+  clip-path: polygon(0 8%, 100% 0%, 100% 92%, 0% 100%);
+  padding: 80px 20px !important;
+  margin: 60px 0;
+}
+
+.cta-section-diagonal h2 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  margin-bottom: var(--spacing-md);
+}
+
+.cta-section-diagonal p {
+  color: rgba(255, 255, 255, 0.90) !important;
+  margin-bottom: var(--spacing-md);
+}
+
+.cta-section-diagonal .btn-white {
+  background: #ffffff !important;
+  color: #7c3aed !important;
+  -webkit-text-fill-color: #7c3aed !important;
+  font-weight: 700 !important;
+  border-radius: 50px !important;
+  padding: 16px 40px !important;
+  transition: all 0.3s ease !important;
+}
+
+.cta-section-diagonal .btn-white:hover {
+  background: rgba(255, 255, 255, 0.90) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3) !important;
+}
+
 /* ━━━━ CARTES RECRUTEMENT PUNCH ━━━━ */
 
 .job-card {

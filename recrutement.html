@@ -617,11 +617,12 @@
     /* CHATBOT LILI - STYLES */
     /* ═══════════════════════════════════════════════════════════════════════ */
     #lili-chat-widget {
-      position: fixed;
-      bottom: 20px;
+      position: absolute;
       right: 20px;
       z-index: 9999;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: none;
+      will-change: top;
     }
 
     /* Bouton flottant */
@@ -647,6 +648,18 @@
 
     @keyframes pulse {
       0%, 100% { box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4); }
+    /* Animation idle bounce pour chatbot */
+    @keyframes chatbot-bounce {
+      0%, 100% { transform: translateY(0px); }
+      25% { transform: translateY(-10px); }
+      50% { transform: translateY(0px); }
+      75% { transform: translateY(4px); }
+    }
+
+    #lili-chat-widget.chatbot-idle {
+      animation: chatbot-bounce 1.8s ease-in-out infinite;
+    }
+
       50% { box-shadow: 0 8px 32px rgba(124, 58, 237, 0.6); }
     }
 
@@ -934,6 +947,57 @@
     /* ═══════════════════════════════════════════════════════════════════════ */
     /* CHATBOT LILI - JAVASCRIPT */
     /* ═══════════════════════════════════════════════════════════════════════ */
+    
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    /* CHATBOT SMOOTH SCROLL & IDLE ANIMATION */
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    (function() {
+      const chatbot = document.getElementById('lili-chat-widget');
+      if (!chatbot) return;
+
+      let targetY = window.innerHeight * 0.5;
+      let currentY = targetY;
+      let idleTimer;
+
+      // Mise à jour de la position cible lors du scroll
+      function updateTargetPosition() {
+        const scrolled = window.scrollY;
+        const windowH = window.innerHeight;
+        targetY = scrolled + windowH * 0.5;
+      }
+
+      // Animation fluide du chatbot
+      function animateChatbot() {
+        currentY += (targetY - currentY) * 0.08;
+        chatbot.style.top = currentY + 'px';
+        chatbot.style.transform = 'translateY(-50%)';
+        requestAnimationFrame(animateChatbot);
+      }
+
+      // Gestion de l'animation idle (rebond)
+      function resetIdleTimer() {
+        chatbot.classList.remove('chatbot-idle');
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          chatbot.classList.add('chatbot-idle');
+        }, 3000);
+      }
+
+      // Initialisation
+      window.addEventListener('scroll', () => {
+        updateTargetPosition();
+        resetIdleTimer();
+      });
+
+      window.addEventListener('mousemove', resetIdleTimer);
+      window.addEventListener('click', resetIdleTimer);
+
+      updateTargetPosition();
+      animateChatbot();
+      resetIdleTimer();
+    })();
+
+
     let chatHistory = [];
 
     function toggleChat() {
