@@ -140,7 +140,7 @@ def draw_header(c, width, date_signature=None):
         if os.path.exists(logo_path):
             # Logo PNG avec fond transparent
             logo = ImageReader(logo_path)
-            logo_height = 50  # pixels de hauteur
+            logo_height = 70  # pixels de hauteur (augmenté à 70 points minimum)
             # Ratio pour garder proportions (approximatif)
             logo_width = logo_height * 3  # ajuster selon ratio réel
             c.drawImage(logo, 20*mm, height - 30*mm,
