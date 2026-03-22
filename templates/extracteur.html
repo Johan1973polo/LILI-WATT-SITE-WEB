@@ -954,27 +954,8 @@
     <div class="step-title" style="text-align:center; margin-bottom: 8px;">Quel est votre profil de consommation ?</div>
     <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez le profil qui vous correspond le mieux</div>
 
-    <div class="estimate-cards">
-      <div class="estimate-card" onclick="selectConsumerType('petit', 2000, 1000, 4000)">
-        <div class="estimate-icon">🏠</div>
-        <div class="estimate-title">Petit consommateur</div>
-        <div class="estimate-desc">Studio / petit appart</div>
-        <div class="estimate-kwh">~ 2 000 kWh/an</div>
-      </div>
-
-      <div class="estimate-card" onclick="selectConsumerType('moyen', 5000, 4000, 8000)">
-        <div class="estimate-icon">⚡</div>
-        <div class="estimate-title">Consommateur moyen</div>
-        <div class="estimate-desc">Maison / famille</div>
-        <div class="estimate-kwh">~ 5 000 kWh/an</div>
-      </div>
-
-      <div class="estimate-card" onclick="selectConsumerType('grand', 12000, 8000, 20000)">
-        <div class="estimate-icon">🏭</div>
-        <div class="estimate-title">Grand consommateur</div>
-        <div class="estimate-desc">Grande maison / pro</div>
-        <div class="estimate-kwh">~ 12 000 kWh/an</div>
-      </div>
+    <div class="estimate-cards" id="estimate-cards-container">
+      <!-- Les cartes seront générées dynamiquement par JavaScript selon profil et type d'énergie -->
     </div>
   </div>
 
@@ -1479,6 +1460,11 @@ function go(from, to, pct) {
   document.getElementById(to).classList.add('on');
   setPbar(pct);
   window.scrollTo(0, 0);
+
+  // Charger les cartes d'estimation si on navigue vers s-estimate-type
+  if (to === 's-estimate-type') {
+    loadEstimateCards();
+  }
 }
 
 function goLoader() {
@@ -1818,9 +1804,8 @@ async function analyzeInvoiceContinue() {
   } catch (err) {
     console.error('Erreur analyse facture:', err);
     alert('Erreur lors de l\'analyse. Veuillez compléter manuellement.');
-    // Rediriger selon le profil : particulier → estimation, professionnel → formulaire manuel
-    const targetScreen = (D.profil === 'particulier') ? 's-estimate-type' : 's0';
-    setTimeout(() => go('s-load', targetScreen, 8), 500);
+    // Toujours rediriger vers l'estimation (pour tous les profils)
+    setTimeout(() => go('s-load', 's-estimate-type', 8), 500);
   }
 }
 
@@ -1833,8 +1818,76 @@ let estimationParams = {
   min: 1000,
   max: 20000,
   icon: '⚡',
-  name: 'Consommateur moyen'
+  name: 'Consommateur moyen',
+  energyPrice: 0.25  // Prix par défaut électricité
 };
+
+// Configuration des cartes selon profil et énergie
+const cardConfigs = {
+  'particulier_electricite': {
+    cards: [
+      { type: 'petit', icon: '🏠', title: 'Petit consommateur', desc: 'Studio / petit appart', kwh: 2000, min: 1000, max: 4000 },
+      { type: 'moyen', icon: '⚡', title: 'Consommateur moyen', desc: 'Maison / famille', kwh: 5000, min: 4000, max: 8000 },
+      { type: 'grand', icon: '🏭', title: 'Grand consommateur', desc: 'Grande maison / pro', kwh: 12000, min: 8000, max: 20000 }
+    ],
+    pricePerKwh: 0.25,
+    priceLabel: '0.25€/kWh'
+  },
+  'particulier_gaz': {
+    cards: [
+      { type: 'petit', icon: '🏠', title: 'Petit consommateur', desc: 'Studio / petit appart', kwh: 5000, min: 2000, max: 8000 },
+      { type: 'moyen', icon: '🔥', title: 'Consommateur moyen', desc: 'Maison / famille', kwh: 12000, min: 8000, max: 18000 },
+      { type: 'grand', icon: '🏭', title: 'Grand consommateur', desc: 'Grande maison', kwh: 25000, min: 18000, max: 35000 }
+    ],
+    pricePerKwh: 0.12,
+    priceLabel: '0.12€/kWh'
+  },
+  'professionnel_electricite': {
+    cards: [
+      { type: 'petit', icon: '🏢', title: 'Petite structure', desc: 'Bureau / petit commerce', kwh: 15000, min: 5000, max: 30000 },
+      { type: 'moyen', icon: '🏭', title: 'Structure moyenne', desc: 'Restaurant / PME', kwh: 45000, min: 30000, max: 60000 },
+      { type: 'grand', icon: '🏗️', title: 'Grande structure', desc: 'Industrie / grand site', kwh: 80000, min: 60000, max: 100000 }
+    ],
+    pricePerKwh: 0.25,
+    priceLabel: '0.25€/kWh'
+  },
+  'professionnel_gaz': {
+    cards: [
+      { type: 'petit', icon: '🏢', title: 'Petite structure', desc: 'Bureau / petit commerce', kwh: 15000, min: 5000, max: 30000 },
+      { type: 'moyen', icon: '🏭', title: 'Structure moyenne', desc: 'Restaurant / PME', kwh: 50000, min: 30000, max: 80000 },
+      { type: 'grand', icon: '🏗️', title: 'Grande structure', desc: 'Industrie / grand site', kwh: 150000, min: 80000, max: 300000 }
+    ],
+    pricePerKwh: 0.12,
+    priceLabel: '0.12€/kWh'
+  }
+};
+
+function loadEstimateCards() {
+  // Déterminer la configuration à utiliser
+  const profil = D.profil || 'particulier';
+  const energie = D.energie || 'electricite';
+  const configKey = `${profil}_${energie}`;
+  const config = cardConfigs[configKey];
+
+  if (!config) {
+    console.error('Configuration non trouvée pour', configKey);
+    return;
+  }
+
+  // Stocker le prix dans estimationParams
+  estimationParams.energyPrice = config.pricePerKwh;
+
+  // Générer le HTML des cartes
+  const container = document.getElementById('estimate-cards-container');
+  container.innerHTML = config.cards.map(card => `
+    <div class="estimate-card" onclick="selectConsumerType('${card.type}', ${card.kwh}, ${card.min}, ${card.max})">
+      <div class="estimate-icon">${card.icon}</div>
+      <div class="estimate-title">${card.title}</div>
+      <div class="estimate-desc">${card.desc}</div>
+      <div class="estimate-kwh">~ ${card.kwh.toLocaleString('fr-FR')} kWh/an</div>
+    </div>
+  `).join('');
+}
 
 function selectConsumerType(type, defaultValue, min, max) {
   // Stocker les paramètres
@@ -1880,9 +1933,15 @@ function updateConsumptionEstimate() {
   // Mettre à jour la consommation affichée
   document.getElementById('consumption-value').textContent = consumption.toLocaleString('fr-FR') + ' kWh/an';
 
-  // Calculer le coût mensuel (kWh * 0.25€ / 12)
-  const monthlyCost = Math.round((consumption * 0.25) / 12);
+  // Calculer le coût mensuel avec le prix dynamique (kWh * energyPrice / 12)
+  const monthlyCost = Math.round((consumption * estimationParams.energyPrice) / 12);
   document.getElementById('cost-value').textContent = monthlyCost.toLocaleString('fr-FR') + ' € par mois';
+
+  // Mettre à jour le label de prix
+  const costSubElement = document.querySelector('.estimate-cost-sub');
+  if (costSubElement) {
+    costSubElement.textContent = `au tarif actuel (${estimationParams.energyPrice.toFixed(2)}€/kWh)`;
+  }
 
   // Stocker dans D
   D.consommation_estimee_kwh = consumption;
@@ -1892,8 +1951,8 @@ function startEstimation() {
   // Préparer les données d'estimation
   const consumption = parseInt(document.getElementById('consumption-slider').value);
 
-  // Calculer le montant annuel estimé (kWh * 0.25€)
-  const montantAnnuelEstime = Math.round(consumption * 0.25);
+  // Calculer le montant annuel estimé avec le prix dynamique (kWh * energyPrice)
+  const montantAnnuelEstime = Math.round(consumption * estimationParams.energyPrice);
 
   // Stocker dans D
   D.montant = montantAnnuelEstime;

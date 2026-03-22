@@ -799,9 +799,31 @@ Si une valeur est introuvable, mets null."""
 
         for attempt in range(max_retries):
             try:
+                model_name = "claude-opus-4-20250514"
                 print(f"🤖 Appel Claude Vision (tentative {attempt + 1}/{max_retries})...")
+                print(f"   📌 Modèle : {model_name}")
+                print(f"   📌 Max tokens : 1024")
+                print(f"   📌 Taille payload image : {len(image_b64)} caractères base64")
+                print(f"   📌 Taille prompt : {len(prompt)} caractères")
+
+                # Log du payload (sans les données base64 pour éviter de polluer les logs)
+                payload_summary = {
+                    "model": model_name,
+                    "max_tokens": 1024,
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data_length": len(image_b64)}},
+                                {"type": "text", "text_length": len(prompt)}
+                            ]
+                        }
+                    ]
+                }
+                print(f"   📦 Payload summary : {json.dumps(payload_summary, indent=2)}")
+
                 message = anthropic_client.messages.create(
-                    model="claude-opus-4-20250514",
+                    model=model_name,
                     max_tokens=1024,
                     messages=[
                         {
@@ -824,6 +846,9 @@ Si une valeur est introuvable, mets null."""
                     ],
                 )
                 print(f"✅ Réponse Claude reçue")
+                print(f"   📊 Status : {message.stop_reason}")
+                print(f"   📊 Tokens utilisés : input={message.usage.input_tokens}, output={message.usage.output_tokens}")
+                print(f"   📊 ID message : {message.id}")
                 break  # Success, exit retry loop
 
             except Exception as api_error:
@@ -838,7 +863,10 @@ Si une valeur est introuvable, mets null."""
 
         # Extraire le JSON de la réponse
         response_text = message.content[0].text.strip()
-        print(f"📥 Réponse brute Claude :\n{response_text[:200]}...")
+        print(f"📥 Réponse COMPLÈTE Claude ({len(response_text)} caractères) :")
+        print("─" * 60)
+        print(response_text)
+        print("─" * 60)
 
         # Nettoyer le texte pour extraire uniquement le JSON
         if "```json" in response_text:
