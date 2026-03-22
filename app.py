@@ -714,7 +714,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
 
     try:
         # Variables pour stocker le contenu à envoyer à Claude
-        content_data = None
+        content_images = []  # Liste d'images (pour support multi-pages PDF)
         media_type = None
 
         # Normaliser l'extension
@@ -732,11 +732,12 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
             print(f"   📁 Chemin poppler : {poppler_path if poppler_path else 'Chemin système par défaut'}")
 
             try:
+                # Convertir jusqu'à 3 pages maximum
                 if poppler_path:
                     images = convert_from_bytes(
                         image_bytes,
                         first_page=1,
-                        last_page=1,
+                        last_page=3,  # Lire jusqu'à 3 pages
                         poppler_path=poppler_path
                     )
                 else:
@@ -744,20 +745,22 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                     images = convert_from_bytes(
                         image_bytes,
                         first_page=1,
-                        last_page=1
+                        last_page=3  # Lire jusqu'à 3 pages
                     )
                 if not images:
                     raise Exception("Aucune image générée par pdf2image")
 
-                image = images[0]
-                print(f"✅ PDF converti en image : {image.size}")
+                print(f"✅ PDF converti en {len(images)} page(s)")
 
-                # Convertir l'image en base64
-                print(f"🔄 Conversion image base64...")
-                image_b64 = image_to_base64(image)
-                content_data = image_b64
+                # Convertir toutes les pages (max 3) en base64
+                for i, image in enumerate(images[:3], 1):  # Limiter à 3 pages max
+                    print(f"🔄 Conversion page {i} en base64...")
+                    image_b64 = image_to_base64(image)
+                    content_images.append(image_b64)
+                    print(f"✅ Page {i} convertie : {len(image_b64)} caractères")
+
                 media_type = "image/png"
-                print(f"✅ Base64 image créé : {len(image_b64)} caractères")
+                print(f"✅ {len(content_images)} page(s) prête(s) pour Claude")
 
             except Exception as pdf_error:
                 print(f"⚠️ Conversion PDF→image échouée : {pdf_error}")
@@ -767,7 +770,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                 # FALLBACK : Envoyer le PDF directement à Claude (supporté nativement)
                 print(f"🔄 FALLBACK : Envoi du PDF directement à Claude...")
                 pdf_b64 = base64.b64encode(image_bytes).decode('utf-8')
-                content_data = pdf_b64
+                content_images = [pdf_b64]
                 media_type = "application/pdf"
                 print(f"✅ Base64 PDF créé : {len(pdf_b64)} caractères")
 
@@ -789,7 +792,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
 
                 # Convertir en base64
                 image_b64 = base64.b64encode(image_bytes).decode('utf-8')
-                content_data = image_b64
+                content_images = [image_b64]
                 media_type = "image/jpeg"
                 print(f"✅ Base64 JPEG créé : {len(image_b64)} caractères")
             except Exception as heic_error:
@@ -800,7 +803,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
             # JPG/JPEG - traitement direct
             print(f"🖼️ Image JPEG détectée, traitement direct...")
             image_b64 = base64.b64encode(image_bytes).decode('utf-8')
-            content_data = image_b64
+            content_images = [image_b64]
             media_type = "image/jpeg"
             print(f"✅ Base64 JPEG créé : {len(image_b64)} caractères")
 
@@ -808,7 +811,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
             # PNG - traitement direct
             print(f"🖼️ Image PNG détectée, traitement direct...")
             image_b64 = base64.b64encode(image_bytes).decode('utf-8')
-            content_data = image_b64
+            content_images = [image_b64]
             media_type = "image/png"
             print(f"✅ Base64 PNG créé : {len(image_b64)} caractères")
 
@@ -816,7 +819,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
             # WEBP - traitement direct
             print(f"🖼️ Image WEBP détectée, traitement direct...")
             image_b64 = base64.b64encode(image_bytes).decode('utf-8')
-            content_data = image_b64
+            content_images = [image_b64]
             media_type = "image/webp"
             print(f"✅ Base64 WEBP créé : {len(image_b64)} caractères")
 
@@ -830,7 +833,7 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                 # Convertir en base64 PNG
                 print(f"🔄 Conversion base64 PNG...")
                 image_b64 = image_to_base64(image)
-                content_data = image_b64
+                content_images = [image_b64]
                 media_type = "image/png"
                 print(f"✅ Base64 créé : {len(image_b64)} caractères")
             except Exception as img_error:
@@ -873,48 +876,50 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
                 print(f"🤖 Appel Claude Vision (tentative {attempt + 1}/{max_retries})...")
                 print(f"   📌 Modèle : {model_name}")
                 print(f"   📌 Max tokens : 1024")
-                print(f"   📌 Taille payload : {len(content_data)} caractères base64")
+                print(f"   📌 Nombre d'images : {len(content_images)}")
                 print(f"   📌 Type de média : {media_type}")
                 print(f"   📌 Taille prompt : {len(prompt)} caractères")
 
                 # Déterminer le type de contenu pour l'API
                 content_type = "document" if media_type == "application/pdf" else "image"
 
-                # Log du payload (sans les données base64 pour éviter de polluer les logs)
+                # Construire la liste de content items (une image par item)
+                content_items = []
+                for i, img_b64 in enumerate(content_images, 1):
+                    if media_type == "application/pdf":
+                        content_items.append({
+                            "type": "document",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": img_b64,
+                            },
+                        })
+                    else:
+                        content_items.append({
+                            "type": "image",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": img_b64,
+                            },
+                        })
+                    print(f"   📄 Image {i} ajoutée au payload ({len(img_b64)} caractères)")
+
+                # Ajouter le prompt à la fin
+                content_items.append({
+                    "type": "text",
+                    "text": prompt
+                })
+
+                # Log du payload summary
                 payload_summary = {
                     "model": model_name,
                     "max_tokens": 1024,
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": [
-                                {"type": content_type, "source": {"type": "base64", "media_type": media_type, "data_length": len(content_data)}},
-                                {"type": "text", "text_length": len(prompt)}
-                            ]
-                        }
-                    ]
+                    "nb_images": len(content_images),
+                    "type_media": media_type
                 }
                 print(f"   📦 Payload summary : {json.dumps(payload_summary, indent=2)}")
-
-                # Construire le content item selon le type de média
-                if media_type == "application/pdf":
-                    content_item = {
-                        "type": "document",
-                        "source": {
-                            "type": "base64",
-                            "media_type": media_type,
-                            "data": content_data,
-                        },
-                    }
-                else:
-                    content_item = {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": media_type,
-                            "data": content_data,
-                        },
-                    }
 
                 try:
                     message = anthropic_client.messages.create(
@@ -923,13 +928,7 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
                         messages=[
                             {
                                 "role": "user",
-                                "content": [
-                                    content_item,
-                                    {
-                                        "type": "text",
-                                        "text": prompt
-                                    }
-                                ],
+                                "content": content_items
                             }
                         ],
                     )
