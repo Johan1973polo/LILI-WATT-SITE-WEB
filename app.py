@@ -1044,6 +1044,12 @@ def recrutement():
 def contact():
     return serve_html('contact.html')
 
+@app.route('/c2e')
+@app.route('/c2e.html')
+def c2e():
+    """Page C2E - Certificats d'Économies d'Énergie et aides à la rénovation"""
+    return serve_html('c2e.html')
+
 @app.route('/extracteur')
 def extracteur():
     """Page extracteur de factures avec Claude Vision AI"""
@@ -1324,6 +1330,68 @@ def recrutement_form():
         import traceback
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
+
+@app.route('/api/c2e/simuler', methods=['POST'])
+def c2e_simuler():
+    """Endpoint proxy pour simulateur C2E - Certificats d'Économies d'Énergie"""
+    try:
+        data = request.get_json()
+
+        # Mapping parameters to France Rénov API
+        statut = data.get('statut', 'propriétaire occupant')
+        personnes = int(data.get('personnes', 2))
+        revenu = int(data.get('revenu', 30000))
+        type_logement = data.get('type_logement', 'maison')
+        code_postal = data.get('code_postal', '75001')
+        age_logement = data.get('age_logement', 'au moins 15 ans')
+        dpe_actuel = int(data.get('dpe_actuel', 5))
+
+        # Build API URL with parameters
+        params = {
+            'vous . propriétaire . statut': 'propriétaire' if 'proprio' in statut.lower() else 'locataire',
+            'ménage . personnes': personnes,
+            'ménage . revenu': revenu,
+            'logement . type': f"'{type_logement}'",
+            'logement . commune': f"'{code_postal}'",
+            'logement . propriétaire occupant': 'oui' if 'occupant' in statut.lower() else 'non',
+            'logement . résidence principale propriétaire': 'oui',
+            'logement . période de construction': f"'{age_logement}'",
+            'DPE . actuel': dpe_actuel,
+            'fields': 'eligibilite'
+        }
+
+        import urllib.parse
+        query = '&'.join([f"{urllib.parse.quote(k)}={urllib.parse.quote(str(v))}"
+                          for k, v in params.items()])
+
+        api_url = f"https://mesaides.france-renov.gouv.fr/api/v1/?{query}"
+
+        # Call external API
+        import urllib.request
+        import json as json_lib
+        req = urllib.request.Request(
+            api_url,
+            headers={'Accept': 'application/json', 'User-Agent': 'LILIWATT/1.0'}
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json_lib.loads(resp.read())
+
+        # Parse results
+        aides = []
+        if result:
+            for key, value in result.items():
+                if value and value != 0:
+                    aides.append({
+                        'nom': key.replace('.', ' ').title(),
+                        'montant': value if isinstance(value, (int, float)) else None,
+                        'description': 'Aide calculée selon votre situation'
+                    })
+
+        return jsonify({'success': True, 'aides': aides})
+
+    except Exception as e:
+        print(f"Erreur API C2E : {e}")
+        return jsonify({'success': False, 'aides': []}), 200
 
 @app.route("/admin/leads")
 def admin_leads():
