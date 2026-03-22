@@ -1,42 +1,207 @@
 #!/usr/bin/env python3
 """
 Générateur de mandat de courtage LILIWATT en PDF
+Version 2.0 - Avec gestion automatique des débordements de page
 """
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
 from datetime import datetime
 import io
+import os
 
 
-# COULEURS LILIWATT
+# ═══════════════════════════════════════════════════════════
+# CONSTANTES COULEURS LILIWATT
+# ═══════════════════════════════════════════════════════════
 VIOLET = colors.HexColor('#7C3AED')
 VIOLET_L = colors.HexColor('#A78BFA')
 FUCHSIA = colors.HexColor('#D946EF')
 NOIR = colors.HexColor('#06060F')
 GRIS_CLAIR = colors.HexColor('#F5F3FF')
 GRIS_TEXTE = colors.HexColor('#6B7280')
+VERT_SIGNATURE = colors.HexColor('#34D399')
 BLANC = colors.white
 
 
-def draw_footer(canvas, width):
-    """Dessine le pied de page à position fixe"""
-    canvas.setStrokeColor(VIOLET)
-    canvas.setLineWidth(0.5)
-    canvas.line(15*mm, 25*mm, width - 15*mm, 25*mm)
-
-    canvas.setFillColor(VIOLET)
-    canvas.setFont("Helvetica-Bold", 8)
-    canvas.drawCentredString(width/2, 18*mm, "LILIWATT")
-
-    canvas.setFillColor(GRIS_TEXTE)
-    canvas.setFont("Helvetica", 7.5)
-    canvas.drawCentredString(width/2, 12*mm, "LILISTRAT STRATÉGIE SAS  ·  contact@liliwatt.fr  ·  www.liliwatt.fr")
-    canvas.drawCentredString(width/2, 6*mm, f"Numéro de document : LW-{datetime.now().strftime('%Y%m%d%H%M%S')}")
+# ═══════════════════════════════════════════════════════════
+# CONSTANTES GESTION DE PAGE (CRITIQUES)
+# ═══════════════════════════════════════════════════════════
+PAGE_WIDTH, PAGE_HEIGHT = A4  # 595.27 x 841.89 points
+MARGIN_BOTTOM = 80  # MINIMUM 80 POINTS EN BAS DE PAGE
+MARGIN_TOP = 100    # Espace réservé en haut après header
+HEADER_HEIGHT = 60 * mm  # ~170 points
+FOOTER_START = 25 * mm   # Position Y du footer (~70 points)
 
 
+# ═══════════════════════════════════════════════════════════
+# FONCTION CRITIQUE : GESTION DÉBORDEMENT PAGE
+# ═══════════════════════════════════════════════════════════
+def check_page_break(c, y, needed_height, width):
+    """
+    Vérifie si on a assez d'espace pour dessiner un bloc.
+    Si y - needed_height < MARGIN_BOTTOM → nouvelle page + header + footer
+
+    Args:
+        c: canvas ReportLab
+        y: position Y actuelle
+        needed_height: hauteur nécessaire en points
+        width: largeur de page
+
+    Returns:
+        y: nouvelle position Y (soit inchangée, soit en haut de nouvelle page)
+    """
+    if y - needed_height < MARGIN_BOTTOM:
+        # Dessiner footer sur page actuelle avant de tourner
+        draw_footer(c, width)
+
+        # Nouvelle page
+        c.showPage()
+
+        # Dessiner header sur nouvelle page
+        draw_header(c, width)
+
+        # Réinitialiser Y en haut (sous le header)
+        y = PAGE_HEIGHT - HEADER_HEIGHT - 20 * mm
+
+    return y
+
+
+# ═══════════════════════════════════════════════════════════
+# EN-TÊTE DE PAGE (AVEC LOGO)
+# ═══════════════════════════════════════════════════════════
+def draw_header(c, width, date_signature=None):
+    """
+    Dessine l'en-tête violet avec logo LILIWATT
+
+    Args:
+        c: canvas
+        width: largeur page
+        date_signature: date de signature (optionnel, pour première page)
+    """
+    height = PAGE_HEIGHT
+
+    # Bandeau violet
+    c.setFillColor(VIOLET)
+    c.rect(0, height - HEADER_HEIGHT, width, HEADER_HEIGHT, fill=1, stroke=0)
+
+    # Charger et dessiner le logo
+    logo_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        'assets', 'images', 'logo-sans-fond.png'
+    )
+
+    try:
+        if os.path.exists(logo_path):
+            # Logo PNG avec fond transparent
+            logo = ImageReader(logo_path)
+            logo_height = 50  # pixels de hauteur
+            # Ratio pour garder proportions (approximatif)
+            logo_width = logo_height * 3  # ajuster selon ratio réel
+            c.drawImage(logo, 20*mm, height - 30*mm,
+                       width=logo_width, height=logo_height,
+                       mask='auto', preserveAspectRatio=True)
+        else:
+            # Fallback: texte si logo introuvable
+            c.setFillColor(BLANC)
+            c.setFont("Helvetica-Bold", 28)
+            c.drawString(20*mm, height - 25*mm, "LILIWATT")
+    except Exception as e:
+        # Fallback en cas d'erreur de chargement
+        print(f"⚠️  Erreur chargement logo: {e}")
+        c.setFillColor(BLANC)
+        c.setFont("Helvetica-Bold", 28)
+        c.drawString(20*mm, height - 25*mm, "LILIWATT")
+
+    # Point fuchsia décoratif
+    c.setFillColor(FUCHSIA)
+    c.circle(18*mm, height - 22*mm, 3*mm, fill=1, stroke=0)
+
+    # Sous-titre
+    c.setFillColor(VIOLET_L)
+    c.setFont("Helvetica", 9)
+    c.drawString(20*mm, height - 40*mm, "COURTAGE ÉNERGIE  ·  B2B & B2C")
+
+    # Titre mandat à droite (seulement sur première page)
+    if date_signature:
+        c.setFillColor(BLANC)
+        c.setFont("Helvetica-Bold", 14)
+        c.drawRightString(width - 20*mm, height - 22*mm, "MANDAT DE COURTAGE")
+        c.setFont("Helvetica", 9)
+        c.drawRightString(width - 20*mm, height - 30*mm, f"Signé le {date_signature}")
+
+    # Ligne décorative fuchsia
+    c.setStrokeColor(FUCHSIA)
+    c.setLineWidth(2)
+    c.line(0, height - HEADER_HEIGHT - 2*mm, width, height - HEADER_HEIGHT - 2*mm)
+
+
+# ═══════════════════════════════════════════════════════════
+# PIED DE PAGE (FIXE À y=40 POINTS)
+# ═══════════════════════════════════════════════════════════
+def draw_footer(c, width):
+    """
+    Dessine le pied de page à position fixe y=40 points (~14mm)
+    """
+    footer_y = 40  # Position fixe en points
+
+    # Ligne de séparation
+    c.setStrokeColor(VIOLET)
+    c.setLineWidth(0.5)
+    c.line(15*mm, footer_y + 25, width - 15*mm, footer_y + 25)
+
+    # Nom LILIWATT
+    c.setFillColor(VIOLET)
+    c.setFont("Helvetica-Bold", 8)
+    c.drawCentredString(width/2, footer_y + 18, "LILIWATT")
+
+    # Coordonnées
+    c.setFillColor(GRIS_TEXTE)
+    c.setFont("Helvetica", 7.5)
+    c.drawCentredString(width/2, footer_y + 10,
+                       "LILISTRAT STRATÉGIE SAS  ·  contact@liliwatt.fr  ·  www.liliwatt.fr")
+
+    # Numéro de document
+    c.drawCentredString(width/2, footer_y + 2,
+                       f"Document : LW-{datetime.now().strftime('%Y%m%d%H%M%S')}")
+
+
+# ═══════════════════════════════════════════════════════════
+# FONCTIONS HELPER POUR SECTIONS
+# ═══════════════════════════════════════════════════════════
+def section_title(c, text, y_pos, width):
+    """
+    Dessine un titre de section avec fond violet
+    Retourne la nouvelle position Y
+    """
+    c.setFillColor(VIOLET)
+    c.rect(15*mm, y_pos - 2*mm, width - 30*mm, 8*mm, fill=1, stroke=0)
+    c.setFillColor(BLANC)
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(20*mm, y_pos, text)
+    return y_pos - 12*mm
+
+
+def field_line(c, label, value, y_pos, label_x=20, value_x=75):
+    """
+    Dessine une ligne label: valeur
+    Retourne la nouvelle position Y
+    """
+    c.setFillColor(GRIS_TEXTE)
+    c.setFont("Helvetica", 9)
+    c.drawString(label_x*mm, y_pos, label)
+    c.setFillColor(NOIR)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(value_x*mm, y_pos, str(value) if value else "—")
+    return y_pos - 6*mm
+
+
+# ═══════════════════════════════════════════════════════════
+# FONCTION PRINCIPALE : GÉNÉRATION PDF
+# ═══════════════════════════════════════════════════════════
 def generate_mandat_pdf(data: dict) -> bytes:
     """
     Génère le PDF mandat et retourne les bytes.
@@ -64,61 +229,24 @@ def generate_mandat_pdf(data: dict) -> bytes:
 
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
-    width, height = A4
+    width = PAGE_WIDTH
 
-    # ── BANDEAU EN-TÊTE VIOLET ──────────────────────────
-    c.setFillColor(VIOLET)
-    c.rect(0, height - 60*mm, width, 60*mm, fill=1, stroke=0)
+    # ═══════════════════════════════════════════════════════
+    # PAGE 1 : EN-TÊTE AVEC DATE
+    # ═══════════════════════════════════════════════════════
+    draw_header(c, width, date_signature=data.get('date_signature', ''))
 
-    # Logo texte LILIWATT
-    c.setFillColor(BLANC)
-    c.setFont("Helvetica-Bold", 28)
-    c.drawString(20*mm, height - 25*mm, "LILIWATT")
+    # Position de départ sous l'en-tête
+    y = PAGE_HEIGHT - HEADER_HEIGHT - 20*mm
 
-    # Point fuchsia décoratif
-    c.setFillColor(FUCHSIA)
-    c.circle(18*mm, height - 22*mm, 3*mm, fill=1, stroke=0)
 
-    # Sous-titre
-    c.setFillColor(VIOLET_L)
-    c.setFont("Helvetica", 9)
-    c.drawString(20*mm, height - 33*mm, "COURTAGE ÉNERGIE  ·  B2B & B2C")
+    # ═══════════════════════════════════════════════════════
+    # SECTION 1 : LE MANDANT (CLIENT)
+    # ═══════════════════════════════════════════════════════
+    # Vérifier si on a assez de place (estimation: 70mm de hauteur)
+    y = check_page_break(c, y, 70*mm, width)
 
-    # Titre mandat à droite
-    c.setFillColor(BLANC)
-    c.setFont("Helvetica-Bold", 14)
-    c.drawRightString(width - 20*mm, height - 22*mm, "MANDAT DE COURTAGE")
-    c.setFont("Helvetica", 9)
-    c.drawRightString(width - 20*mm, height - 30*mm, f"Signé le {data.get('date_signature', '')}")
-
-    # Ligne décorative fuchsia
-    c.setStrokeColor(FUCHSIA)
-    c.setLineWidth(2)
-    c.line(0, height - 62*mm, width, height - 62*mm)
-
-    # ── FONCTIONS HELPER ────────────────────────────────
-    def section_title(canvas, text, y_pos):
-        """Dessine un titre de section avec fond violet"""
-        canvas.setFillColor(VIOLET)
-        canvas.rect(15*mm, y_pos - 2*mm, width - 30*mm, 8*mm, fill=1, stroke=0)
-        canvas.setFillColor(BLANC)
-        canvas.setFont("Helvetica-Bold", 10)
-        canvas.drawString(20*mm, y_pos, text)
-        return y_pos - 12*mm
-
-    def field_line(canvas, label, value, y_pos, label_x=20, value_x=75):
-        """Dessine une ligne label: valeur"""
-        canvas.setFillColor(GRIS_TEXTE)
-        canvas.setFont("Helvetica", 9)
-        canvas.drawString(label_x*mm, y_pos, label)
-        canvas.setFillColor(NOIR)
-        canvas.setFont("Helvetica-Bold", 9)
-        canvas.drawString(value_x*mm, y_pos, str(value) if value else "—")
-        return y_pos - 6*mm
-
-    # ── SECTION : MANDANT ───────────────────────────────
-    y = height - 80*mm
-    y = section_title(c, "LE MANDANT (CLIENT)", y)
+    y = section_title(c, "LE MANDANT (CLIENT)", y, width)
 
     nom_complet = f"{data.get('prenom', '')} {data.get('nom', '')}".strip()
     if data.get('nom_entreprise'):
@@ -134,10 +262,15 @@ def generate_mandat_pdf(data: dict) -> bytes:
     y = field_line(c, "Téléphone :", data.get('tel', ''), y)
     y = field_line(c, "Email :", data.get('email', ''), y)
 
-    y -= 5*mm
+    y -= 8*mm  # Espacement entre sections
 
-    # ── SECTION SITE DE CONSOMMATION ────────────────────
-    y = section_title(c, "SITE DE CONSOMMATION", y)
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 2 : SITE DE CONSOMMATION
+    # ═══════════════════════════════════════════════════════
+    y = check_page_break(c, y, 60*mm, width)
+
+    y = section_title(c, "SITE DE CONSOMMATION", y, width)
 
     # PDL et PCE TOUJOURS affichés (obligatoires)
     pdl_value = data.get('pdl') if data.get('pdl') else "À compléter par le conseiller"
@@ -153,25 +286,35 @@ def generate_mandat_pdf(data: dict) -> bytes:
     if data.get('nom_offre'):
         y = field_line(c, "Offre actuelle :", data['nom_offre'], y)
 
-    y -= 5*mm
+    y -= 8*mm
 
-    # ── SECTION MANDATAIRE ──────────────────────────────
-    y = section_title(c, "LE MANDATAIRE", y)
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 3 : LE MANDATAIRE
+    # ═══════════════════════════════════════════════════════
+    y = check_page_break(c, y, 50*mm, width)
+
+    y = section_title(c, "LE MANDATAIRE", y, width)
     y = field_line(c, "Société :", "LILISTRAT STRATÉGIE SAS", y)
     y = field_line(c, "Marque commerciale :", "LILIWATT", y)
     y = field_line(c, "Email :", "contact@liliwatt.fr", y)
     y = field_line(c, "Site :", "www.liliwatt.fr", y)
 
-    y -= 5*mm
+    y -= 8*mm
 
-    # ── SECTION OBJET ───────────────────────────────────
-    y = section_title(c, "OBJET DU MANDAT", y)
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 4 : OBJET DU MANDAT
+    # ═══════════════════════════════════════════════════════
+    y = check_page_break(c, y, 65*mm, width)
+
+    y = section_title(c, "OBJET DU MANDAT", y, width)
 
     objet_text = "Le Mandant confie à LILIWATT un mandat non exclusif de courtage en énergie afin de :"
     c.setFillColor(NOIR)
     c.setFont("Helvetica", 9)
     c.drawString(20*mm, y, objet_text)
-    y -= 6*mm
+    y -= 7*mm
 
     items = [
         "Rechercher les meilleures offres d'énergie du marché",
@@ -188,10 +331,15 @@ def generate_mandat_pdf(data: dict) -> bytes:
         c.drawString(26*mm, y, item)
         y -= 5.5*mm
 
-    y -= 3*mm
+    y -= 5*mm
 
-    # ── SECTION CONDITIONS ──────────────────────────────
-    y = section_title(c, "CONDITIONS", y)
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 5 : CONDITIONS
+    # ═══════════════════════════════════════════════════════
+    y = check_page_break(c, y, 70*mm, width)
+
+    y = section_title(c, "CONDITIONS", y, width)
 
     conditions = [
         ("Durée :", "12 mois à compter de la date de signature, renouvelable par tacite reconduction"),
@@ -199,12 +347,17 @@ def generate_mandat_pdf(data: dict) -> bytes:
         ("Résiliation :", "Résiliable à tout moment par email à contact@liliwatt.fr"),
         ("Exclusivité :", "Mandat non exclusif — le Mandant reste libre de contracter directement"),
     ]
+
     for label, val in conditions:
+        # Vérifier si on a assez de place pour cette condition (max 3 lignes = 18mm)
+        y = check_page_break(c, y, 18*mm, width)
+
         c.setFillColor(GRIS_TEXTE)
         c.setFont("Helvetica-Bold", 9)
         c.drawString(20*mm, y, label)
         c.setFillColor(NOIR)
         c.setFont("Helvetica", 8.5)
+
         # Wrap le texte long
         max_width = 130*mm
         if c.stringWidth(val, "Helvetica", 8.5) > max_width:
@@ -221,12 +374,17 @@ def generate_mandat_pdf(data: dict) -> bytes:
                 c.drawString(55*mm, y, line.strip())
         else:
             c.drawString(55*mm, y, val)
-        y -= 5.5*mm
+        y -= 6*mm
 
-    y -= 3*mm
+    y -= 5*mm
 
-    # ── SECTION RGPD ────────────────────────────────────
-    y = section_title(c, "DONNÉES PERSONNELLES (RGPD)", y)
+
+    # ═══════════════════════════════════════════════════════
+    # SECTION 6 : DONNÉES PERSONNELLES (RGPD)
+    # ═══════════════════════════════════════════════════════
+    y = check_page_break(c, y, 50*mm, width)
+
+    y = section_title(c, "DONNÉES PERSONNELLES (RGPD)", y, width)
 
     rgpd_text = (
         "Conformément au RGPD (UE 2016/679), les données collectées sont utilisées uniquement dans le cadre "
@@ -234,6 +392,7 @@ def generate_mandat_pdf(data: dict) -> bytes:
     )
     c.setFillColor(NOIR)
     c.setFont("Helvetica", 8.5)
+
     # Wrap text
     words = rgpd_text.split()
     line = ""
@@ -249,48 +408,53 @@ def generate_mandat_pdf(data: dict) -> bytes:
         c.drawString(20*mm, y, line.strip())
         y -= 5*mm
 
-    y -= 5*mm
+    y -= 8*mm
 
-    # ── SECTION SIGNATURE ÉLECTRONIQUE ──────────────────
-    # Vérifier si on a assez de place (besoin de 50mm minimum pour signature + pied de page)
-    FOOTER_HEIGHT = 25*mm  # Hauteur du pied de page
-    SIGNATURE_HEIGHT = 26*mm  # Hauteur du bloc signature
-    MIN_Y = FOOTER_HEIGHT + SIGNATURE_HEIGHT + 5*mm  # Marge de sécurité
 
-    if y < MIN_Y:
-        # Ajouter pied de page sur cette page
-        draw_footer(c, width)
-        # Créer nouvelle page
-        c.showPage()
-        # Réinitialiser y en haut de la nouvelle page
-        y = height - 40*mm
+    # ═══════════════════════════════════════════════════════
+    # SECTION 7 : SIGNATURE ÉLECTRONIQUE (AVEC ENCADRÉ VERT)
+    # ═══════════════════════════════════════════════════════
+    # Hauteur nécessaire pour signature : 30mm
+    y = check_page_break(c, y, 35*mm, width)
 
+    # Fond gris clair avec bordure violette
     c.setFillColor(GRIS_CLAIR)
-    c.rect(15*mm, y - 22*mm, width - 30*mm, 26*mm, fill=1, stroke=0)
+    c.rect(15*mm, y - 26*mm, width - 30*mm, 30*mm, fill=1, stroke=0)
     c.setStrokeColor(VIOLET)
     c.setLineWidth(0.5)
-    c.rect(15*mm, y - 22*mm, width - 30*mm, 26*mm, fill=0, stroke=1)
+    c.rect(15*mm, y - 26*mm, width - 30*mm, 30*mm, fill=0, stroke=1)
 
+    # Titre
     c.setFillColor(VIOLET)
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(20*mm, y, "SIGNATURE ÉLECTRONIQUE")
+    c.drawString(20*mm, y - 2*mm, "SIGNATURE ÉLECTRONIQUE")
 
-    c.setFillColor(colors.HexColor('#34D399'))
+    # Checkmark vert + date
+    c.setFillColor(VERT_SIGNATURE)
     c.setFont("Helvetica-Bold", 9)
-    c.drawString(20*mm, y - 7*mm, f"✓  Accepté en ligne le {data.get('date_signature', '')}")
+    c.drawString(20*mm, y - 9*mm, f"✓  Accepté en ligne le {data.get('date_signature', '')}")
 
+    # Informations signataire
     c.setFillColor(GRIS_TEXTE)
     c.setFont("Helvetica", 8)
-    c.drawString(20*mm, y - 13*mm, f"Par : {nom_complet}  |  Email : {data.get('email', '')}  |  IP : {data.get('ip', 'xxx.xxx.xxx.xxx')}")
+    c.drawString(20*mm, y - 16*mm,
+                f"Par : {nom_complet}  |  Email : {data.get('email', '')}  |  IP : {data.get('ip', 'xxx.xxx.xxx.xxx')}")
 
+    # Note légale
     c.setFillColor(GRIS_TEXTE)
     c.setFont("Helvetica", 7.5)
-    c.drawString(20*mm, y - 19*mm,
-                 "La case cochée par le signataire vaut consentement au sens de l'article 7 du RGPD et constitue une preuve de signature électronique.")
+    c.drawString(20*mm, y - 23*mm,
+                "La case cochée par le signataire vaut consentement au sens de l'article 7 du RGPD")
+    c.drawString(20*mm, y - 28*mm,
+                "et constitue une preuve de signature électronique.")
 
-    # ── PIED DE PAGE ────────────────────────────────────
+
+    # ═══════════════════════════════════════════════════════
+    # PIED DE PAGE FINAL
+    # ═══════════════════════════════════════════════════════
     draw_footer(c, width)
 
+    # Finaliser le PDF
     c.save()
     buffer.seek(0)
     return buffer.getvalue()
