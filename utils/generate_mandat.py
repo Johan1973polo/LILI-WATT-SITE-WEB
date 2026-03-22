@@ -13,6 +13,10 @@ from datetime import datetime
 import io
 import os
 
+# Chemin de base absolu pour les assets
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)  # liliwatt-analyseur/
+
 
 # ═══════════════════════════════════════════════════════════
 # CONSTANTES COULEURS LILIWATT
@@ -77,6 +81,9 @@ def draw_header(c, width, date_signature=None):
     """
     Dessine l'en-tête violet avec logo LILIWATT
 
+    Si date_signature est fournie : header complet (page 1)
+    Sinon : header compact pour pages suivantes (60 points max)
+
     Args:
         c: canvas
         width: largeur page
@@ -84,15 +91,50 @@ def draw_header(c, width, date_signature=None):
     """
     height = PAGE_HEIGHT
 
+    # HEADER COMPACT pour pages 2+ (sans date_signature)
+    if not date_signature:
+        # Bandeau violet compact (40mm au lieu de 60mm)
+        header_compact_height = 40 * mm
+        c.setFillColor(VIOLET)
+        c.rect(0, height - header_compact_height, width, header_compact_height, fill=1, stroke=0)
+
+        # Logo (plus petit)
+        logo_path = os.path.join(PARENT_DIR, 'assets', 'images', 'logo-sans-fond.png')
+        try:
+            if os.path.exists(logo_path):
+                logo = ImageReader(logo_path)
+                c.drawImage(logo, 20*mm, height - 25*mm,
+                           width=40, height=30,
+                           mask='auto', preserveAspectRatio=True)
+            else:
+                c.setFillColor(BLANC)
+                c.setFont("Helvetica-Bold", 16)
+                c.drawString(20*mm, height - 20*mm, "LILIWATT")
+                print(f"⚠️  Logo introuvable : {logo_path}")
+        except Exception as e:
+            c.setFillColor(BLANC)
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(20*mm, height - 20*mm, "LILIWATT")
+            print(f"⚠️  Erreur chargement logo: {e}")
+
+        # Titre à droite
+        c.setFillColor(BLANC)
+        c.setFont("Helvetica-Bold", 12)
+        c.drawRightString(width - 20*mm, height - 20*mm, "MANDAT DE COURTAGE")
+
+        # Ligne fuchsia
+        c.setStrokeColor(FUCHSIA)
+        c.setLineWidth(1.5)
+        c.line(0, height - header_compact_height - 1*mm, width, height - header_compact_height - 1*mm)
+        return
+
+    # HEADER COMPLET pour page 1 (avec date_signature)
     # Bandeau violet
     c.setFillColor(VIOLET)
     c.rect(0, height - HEADER_HEIGHT, width, HEADER_HEIGHT, fill=1, stroke=0)
 
-    # Charger et dessiner le logo
-    logo_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        'assets', 'images', 'logo-sans-fond.png'
-    )
+    # Charger et dessiner le logo (avec chemin absolu corrigé)
+    logo_path = os.path.join(PARENT_DIR, 'assets', 'images', 'logo-sans-fond.png')
 
     try:
         if os.path.exists(logo_path):
@@ -109,6 +151,7 @@ def draw_header(c, width, date_signature=None):
             c.setFillColor(BLANC)
             c.setFont("Helvetica-Bold", 28)
             c.drawString(20*mm, height - 25*mm, "LILIWATT")
+            print(f"⚠️  Logo introuvable : {logo_path}")
     except Exception as e:
         # Fallback en cas d'erreur de chargement
         print(f"⚠️  Erreur chargement logo: {e}")
@@ -126,12 +169,11 @@ def draw_header(c, width, date_signature=None):
     c.drawString(20*mm, height - 40*mm, "COURTAGE ÉNERGIE  ·  B2B & B2C")
 
     # Titre mandat à droite (seulement sur première page)
-    if date_signature:
-        c.setFillColor(BLANC)
-        c.setFont("Helvetica-Bold", 14)
-        c.drawRightString(width - 20*mm, height - 22*mm, "MANDAT DE COURTAGE")
-        c.setFont("Helvetica", 9)
-        c.drawRightString(width - 20*mm, height - 30*mm, f"Signé le {date_signature}")
+    c.setFillColor(BLANC)
+    c.setFont("Helvetica-Bold", 14)
+    c.drawRightString(width - 20*mm, height - 22*mm, "MANDAT DE COURTAGE")
+    c.setFont("Helvetica", 9)
+    c.drawRightString(width - 20*mm, height - 30*mm, f"Signé le {date_signature}")
 
     # Ligne décorative fuchsia
     c.setStrokeColor(FUCHSIA)
@@ -280,7 +322,11 @@ def generate_mandat_pdf(data: dict) -> bytes:
     y = field_line(c, "PCE (Gaz) :", pce_value, y)
 
     if data.get('puissance_kva'):
-        y = field_line(c, "Puissance souscrite :", f"{data['puissance_kva']} kVA", y)
+        # Éviter doublon "kVA kVA" si la valeur contient déjà "kVA"
+        puissance_value = str(data['puissance_kva'])
+        if 'kva' not in puissance_value.lower():
+            puissance_value = f"{puissance_value} kVA"
+        y = field_line(c, "Puissance souscrite :", puissance_value, y)
 
     y = field_line(c, "Fournisseur actuel :", data.get('fourn', '—'), y)
     if data.get('nom_offre'):
@@ -414,38 +460,51 @@ def generate_mandat_pdf(data: dict) -> bytes:
     # ═══════════════════════════════════════════════════════
     # SECTION 7 : SIGNATURE ÉLECTRONIQUE (AVEC ENCADRÉ VERT)
     # ═══════════════════════════════════════════════════════
-    # Hauteur nécessaire pour signature : 30mm
-    y = check_page_break(c, y, 35*mm, width)
+    # Calculer la hauteur exacte nécessaire pour le bloc signature
+    # Titre (10pt) : 2mm
+    # Checkmark : 9mm
+    # Info signataire : 16mm
+    # Note légale ligne 1 : 23mm
+    # Note légale ligne 2 : 28mm
+    # Padding bas : 33mm
+    # Total : ~38mm de hauteur nécessaire
+    signature_box_height = 38*mm
+
+    y = check_page_break(c, y, signature_box_height + 5*mm, width)
+
+    # Position de départ du rectangle (y_start est en haut)
+    box_y_start = y
+    box_y_bottom = y - signature_box_height
 
     # Fond gris clair avec bordure violette
     c.setFillColor(GRIS_CLAIR)
-    c.rect(15*mm, y - 26*mm, width - 30*mm, 30*mm, fill=1, stroke=0)
+    c.rect(15*mm, box_y_bottom, width - 30*mm, signature_box_height, fill=1, stroke=0)
     c.setStrokeColor(VIOLET)
     c.setLineWidth(0.5)
-    c.rect(15*mm, y - 26*mm, width - 30*mm, 30*mm, fill=0, stroke=1)
+    c.rect(15*mm, box_y_bottom, width - 30*mm, signature_box_height, fill=0, stroke=1)
 
     # Titre
     c.setFillColor(VIOLET)
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(20*mm, y - 2*mm, "SIGNATURE ÉLECTRONIQUE")
+    c.drawString(20*mm, y - 6*mm, "SIGNATURE ÉLECTRONIQUE")
 
     # Checkmark vert + date
     c.setFillColor(VERT_SIGNATURE)
     c.setFont("Helvetica-Bold", 9)
-    c.drawString(20*mm, y - 9*mm, f"✓  Accepté en ligne le {data.get('date_signature', '')}")
+    c.drawString(20*mm, y - 13*mm, f"✓  Accepté en ligne le {data.get('date_signature', '')}")
 
     # Informations signataire
     c.setFillColor(GRIS_TEXTE)
     c.setFont("Helvetica", 8)
-    c.drawString(20*mm, y - 16*mm,
+    c.drawString(20*mm, y - 20*mm,
                 f"Par : {nom_complet}  |  Email : {data.get('email', '')}  |  IP : {data.get('ip', 'xxx.xxx.xxx.xxx')}")
 
-    # Note légale
+    # Note légale (sur 2 lignes explicites pour être sûr que ça rentre)
     c.setFillColor(GRIS_TEXTE)
     c.setFont("Helvetica", 7.5)
-    c.drawString(20*mm, y - 23*mm,
+    c.drawString(20*mm, y - 27*mm,
                 "La case cochée par le signataire vaut consentement au sens de l'article 7 du RGPD")
-    c.drawString(20*mm, y - 28*mm,
+    c.drawString(20*mm, y - 33*mm,
                 "et constitue une preuve de signature électronique.")
 
 
