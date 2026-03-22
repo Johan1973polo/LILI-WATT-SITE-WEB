@@ -910,42 +910,76 @@ def blog_article():
 def analyze_invoice():
     """Endpoint pour analyser une facture uploadée"""
     try:
+        print("\n" + "="*60)
+        print("📥 NOUVEAU UPLOAD DE FACTURE")
+        print("="*60)
+
+        # Vérifier la configuration API
+        api_key_status = "✅ Configurée" if ANTHROPIC_API_KEY else "❌ MANQUANTE"
+        print(f"🔑 ANTHROPIC_API_KEY : {api_key_status}")
+        if ANTHROPIC_API_KEY:
+            print(f"   Longueur clé : {len(ANTHROPIC_API_KEY)} caractères")
+            print(f"   Préfixe : {ANTHROPIC_API_KEY[:10]}...")
+
         # Vérifier qu'un fichier est présent
+        print(f"📋 Headers requête : {dict(request.headers)}")
+        print(f"📦 Fichiers dans la requête : {list(request.files.keys())}")
+
         if 'file' not in request.files:
+            print("❌ ERREUR : Aucun fichier dans la requête")
             return jsonify({"success": False, "error": "Aucun fichier fourni"}), 400
 
         file = request.files['file']
+        print(f"✅ Fichier reçu : {file.filename}")
 
         if file.filename == '':
+            print("❌ ERREUR : Nom de fichier vide")
             return jsonify({"success": False, "error": "Nom de fichier vide"}), 400
 
         if not allowed_file(file.filename):
+            print(f"❌ ERREUR : Format non accepté : {file.filename}")
             return jsonify({"success": False, "error": "Format de fichier non accepté"}), 400
 
         # Lire le fichier
+        print(f"📖 Lecture du fichier...")
         file_bytes = file.read()
+        file_size_mb = len(file_bytes) / (1024 * 1024)
         file_extension = file.filename.rsplit('.', 1)[1].lower()
         filename = secure_filename(file.filename)
 
+        print(f"✅ Fichier lu avec succès")
+        print(f"   - Nom sécurisé : {filename}")
+        print(f"   - Extension : {file_extension}")
+        print(f"   - Taille : {file_size_mb:.2f} MB ({len(file_bytes)} bytes)")
+
         # Analyser avec Claude
+        print(f"🤖 Appel de analyze_invoice_with_claude()...")
         result = analyze_invoice_with_claude(file_bytes, file_extension)
 
+        print(f"📊 Résultat de l'analyse : {result.get('success', False)}")
         if "error" in result:
+            print(f"❌ ERREUR retournée par analyze_invoice_with_claude : {result['error']}")
             return jsonify({"success": False, "error": result["error"]}), 500
 
         # Upload vers Google Drive si extraction réussie
         if result.get("success") and result.get("data"):
+            print(f"📤 Upload vers Google Drive...")
             lead_data = {
                 "nom": "Lead",  # Nom temporaire, sera mis à jour lors de la soumission du formulaire
                 "montant": result["data"].get("montant", 0)
             }
             drive_result = upload_invoice_to_drive(file_bytes, filename, lead_data)
             result["drive"] = drive_result
+            print(f"✅ Upload Drive : {drive_result.get('success', False)}")
 
+        print(f"✅ SUCCÈS - Retour de la réponse")
+        print("="*60 + "\n")
         return jsonify(result)
 
     except Exception as e:
-        print(f"Erreur endpoint analyze-invoice : {e}")
+        print(f"❌ EXCEPTION CRITIQUE dans endpoint analyze-invoice : {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/api/submit-lead", methods=["POST"])

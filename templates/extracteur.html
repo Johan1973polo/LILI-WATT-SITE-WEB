@@ -612,6 +612,160 @@
     color: var(--gray);
   }
 
+  /* Estimate Cards */
+  .estimate-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .estimate-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .estimate-card:hover {
+    border-color: var(--violet);
+    background: rgba(124,58,237,0.05);
+  }
+  .estimate-card.selected {
+    border-color: var(--violet);
+    border-width: 2px;
+    background: rgba(124,58,237,0.12);
+  }
+  .estimate-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .estimate-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .estimate-desc {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+  .estimate-kwh {
+    font-size: 14px;
+    color: var(--violet);
+    font-weight: 500;
+  }
+
+  /* Estimation Slider */
+  .estimate-slider-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-bottom: 20px;
+  }
+  .estimate-profile-display {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .estimate-profile-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+  }
+  .estimate-profile-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .slider-wrapper {
+    margin-bottom: 32px;
+  }
+  .consumption-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(124,58,237,0.15);
+    outline: none;
+    -webkit-appearance: none;
+    margin-bottom: 8px;
+  }
+  .consumption-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--violet);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+    transition: all 0.2s;
+  }
+  .consumption-slider::-webkit-slider-thumb:hover {
+    background: var(--violet-l);
+    transform: scale(1.1);
+  }
+  .consumption-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--violet);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+    transition: all 0.2s;
+  }
+  .consumption-slider::-moz-range-thumb:hover {
+    background: var(--violet-l);
+    transform: scale(1.1);
+  }
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .estimate-display {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .estimate-result {
+    margin-bottom: 20px;
+  }
+  .estimate-label {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+  .estimate-value {
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--violet);
+    margin-bottom: 4px;
+  }
+  .estimate-cost {
+    background: rgba(124,58,237,0.08);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .estimate-cost-label {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+  .estimate-cost-value {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .estimate-cost-sub {
+    font-size: 11px;
+    color: var(--gray);
+  }
+
   /* Responsive */
   @media (max-width: 400px) {
     .row2 { grid-template-columns: 1fr; }
@@ -703,9 +857,7 @@
 
   <!-- Logo animé -->
   <div style="text-align: center; padding: 40px 20px 20px;">
-    <video autoplay muted loop="false" playsinline style="height: 80px; width: auto;">
-      <source src="/assets/videos/logo-animation.mp4" type="video/mp4">
-    </video>
+    <img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" style="height: 80px; width: auto;">
     <p style="color: #A78BFA; margin-top: 10px; font-size: 14px;">
       Analysez votre facture en 60 secondes
     </p>
@@ -787,11 +939,81 @@
         <div class="choice-badge">RECOMMANDÉ · PLUS RAPIDE</div>
       </div>
 
-      <div class="choice-card" onclick="go('s-start','s0',8)">
+      <div class="choice-card" onclick="go('s-start','s-estimate-type',8)">
         <div class="choice-icon">✏️</div>
         <div class="choice-title">Je n'ai pas ma facture</div>
         <div class="choice-sub">Estimation sans facture — Saisie manuelle<br>En 2 minutes chrono</div>
       </div>
+    </div>
+  </div>
+
+  <!-- ── ÉCRAN ESTIMATION : TYPE CONSOMMATEUR ── -->
+  <div class="screen" id="s-estimate-type">
+    <button class="back-btn" onclick="go('s-estimate-type','s-start',5)">← Retour</button>
+    <div class="step-lbl">Estimation sans facture</div>
+    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Quel est votre profil de consommation ?</div>
+    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez le profil qui vous correspond le mieux</div>
+
+    <div class="estimate-cards">
+      <div class="estimate-card" onclick="selectConsumerType('petit', 2000, 1000, 4000)">
+        <div class="estimate-icon">🏠</div>
+        <div class="estimate-title">Petit consommateur</div>
+        <div class="estimate-desc">Studio / petit appart</div>
+        <div class="estimate-kwh">~ 2 000 kWh/an</div>
+      </div>
+
+      <div class="estimate-card" onclick="selectConsumerType('moyen', 5000, 4000, 8000)">
+        <div class="estimate-icon">⚡</div>
+        <div class="estimate-title">Consommateur moyen</div>
+        <div class="estimate-desc">Maison / famille</div>
+        <div class="estimate-kwh">~ 5 000 kWh/an</div>
+      </div>
+
+      <div class="estimate-card" onclick="selectConsumerType('grand', 12000, 8000, 20000)">
+        <div class="estimate-icon">🏭</div>
+        <div class="estimate-title">Grand consommateur</div>
+        <div class="estimate-desc">Grande maison / pro</div>
+        <div class="estimate-kwh">~ 12 000 kWh/an</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ÉCRAN ESTIMATION : SLIDER CONSOMMATION ── -->
+  <div class="screen" id="s-estimate-slider">
+    <button class="back-btn" onclick="go('s-estimate-slider','s-estimate-type',8)">← Retour</button>
+    <div class="step-lbl">Affinez votre estimation</div>
+    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Ajustez votre consommation</div>
+    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Utilisez le curseur pour affiner votre estimation</div>
+
+    <div class="estimate-slider-container">
+      <div class="estimate-profile-display">
+        <div class="estimate-profile-icon" id="profile-icon">⚡</div>
+        <div class="estimate-profile-name" id="profile-name">Consommateur moyen</div>
+      </div>
+
+      <div class="slider-wrapper">
+        <input type="range" id="consumption-slider" class="consumption-slider"
+               min="1000" max="20000" step="100" value="5000"
+               oninput="updateConsumptionEstimate()">
+        <div class="slider-labels">
+          <span id="slider-min">1 000 kWh</span>
+          <span id="slider-max">20 000 kWh</span>
+        </div>
+      </div>
+
+      <div class="estimate-display">
+        <div class="estimate-result">
+          <div class="estimate-label">Votre consommation estimée</div>
+          <div class="estimate-value" id="consumption-value">5 000 kWh/an</div>
+        </div>
+        <div class="estimate-cost">
+          <div class="estimate-cost-label">Soit environ</div>
+          <div class="estimate-cost-value" id="cost-value">104 € par mois</div>
+          <div class="estimate-cost-sub">au tarif actuel (0.25€/kWh)</div>
+        </div>
+      </div>
+
+      <button class="btn btn-main" onclick="startEstimation()">Estimer mes économies →</button>
     </div>
   </div>
 
@@ -1584,6 +1806,103 @@ async function analyzeInvoiceContinue() {
     alert('Erreur lors de l\'analyse. Veuillez compléter manuellement.');
     setTimeout(() => go('s-load', 's0', 8), 500);
   }
+}
+
+// ─── FONCTIONS ESTIMATION SANS FACTURE ────────────────────────────────────
+
+// Stocker les paramètres d'estimation
+let estimationParams = {
+  type: '',
+  defaultValue: 5000,
+  min: 1000,
+  max: 20000,
+  icon: '⚡',
+  name: 'Consommateur moyen'
+};
+
+function selectConsumerType(type, defaultValue, min, max) {
+  // Stocker les paramètres
+  estimationParams.type = type;
+  estimationParams.defaultValue = defaultValue;
+  estimationParams.min = min;
+  estimationParams.max = max;
+
+  // Définir l'icône et le nom selon le type
+  const profiles = {
+    'petit': { icon: '🏠', name: 'Petit consommateur' },
+    'moyen': { icon: '⚡', name: 'Consommateur moyen' },
+    'grand': { icon: '🏭', name: 'Grand consommateur' }
+  };
+  estimationParams.icon = profiles[type].icon;
+  estimationParams.name = profiles[type].name;
+
+  // Mettre à jour le slider
+  const slider = document.getElementById('consumption-slider');
+  slider.min = min;
+  slider.max = max;
+  slider.value = defaultValue;
+
+  // Mettre à jour les labels
+  document.getElementById('slider-min').textContent = min.toLocaleString('fr-FR') + ' kWh';
+  document.getElementById('slider-max').textContent = max.toLocaleString('fr-FR') + ' kWh';
+
+  // Mettre à jour l'affichage du profil
+  document.getElementById('profile-icon').textContent = estimationParams.icon;
+  document.getElementById('profile-name').textContent = estimationParams.name;
+
+  // Mettre à jour l'affichage de consommation
+  updateConsumptionEstimate();
+
+  // Aller à l'écran slider
+  setTimeout(() => go('s-estimate-type', 's-estimate-slider', 10), 300);
+}
+
+function updateConsumptionEstimate() {
+  const slider = document.getElementById('consumption-slider');
+  const consumption = parseInt(slider.value);
+
+  // Mettre à jour la consommation affichée
+  document.getElementById('consumption-value').textContent = consumption.toLocaleString('fr-FR') + ' kWh/an';
+
+  // Calculer le coût mensuel (kWh * 0.25€ / 12)
+  const monthlyCost = Math.round((consumption * 0.25) / 12);
+  document.getElementById('cost-value').textContent = monthlyCost.toLocaleString('fr-FR') + ' € par mois';
+
+  // Stocker dans D
+  D.consommation_estimee_kwh = consumption;
+}
+
+function startEstimation() {
+  // Préparer les données d'estimation
+  const consumption = parseInt(document.getElementById('consumption-slider').value);
+
+  // Calculer le montant annuel estimé (kWh * 0.25€)
+  const montantAnnuelEstime = Math.round(consumption * 0.25);
+
+  // Stocker dans D
+  D.montant = montantAnnuelEstime;
+  D.consommation_estimee_kwh = consumption;
+  D.periode = 'mensuel';
+  D.fourn = 'Estimation';
+  D.type_estimation = estimationParams.type;
+
+  // Pré-remplir le champ montant (montant mensuel)
+  document.getElementById('f-montant').value = Math.round(montantAnnuelEstime / 12);
+
+  // Calculer les économies
+  calcEco();
+
+  // Afficher l'animation des logos fournisseurs
+  showLoadingAnimation(() => {
+    // Après l'animation, afficher le loader classique
+    go('s-estimate-slider', 's-load', 20);
+    const steps = ['ls0', 'ls1', 'ls2', 'ls3'];
+    let i = 0;
+    const iv = setInterval(() => {
+      if (i < steps.length) { document.getElementById(steps[i]).classList.add('done'); i++; }
+      else { clearInterval(iv); setTimeout(() => go('s-load', 's1', 30), 500); }
+    }, 650);
+  });
 }
 
 // Drag & drop
