@@ -838,32 +838,27 @@
     transition: width 0.1s linear;
   }
 
-  /* Hero section avec images absolute */
+  /* Hero section */
   #s-hero {
     position: relative;
-    overflow: hidden;
   }
   #s-hero .hero-container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
-  #s-hero .hero-img-abs {
-    position: absolute;
+  /* Images fixed aux bords de l'écran */
+  .hero-side-fixed {
+    position: fixed;
     bottom: 0;
     width: 220px;
     height: auto;
     pointer-events: none;
-    z-index: 0;
-  }
-  #s-hero .hero-img-abs.left {
-    left: 0;
-  }
-  #s-hero .hero-img-abs.right {
-    right: 0;
+    z-index: 1;
+    opacity: 1;
   }
   @media (max-width: 1200px) {
-    #s-hero .hero-img-abs {
-      display: none;
+    .hero-side-fixed {
+      display: none !important;
     }
   }
 </style>
@@ -890,8 +885,8 @@
 
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
-    <img src="/images/cochon.png" class="hero-img-abs left" alt="">
-    <img src="/images/homme_a_droite.png" class="hero-img-abs right" alt="">
+    <img src="/images/cochon.png" class="hero-side-fixed" style="left: 0;" alt="">
+    <img src="/images/homme_a_droite.png" class="hero-side-fixed" style="right: 0;" alt="">
 
     <div class="hero-container">
       <div style="text-align: center; max-width: 600px; margin: 0 auto; padding: 0 20px;">
@@ -1347,6 +1342,22 @@
 
 <script>
 const D = {};
+
+// ─── MASQUAGE IMAGES HERO QUAND ON QUITTE LA SECTION ─────────────────
+const heroImages = document.querySelectorAll('.hero-side-fixed');
+function toggleHeroImages() {
+  const heroVisible = document.getElementById('s-hero').classList.contains('on');
+  heroImages.forEach(img => {
+    img.style.display = heroVisible ? 'block' : 'none';
+  });
+}
+// Observer les changements de classe sur #s-hero
+const observer = new MutationObserver(toggleHeroImages);
+observer.observe(document.getElementById('s-hero'), {
+  attributes: true,
+  attributeFilter: ['class']
+});
+toggleHeroImages();
 
 // ─── ANIMATION LOGOS FOURNISSEURS ────────────────────────────────────
 const fournisseurs = [
