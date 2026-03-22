@@ -409,10 +409,10 @@ def calcul_economies(montant, periode, contrat, type_energie="electricite", cont
                 annuel_elec = annuel_total * 0.6
                 annuel_gaz = annuel_total * 0.4
 
-        # Calcul économies électricité
-        r_elec = taux_elec.get(contrat, taux_elec["inconnu"])
-        eco_elec_min = round(annuel_elec * r_elec["min"] / 100)
-        eco_elec_max = round(annuel_elec * r_elec["max"] / 100)
+            # Calcul économies électricité
+            r_elec = taux_elec.get(contrat, taux_elec["inconnu"])
+            eco_elec_min = round(annuel_elec * r_elec["min"] / 100)
+            eco_elec_max = round(annuel_elec * r_elec["max"] / 100)
 
             # Calcul économies gaz
             r_gaz = taux_gaz.get(contrat_gaz or "inconnu", taux_gaz["inconnu"])
@@ -1103,15 +1103,22 @@ def analyze_invoice():
             return jsonify({"success": False, "error": result["error"]}), 500
 
         # Upload vers Google Drive si extraction réussie
+        # DÉSACTIVÉ TEMPORAIREMENT (Service Account sans quota - erreur 403)
         if result.get("success") and result.get("data"):
-            print(f"📤 Upload vers Google Drive...")
-            lead_data = {
-                "nom": "Lead",  # Nom temporaire, sera mis à jour lors de la soumission du formulaire
-                "montant": result["data"].get("montant", 0)
+            print(f"⚠️ Upload Google Drive désactivé temporairement (quota 403)")
+            result["drive"] = {
+                "success": False,
+                "link": None,
+                "error": "Upload Drive désactivé"
             }
-            drive_result = upload_invoice_to_drive(file_bytes, filename, lead_data)
-            result["drive"] = drive_result
-            print(f"✅ Upload Drive : {drive_result.get('success', False)}")
+            # print(f"📤 Upload vers Google Drive...")
+            # lead_data = {
+            #     "nom": "Lead",
+            #     "montant": result["data"].get("montant", 0)
+            # }
+            # drive_result = upload_invoice_to_drive(file_bytes, filename, lead_data)
+            # result["drive"] = drive_result
+            # print(f"✅ Upload Drive : {drive_result.get('success', False)}")
 
         print(f"✅ SUCCÈS - Retour de la réponse")
         print("="*60 + "\n")
