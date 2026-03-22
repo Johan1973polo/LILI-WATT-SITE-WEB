@@ -516,10 +516,11 @@
     margin-bottom: 24px;
   }
   .hero-title {
-    font-size: 48px;
+    font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 500;
     line-height: 1.2;
     margin-bottom: 20px;
+    white-space: normal;
     background: linear-gradient(135deg, var(--text) 0%, var(--violet) 50%, var(--fuchsia) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -856,6 +857,7 @@
   .hero-col-center {
     text-align: center;
     padding: 0 20px;
+    min-width: 0;  /* évite le débordement grid */
   }
   @media (max-width: 1100px) {
     .hero-grid {
