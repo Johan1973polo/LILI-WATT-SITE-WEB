@@ -196,9 +196,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Forcer textes blancs sur sections violettes */
-    .c2e-hero,
-    .c2e-hero *,
+    /* Forcer textes blancs sauf hero */
     [style*="background: linear-gradient(135deg, #7c3aed"],
     [style*="background: linear-gradient(135deg, #7c3aed"] *,
     [style*="background: linear-gradient(135deg,#7c3aed"],
@@ -206,6 +204,13 @@
     [style*="background: #1e1b4b"],
     [style*="background: #1e1b4b"] * {
       color: #ffffff !important;
+    }
+
+    /* Hero c2e : textes en bleu marine sauf titre */
+    .c2e-badge,
+    .c2e-subtitle,
+    .c2e-badges span {
+      color: #1e1b4b !important;
     }
 
     @media (max-width: 768px) {
@@ -261,13 +266,13 @@
     <div class="container">
       <span class="c2e-badge">NOUVEAU SERVICE</span>
       <h1 class="c2e-title">Obtenez vos aides à la rénovation énergétique</h1>
-      <p class="c2e-subtitle" style="color: #ffffff !important;">
+      <p class="c2e-subtitle">
         LILIWATT vous accompagne dans la constitution de vos dossiers MaPrimeRénov', CEE et aides ANAH. Service 100% gratuit, sans engagement.
       </p>
       <div class="c2e-badges">
-        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ MaPrimeRénov'</span>
-        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ CEE</span>
-        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ Aides ANAH</span>
+        <span>✓ MaPrimeRénov'</span>
+        <span>✓ CEE</span>
+        <span>✓ Aides ANAH</span>
       </div>
       <a href="#simulateur" class="btn btn-white btn-lg">Simuler mes aides →</a>
     </div>
@@ -610,12 +615,13 @@
         <div class="footer-section">
           <h4>Navigation</h4>
           <ul>
-            <li><a href="/">Accueil</a></li>
-            <li><a href="offres.html">Nos offres</a></li>
-            <li><a href="c2e.html">C2E & Aides</a></li>
-            <li><a href="apropos.html">À propos</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/index.html">Accueil</a></li>
+            <li><a href="/offres.html">Nos offres</a></li>
+            <li><a href="/apropos.html">À propos</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/c2e.html">Aides &amp; Rénovation</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/recrutement.html">Recrutement</a></li>
           </ul>
         </div>
 
