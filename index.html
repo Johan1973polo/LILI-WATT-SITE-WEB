@@ -795,7 +795,7 @@
     /* CHATBOT LILI - STYLES */
     /* ═══════════════════════════════════════════════════════════════════════ */
     #lili-chat-widget {
-      position: absolute;
+      position: fixed;
       right: 20px;
       z-index: 9999;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -884,11 +884,12 @@
 
     /* Fenêtre de chat */
     #lili-window {
-      position: absolute;
-      bottom: 80px;
-      right: 0;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
       width: 360px;
       height: 520px;
+      max-height: calc(100vh - 180px);
       background: white;
       border-radius: 16px;
       box-shadow: 0 12px 48px rgba(0,0,0,0.2);
@@ -1108,10 +1109,11 @@
     /* Mobile responsive */
     @media (max-width: 480px) {
       #lili-window {
-        width: calc(100vw - 20px);
+        width: calc(100vw - 40px);
         height: 500px;
-        right: 10px;
-        bottom: 90px;
+        max-height: calc(100vh - 160px);
+        right: 20px;
+        bottom: 100px;
       }
 
       #lili-bubble {
