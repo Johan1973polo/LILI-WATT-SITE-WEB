@@ -261,13 +261,13 @@
     <div class="container">
       <span class="c2e-badge">NOUVEAU SERVICE</span>
       <h1 class="c2e-title">Obtenez vos aides à la rénovation énergétique</h1>
-      <p class="c2e-subtitle">
+      <p class="c2e-subtitle" style="color: #ffffff !important;">
         LILIWATT vous accompagne dans la constitution de vos dossiers MaPrimeRénov', CEE et aides ANAH. Service 100% gratuit, sans engagement.
       </p>
       <div class="c2e-badges">
-        <span>✓ MaPrimeRénov'</span>
-        <span>✓ CEE</span>
-        <span>✓ Aides ANAH</span>
+        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ MaPrimeRénov'</span>
+        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ CEE</span>
+        <span style="color: #ffffff !important; border-color: rgba(255,255,255,0.5) !important; background: rgba(255,255,255,0.15) !important;">✓ Aides ANAH</span>
       </div>
       <a href="#simulateur" class="btn btn-white btn-lg">Simuler mes aides →</a>
     </div>
@@ -792,7 +792,7 @@
         source: 'C2E - Simulateur aides rénovation'
       };
       try {
-        await fetch('/api/contact-c2e', {
+        await fetch('https://lili-watt.onrender.com/api/contact-c2e', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
