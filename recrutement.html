@@ -39,10 +39,15 @@
 
     .job-section {
       margin: var(--spacing-md) 0;
+      background: linear-gradient(135deg, #6d28d9, #7c3aed);
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.20);
     }
 
     .job-section h3 {
-      color: var(--violet-l);
+      color: #ffffff !important;
+      font-weight: 700 !important;
       margin-bottom: var(--spacing-sm);
       font-size: 1.125rem;
     }
@@ -50,12 +55,30 @@
     .job-section ul {
       list-style: disc;
       padding-left: var(--spacing-md);
-      color: var(--steel);
+      color: rgba(255, 255, 255, 0.90) !important;
       line-height: 1.8;
     }
 
     .job-section li {
       margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.90) !important;
+    }
+
+    .job-section li::marker {
+      color: rgba(255, 255, 255, 0.70) !important;
+    }
+
+    .job-section p,
+    .job-section .description {
+      color: rgba(255, 255, 255, 0.90) !important;
+    }
+
+    .job-card h2 {
+      color: #3b1574 !important;
+    }
+
+    .job-header p {
+      color: #6b7280 !important;
     }
 
     .indeed-banner {
@@ -161,8 +184,8 @@
       <div class="job-card reveal">
         <div class="job-header">
           <div class="job-title">
-            <h2 style="color: var(--white); margin-bottom: 0.5rem;">Conseiller Commercial Énergie B2B</h2>
-            <p style="color: var(--steel);">📍 Île-de-France / Toute France · 💼 CDI ou Indépendant (agent commercial)</p>
+            <h2 style="margin-bottom: 0.5rem;">Conseiller Commercial Énergie B2B</h2>
+            <p>📍 Île-de-France / Toute France · 💼 CDI ou Indépendant (agent commercial)</p>
           </div>
           <div class="job-tags">
             <span class="badge badge-violet">Commercial</span>
@@ -210,8 +233,8 @@
       <div class="job-card reveal">
         <div class="job-header">
           <div class="job-title">
-            <h2 style="color: var(--white); margin-bottom: 0.5rem;">Téléprospecteur(trice) Énergie</h2>
-            <p style="color: var(--steel);">📍 Télétravail possible · 💼 CDI ou Freelance</p>
+            <h2 style="margin-bottom: 0.5rem;">Téléprospecteur(trice) Énergie</h2>
+            <p>📍 Télétravail possible · 💼 CDI ou Freelance</p>
           </div>
           <div class="job-tags">
             <span class="badge badge-violet">Téléprospection</span>

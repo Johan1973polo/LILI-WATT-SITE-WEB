@@ -1692,7 +1692,7 @@ body.theme-e section {
 
 .inaction-detail {
   font-size: 12px;
-  color: #6B7280;
+  color: rgba(255, 255, 255, 0.88);
   font-style: italic;
   padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,0.05);
@@ -2246,29 +2246,38 @@ p, li, span, .card-text, .hero-subtitle, .section-subtitle {
 }
 
 .inaction-card {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border: 1px solid rgba(124, 58, 237, 0.3) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15) !important;
 }
 
 .inaction-card:hover {
   box-shadow: 0 8px 40px rgba(124, 58, 237, 0.25) !important;
+  transform: translateY(-4px);
 }
 
 .inaction-number {
-  color: #2D1B69 !important;
+  color: #ffffff !important;
 }
 
 .inaction-label-card {
-  color: #4C3D8A !important;
+  color: rgba(255, 255, 255, 0.90) !important;
 }
 
 .inaction-detail {
-  color: #6B46C1 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
 }
 
 .inaction-label {
   color: #7C3AED !important;
+}
+
+.inaction-icon svg,
+.inaction-icon svg path,
+.inaction-icon svg line,
+.inaction-icon svg rect,
+.inaction-icon svg circle {
+  stroke: rgba(255, 255, 255, 0.80) !important;
 }
 
 /* ========================================
@@ -3326,6 +3335,29 @@ body.extracteur-page {
   inset: 0;
   background: linear-gradient(135deg, rgba(76,29,149,0.8), rgba(124,58,237,0.7));
   z-index: 0;
+}
+/* ========================================
+   SURCHARGES — Sections avec fond violet
+   ======================================== */
+
+/* Correction problème 2 : titres et stats sur fond violet */
+.diagonal-violet .section-title,
+.diagonal-fuchsia .section-title {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.diagonal-violet .stat-number,
+.diagonal-fuchsia .stat-number {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.diagonal-violet .stat-label,
+.diagonal-fuchsia .stat-label {
+  color: rgba(255, 255, 255, 0.78) !important;
 }
 
 @media (max-width: 768px) {
