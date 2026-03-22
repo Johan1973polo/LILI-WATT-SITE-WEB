@@ -62,6 +62,57 @@
       filter: invert(90%) hue-rotate(180deg) saturate(0.8) brightness(0.9);
     }
 
+    /* FAQ Accordion Styles */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .accordion-item {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      background: #7c3aed;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 18px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .accordion-header:hover {
+      background: #6d28d9;
+    }
+
+    .accordion-icon {
+      color: #ffffff;
+      transition: transform 0.3s;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      background: #f5f3ff;
+      color: #1e1b4b;
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .accordion-item.active .accordion-content {
+      padding: 18px 24px;
+      max-height: 500px;
+    }
+
     @media (max-width: 768px) {
       .contact-grid {
         grid-template-columns: 1fr;
@@ -203,7 +254,7 @@
 
         <!-- Informations de contact -->
         <div class="contact-info-section">
-          <div class="contact-info-card reveal">
+          <div class="contact-info-card reveal" style="background: linear-gradient(135deg, #7c3aed, #a855f7); border: none;">
             <div class="contact-info-icon">📧</div>
             <h3 style="margin-bottom: 0.5rem; color: #ffffff; font-weight: 700;">Email</h3>
             <p style="color: rgba(255, 255, 255, 0.85); margin-bottom: 0.5rem;">Notre équipe vous répond sous 24h</p>
@@ -228,7 +279,7 @@
             </p>
           </div>
 
-          <div class="contact-info-card reveal">
+          <div class="contact-info-card reveal" style="background: linear-gradient(135deg, #7c3aed, #a855f7); border: none;">
             <div class="contact-info-icon">⏰</div>
             <h3 style="margin-bottom: 0.5rem; color: #ffffff; font-weight: 700;">Horaires</h3>
             <p style="color: rgba(255, 255, 255, 0.85);">
