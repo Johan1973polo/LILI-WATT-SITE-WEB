@@ -840,29 +840,31 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                 print(f"❌ Erreur chargement image : {img_error}")
                 raise Exception(f"Format {file_extension} non supporté : {img_error}")
 
-        # Prompt d'extraction simplifié et robuste
-        prompt = """Tu es un expert en factures d'énergie françaises. Analyse cette facture et extrait TOUTES les informations suivantes en JSON. Si une info est absente, mets null.
+        # Prompt d'extraction amélioré avec instructions détaillées
+        prompt = """Tu es un expert comptable spécialisé en factures d'énergie françaises B2B et B2C.
+
+Analyse TOUTES les pages de cette facture avec une attention maximale et extrait ces informations. Cherche sur TOUTES les pages, notamment la dernière qui contient souvent les détails du contrat.
+
+Retourne UNIQUEMENT ce JSON sans aucun texte autour :
 
 {
-  "fournisseur": "nom du fournisseur",
-  "offre": "nom de l'offre commerciale",
-  "option_tarifaire": "BASE ou HPHC ou ZEN ou autre",
-  "puissance_souscrite": "valeur en kVA",
-  "pdl": "numéro PDL ou PCE sur 14 chiffres",
-  "abonnement_annuel_ht": "montant en euros HT/an",
-  "abonnement_mensuel_ht": "montant en euros HT/mois",
-  "consommation_annuelle_kwh": "consommation en kWh/an",
-  "consommation_periode_kwh": "consommation sur la période facturée",
-  "prix_kwh_ht": "prix unitaire en €/kWh HT",
-  "montant_facture_ttc": "montant total TTC",
-  "periode_debut": "date début période",
-  "periode_fin": "date fin période",
-  "type_contrat": "fixe ou variable ou indexé",
-  "date_fin_contrat": "date échéance contrat si mentionnée",
-  "energie": "electricite ou gaz"
+  "fournisseur": "nom exact du fournisseur (EDF, ENGIE, TotalEnergies, etc.) - visible sur le logo ou l'en-tête",
+  "offre": "nom exact de l'offre commerciale (ex: Maitriz'Elec, Zen, Tempo, etc.)",
+  "option_tarifaire": "BASE ou HPHC ou C4 ou C5 ou autre option tarifaire exacte",
+  "puissance_souscrite": "puissance en kVA (cherche 'puissance souscrite' ou 'kVA')",
+  "pdl": "numéro PDL ou PRM sans espaces (14 chiffres)",
+  "abonnement_mensuel_ht": "montant abonnement mensuel HT en euros (cherche 'Abonnement du ... au ...')",
+  "consommation_annuelle_kwh": "consommation totale en kWh visible sur la facture",
+  "consommation_periode_kwh": "consommation de la période facturée en kWh",
+  "prix_kwh_ht": "prix unitaire en euros HT par kWh (cherche 'Prix unitaire' ou '€/kWh')",
+  "montant_facture_ttc": "montant TOTAL TTC à payer en euros (cherche 'MONTANT TTC', 'Net à payer', 'Total TTC')",
+  "periode_debut": "date début consommation format DD/MM/YYYY",
+  "periode_fin": "date fin consommation format DD/MM/YYYY",
+  "type_contrat": "fixe si offre à prix fixe, variable sinon",
+  "date_fin_contrat": "date échéance du contrat format DD/MM/YYYY (cherche 'Date échéance', 'Fin de contrat')",
+  "energie": "electricite ou gaz",
+  "segment": "C1 C2 C3 C4 C5 ou particulier selon le type de compteur et puissance"
 }
-
-IMPORTANT pour montant_facture_ttc : Le montant total à payer TTC peut avoir différents noms sur la facture comme "Net à payer", "Montant à régler", "Total TTC", "Solde à payer", "Montant dû", "À payer", "Montant total", "Total à payer". Cherche ce montant partout sur la facture — il est souvent encadré, en gras, ou dans un cadre distinct. C'est généralement le montant le plus visible. Mets ce montant dans montant_facture_ttc SANS le symbole € (uniquement le nombre).
 
 Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, sans backticks."""
 
