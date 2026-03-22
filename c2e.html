@@ -196,6 +196,18 @@
       100% { transform: rotate(360deg); }
     }
 
+    /* Forcer textes blancs sur sections violettes */
+    .c2e-hero,
+    .c2e-hero *,
+    [style*="background: linear-gradient(135deg, #7c3aed"],
+    [style*="background: linear-gradient(135deg, #7c3aed"] *,
+    [style*="background: linear-gradient(135deg,#7c3aed"],
+    [style*="background: linear-gradient(135deg,#7c3aed"] *,
+    [style*="background: #1e1b4b"],
+    [style*="background: #1e1b4b"] * {
+      color: #ffffff !important;
+    }
+
     @media (max-width: 768px) {
       .c2e-title {
         font-size: 2rem;
@@ -484,17 +496,17 @@
       </div>
 
       <!-- Résultats -->
-      <div id="resultats" style="display: none; margin-top: 48px;">
-        <h3 style="color: #7c3aed; text-align: center; margin-bottom: 32px; font-size: 2rem;">Vos aides estimées</h3>
+      <div id="resultats" style="display: none; margin-top: 48px; padding: 40px; background: linear-gradient(135deg,#7c3aed,#a855f7); border-radius: 24px;">
+        <h3 style="color: #ffffff !important; text-align: center; margin-bottom: 32px; font-size: 2rem;">Vos aides estimées</h3>
         <div id="aides-container"></div>
 
-        <div style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg,#7c3aed,#a855f7); border-radius: 16px; color: white; text-align:center;">
-          <p style="font-size: 1.125rem; margin-bottom: 16px; font-weight: 600;">
+        <div style="margin-top: 32px; padding: 24px; background: rgba(255,255,255,0.15); border-radius: 16px; color: white; text-align:center;">
+          <p style="font-size: 1.125rem; margin-bottom: 16px; font-weight: 600; color: #ffffff !important;">
             Un conseiller LILIWATT peut vous accompagner gratuitement dans votre dossier
           </p>
-          <a href="/contact.html" style="display: inline-block; background: white; color: #7c3aed; padding: 12px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: transform 0.2s;">
+          <button onclick="document.getElementById('modal-c2e').style.display='flex'" style="display: inline-block; background: white; color: #7c3aed; padding: 12px 32px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; font-size: 16px;">
             Être contacté gratuitement →
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -702,12 +714,12 @@
       }
 
       container.innerHTML = aides.map(aide => `
-        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #7c3aed; box-shadow: 0 4px 20px rgba(124,58,237,0.1);">
-          <h4 style="color: #7c3aed; margin: 0 0 8px;">${aide.nom}</h4>
-          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">
+        <div style="background: rgba(255,255,255,0.15); border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #ffffff;">
+          <h4 style="color: #ffffff !important; margin: 0 0 8px;">${aide.nom}</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #ffffff !important; margin: 0;">
             ${aide.montant ? aide.montant + ' €' : 'Éligible'}
           </p>
-          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">${aide.description || ''}</p>
+          <p style="color: rgba(255,255,255,0.90) !important; font-size: 14px; margin: 8px 0 0;">${aide.description || ''}</p>
         </div>
       `).join('');
 
@@ -730,21 +742,21 @@
 
       const container = document.getElementById('aides-container');
       container.innerHTML = `
-        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #7c3aed;">
-          <h4 style="color: #7c3aed; margin: 0 0 8px;">MaPrimeRénov'</h4>
-          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">~${mpr.toLocaleString()} €</p>
-          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">Estimation basée sur vos revenus (${taux*100}% des travaux)</p>
+        <div style="background: rgba(255,255,255,0.15); border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #ffffff;">
+          <h4 style="color: #ffffff !important; margin: 0 0 8px;">MaPrimeRénov'</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #ffffff !important; margin: 0;">~${mpr.toLocaleString()} €</p>
+          <p style="color: rgba(255,255,255,0.90) !important; font-size: 14px; margin: 8px 0 0;">Estimation basée sur vos revenus (${taux*100}% des travaux)</p>
         </div>
-        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #a855f7;">
-          <h4 style="color: #7c3aed; margin: 0 0 8px;">CEE - Prime énergie</h4>
-          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">~${cee.toLocaleString()} €</p>
-          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">Prime versée par les fournisseurs d'énergie</p>
+        <div style="background: rgba(255,255,255,0.15); border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #ffffff;">
+          <h4 style="color: #ffffff !important; margin: 0 0 8px;">CEE - Prime énergie</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #ffffff !important; margin: 0;">~${cee.toLocaleString()} €</p>
+          <p style="color: rgba(255,255,255,0.90) !important; font-size: 14px; margin: 8px 0 0;">Prime versée par les fournisseurs d'énergie</p>
         </div>
-        <div style="background: #f0fdf4; border-radius: 16px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #22c55e;">
-          <p style="color: #166534; font-weight: 600; margin: 0;">
+        <div style="background: rgba(255,255,255,0.20); border-radius: 16px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #ffffff;">
+          <p style="color: #ffffff !important; font-weight: 600; margin: 0;">
             💡 Total estimé : ~${(mpr+cee).toLocaleString()} € d'aides sur ${budget.toLocaleString()} € de travaux
           </p>
-          <p style="color: #6b7280; font-size: 12px; margin: 8px 0 0;">
+          <p style="color: rgba(255,255,255,0.85) !important; font-size: 12px; margin: 8px 0 0;">
             * Estimation indicative. Un conseiller LILIWATT calculera le montant exact selon votre dossier complet.
           </p>
         </div>
@@ -768,7 +780,56 @@
         document.getElementById('newsletter-email').value = '';
       });
     });
+
+    // Modal contact C2E
+    document.getElementById('form-contact-c2e').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const payload = {
+        prenom: document.getElementById('c2e-prenom').value,
+        nom:    document.getElementById('c2e-nom').value,
+        tel:    document.getElementById('c2e-tel').value,
+        email:  document.getElementById('c2e-email').value,
+        source: 'C2E - Simulateur aides rénovation'
+      };
+      try {
+        await fetch('/api/contact-c2e', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+      } catch(err) {
+        console.log('Erreur envoi formulaire C2E', err);
+      }
+      document.getElementById('c2e-msg').style.display = 'block';
+      this.reset();
+      setTimeout(() => {
+        document.getElementById('modal-c2e').style.display = 'none';
+        document.getElementById('c2e-msg').style.display = 'none';
+      }, 3000);
+    });
   </script>
+
+  <!-- Modal contact C2E -->
+  <div id="modal-c2e" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:linear-gradient(135deg,#6d28d9,#a855f7); border-radius:24px; padding:40px; width:90%; max-width:480px; color:#ffffff; position:relative;">
+      <button onclick="document.getElementById('modal-c2e').style.display='none'" style="position:absolute;top:16px;right:20px;background:none; border:none;color:#fff;font-size:24px;cursor:pointer;">×</button>
+      <h3 style="color:#fff;margin:0 0 8px;">Être contacté gratuitement</h3>
+      <p style="color:rgba(255,255,255,0.85);font-size:14px;margin:0 0 24px;">
+        Un conseiller LILIWATT vous rappelle sous 24h</p>
+      <form id="form-contact-c2e">
+        <input type="text" id="c2e-prenom" placeholder="Prénom *" required style="width:100%;padding:12px 16px;border-radius:50px;border:none; margin-bottom:12px;font-size:14px;background:rgba(255,255,255,0.2); color:#fff;outline:none;box-sizing:border-box;">
+        <input type="text" id="c2e-nom" placeholder="Nom *" required style="width:100%;padding:12px 16px;border-radius:50px;border:none; margin-bottom:12px;font-size:14px;background:rgba(255,255,255,0.2); color:#fff;outline:none;box-sizing:border-box;">
+        <input type="tel" id="c2e-tel" placeholder="Téléphone *" required style="width:100%;padding:12px 16px;border-radius:50px;border:none; margin-bottom:12px;font-size:14px;background:rgba(255,255,255,0.2); color:#fff;outline:none;box-sizing:border-box;">
+        <input type="email" id="c2e-email" placeholder="Email *" required style="width:100%;padding:12px 16px;border-radius:50px;border:none; margin-bottom:20px;font-size:14px;background:rgba(255,255,255,0.2); color:#fff;outline:none;box-sizing:border-box;">
+        <button type="submit" style="width:100%;padding:14px; background:#ffffff;color:#7c3aed;border:none;border-radius:50px; font-size:15px;font-weight:700;cursor:pointer;">
+          Être rappelé gratuitement →
+        </button>
+        <p id="c2e-msg" style="display:none;text-align:center; margin-top:12px;color:#ffffff;font-size:14px;">
+          ✓ Merci ! Un conseiller vous contacte sous 24h.
+        </p>
+      </form>
+    </div>
+  </div>
 
 </body>
 </html>
