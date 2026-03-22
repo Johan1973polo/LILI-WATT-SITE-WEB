@@ -1331,6 +1331,56 @@ def recrutement_form():
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
 
+@app.route('/api/contact-c2e', methods=['POST'])
+def contact_c2e():
+    """Endpoint pour demandes de contact depuis le simulateur C2E"""
+    try:
+        data = request.get_json()
+        prenom = data.get('prenom', '')
+        nom    = data.get('nom', '')
+        tel    = data.get('tel', '')
+        email  = data.get('email', '')
+        source = data.get('source', 'C2E')
+
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = f'[LILIWATT C2E] Demande de contact — {prenom} {nom}'
+        msg['From'] = f'LILIWATT <{GMAIL_USER}>'
+        msg['To'] = 'contact@liliwatt.fr'
+        msg['Reply-To'] = email
+
+        html_body = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#7c3aed,#a855f7);
+            padding:24px;border-radius:12px 12px 0 0;text-align:center;">
+            <h2 style="color:#fff;margin:0;">Nouvelle demande C2E</h2>
+            <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;">
+              {source}</p>
+          </div>
+          <div style="background:#f5f3ff;padding:24px;border-radius:0 0 12px 12px;">
+            <table style="width:100%;font-size:15px;">
+              <tr><td style="color:#6b7280;padding:6px 0;">Prénom</td>
+                  <td style="font-weight:600;color:#1e1b4b;">{prenom}</td></tr>
+              <tr><td style="color:#6b7280;padding:6px 0;">Nom</td>
+                  <td style="font-weight:600;color:#1e1b4b;">{nom}</td></tr>
+              <tr><td style="color:#6b7280;padding:6px 0;">Téléphone</td>
+                  <td style="font-weight:600;color:#1e1b4b;">{tel}</td></tr>
+              <tr><td style="color:#6b7280;padding:6px 0;">Email</td>
+                  <td style="font-weight:600;color:#7c3aed;">{email}</td></tr>
+            </table>
+          </div>
+        </div>"""
+
+        msg.attach(MIMEText(html_body, 'html'))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
+            server.sendmail(GMAIL_USER, 'contact@liliwatt.fr', msg.as_string())
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f'Erreur contact_c2e : {e}')
+        return jsonify({'success': False}), 500
+
 @app.route('/api/c2e/simuler', methods=['POST'])
 def c2e_simuler():
     """Endpoint proxy pour simulateur C2E - Certificats d'Économies d'Énergie"""
