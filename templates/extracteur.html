@@ -1145,7 +1145,13 @@
       <div class="ifield"><label>Nom *</label><input type="text" id="f-nom" placeholder="Dupont" oninput="chk4()"></div>
     </div>
     <div class="ifield"><label>Téléphone *</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="chk4()"></div>
-    <div class="ifield"><label>Email professionnel *</label><input type="email" id="f-email" placeholder="contact@monentreprise.fr" oninput="chk4()"></div>
+    <div class="ifield">
+      <label>Email professionnel *</label>
+      <input type="email" id="f-email" placeholder="contact@monentreprise.fr" oninput="chk4()">
+      <div id="email-error" style="display: none; color: #EF4444; font-size: 12px; margin-top: 4px;">
+        ⚠️ Format d'email invalide
+      </div>
+    </div>
 
     <!-- Case RGPD obligatoire -->
     <label class="rgpd-checkbox" for="rgpd-consent">
@@ -1434,6 +1440,18 @@ function chk4() {
   const e = document.getElementById('f-email').value.trim();
   const rgpd = document.getElementById('rgpd-consent').checked;
 
+  // Validation email avec regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailValid = emailRegex.test(e);
+
+  // Afficher/cacher le message d'erreur email
+  const emailError = document.getElementById('email-error');
+  if (e.length > 3 && !emailValid) {
+    emailError.style.display = 'block';
+  } else {
+    emailError.style.display = 'none';
+  }
+
   // Check company field if visible (professionnel)
   const fieldEntreprise = document.getElementById('field-entreprise');
   let entrepriseOk = true;
@@ -1442,7 +1460,16 @@ function chk4() {
     entrepriseOk = entreprise.length > 0;
   }
 
-  document.getElementById('btn4').disabled = !(p && n && t && e && rgpd && entrepriseOk);
+  // Valider que tous les champs sont remplis ET email valide
+  const isValid = p && n && t && emailValid && rgpd && entrepriseOk;
+
+  // Activer/désactiver le bouton
+  const btn = document.getElementById('btn4');
+  btn.disabled = !isValid;
+
+  // Style visuel du bouton
+  btn.style.opacity = isValid ? '1' : '0.5';
+  btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
 }
 
 function openRgpdModal() {

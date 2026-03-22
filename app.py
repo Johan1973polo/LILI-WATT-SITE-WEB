@@ -45,7 +45,7 @@ ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
 
 # Client Anthropic
 anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'heic'}
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'heic', 'heif', 'webp'}
 
 # ──── FONCTION UTILITAIRE ────────────────────────────────────
 def temps_relatif(date_str):
@@ -340,6 +340,20 @@ def calcul_economies(montant, periode, contrat, type_energie="electricite", cont
         montant_elec: montant électricité si les_deux
         montant_gaz: montant gaz si les_deux
     """
+    # Validation montant vide ou invalide
+    if not montant or str(montant).strip() == '':
+        return {
+            "montant_annuel": 0,
+            "eco_elec_min": 0,
+            "eco_elec_max": 0,
+            "eco_gaz_min": 0,
+            "eco_gaz_max": 0,
+            "eco_min": 0,
+            "eco_max": 0,
+            "pct_min": 0,
+            "pct_max": 0,
+        }
+
     # Annualisation
     facteurs = {"mensuel": 12, "bimestriel": 6, "trimestriel": 4}
     facteur = facteurs.get(periode, 12)
@@ -365,49 +379,64 @@ def calcul_economies(montant, periode, contrat, type_energie="electricite", cont
     eco_gaz_min = 0
     eco_gaz_max = 0
 
-    if type_energie == "electricite":
-        annuel = float(montant) * facteur
-        r = taux_elec.get(contrat, taux_elec["inconnu"])
-        eco_elec_min = round(annuel * r["min"] / 100)
-        eco_elec_max = round(annuel * r["max"] / 100)
-        montant_annuel = round(annuel)
-        pct_min = r["min"]
-        pct_max = r["max"]
+    try:
+        if type_energie == "electricite":
+            annuel = float(str(montant).replace(',', '.').replace(' ', '')) * facteur
+            r = taux_elec.get(contrat, taux_elec["inconnu"])
+            eco_elec_min = round(annuel * r["min"] / 100)
+            eco_elec_max = round(annuel * r["max"] / 100)
+            montant_annuel = round(annuel)
+            pct_min = r["min"]
+            pct_max = r["max"]
 
-    elif type_energie == "gaz":
-        annuel = float(montant) * facteur
-        r = taux_gaz.get(contrat_gaz or contrat, taux_gaz["inconnu"])
-        eco_gaz_min = round(annuel * r["min"] / 100)
-        eco_gaz_max = round(annuel * r["max"] / 100)
-        montant_annuel = round(annuel)
-        pct_min = r["min"]
-        pct_max = r["max"]
+        elif type_energie == "gaz":
+            annuel = float(str(montant).replace(',', '.').replace(' ', '')) * facteur
+            r = taux_gaz.get(contrat_gaz or contrat, taux_gaz["inconnu"])
+            eco_gaz_min = round(annuel * r["min"] / 100)
+            eco_gaz_max = round(annuel * r["max"] / 100)
+            montant_annuel = round(annuel)
+            pct_min = r["min"]
+            pct_max = r["max"]
 
-    elif type_energie == "les_deux":
-        # Si montants séparés fournis
-        if montant_elec and montant_gaz:
-            annuel_elec = float(montant_elec) * facteur
-            annuel_gaz = float(montant_gaz) * facteur
-        else:
-            # Sinon, on estime 60% élec / 40% gaz
-            annuel_total = float(montant) * facteur
-            annuel_elec = annuel_total * 0.6
-            annuel_gaz = annuel_total * 0.4
+        elif type_energie == "les_deux":
+            # Si montants séparés fournis
+            if montant_elec and montant_gaz:
+                annuel_elec = float(str(montant_elec).replace(',', '.').replace(' ', '')) * facteur
+                annuel_gaz = float(str(montant_gaz).replace(',', '.').replace(' ', '')) * facteur
+            else:
+                # Sinon, on estime 60% élec / 40% gaz
+                annuel_total = float(str(montant).replace(',', '.').replace(' ', '')) * facteur
+                annuel_elec = annuel_total * 0.6
+                annuel_gaz = annuel_total * 0.4
 
         # Calcul économies électricité
         r_elec = taux_elec.get(contrat, taux_elec["inconnu"])
         eco_elec_min = round(annuel_elec * r_elec["min"] / 100)
         eco_elec_max = round(annuel_elec * r_elec["max"] / 100)
 
-        # Calcul économies gaz
-        r_gaz = taux_gaz.get(contrat_gaz or "inconnu", taux_gaz["inconnu"])
-        eco_gaz_min = round(annuel_gaz * r_gaz["min"] / 100)
-        eco_gaz_max = round(annuel_gaz * r_gaz["max"] / 100)
+            # Calcul économies gaz
+            r_gaz = taux_gaz.get(contrat_gaz or "inconnu", taux_gaz["inconnu"])
+            eco_gaz_min = round(annuel_gaz * r_gaz["min"] / 100)
+            eco_gaz_max = round(annuel_gaz * r_gaz["max"] / 100)
 
-        montant_annuel = round(annuel_elec + annuel_gaz)
-        # Pourcentage global moyen
-        pct_min = round(((eco_elec_min + eco_gaz_min) / montant_annuel) * 100)
-        pct_max = round(((eco_elec_max + eco_gaz_max) / montant_annuel) * 100)
+            montant_annuel = round(annuel_elec + annuel_gaz)
+            # Pourcentage global moyen
+            pct_min = round(((eco_elec_min + eco_gaz_min) / montant_annuel) * 100)
+            pct_max = round(((eco_elec_max + eco_gaz_max) / montant_annuel) * 100)
+
+    except (ValueError, TypeError) as e:
+        print(f"⚠️ Erreur conversion montant dans calcul_economies : {e}")
+        return {
+            "montant_annuel": 0,
+            "eco_elec_min": 0,
+            "eco_elec_max": 0,
+            "eco_gaz_min": 0,
+            "eco_gaz_max": 0,
+            "eco_min": 0,
+            "eco_max": 0,
+            "pct_min": 0,
+            "pct_max": 0,
+        }
 
     return {
         "montant_annuel": montant_annuel,
@@ -685,8 +714,11 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
         content_data = None
         media_type = None
 
+        # Normaliser l'extension
+        file_extension = file_extension.lower()
+
         # Si c'est un PDF, essayer de convertir en image, sinon utiliser le PDF directement
-        if file_extension.lower() == 'pdf':
+        if file_extension == 'pdf':
             print(f"📄 Conversion PDF en cours...")
             # Chemin poppler : macOS (/opt/homebrew/bin) vs Linux (/usr/bin)
             import platform
@@ -736,18 +768,71 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                 media_type = "application/pdf"
                 print(f"✅ Base64 PDF créé : {len(pdf_b64)} caractères")
 
-        else:
-            # Charger l'image directement
-            print(f"🖼️ Chargement image {file_extension.upper()}...")
-            image = Image.open(io.BytesIO(image_bytes))
-            print(f"✅ Image chargée : {image.size}")
+        elif file_extension in ['heic', 'heif']:
+            # Convertir HEIC/HEIF en JPEG
+            print(f"🖼️ Conversion HEIC/HEIF → JPEG...")
+            try:
+                image = Image.open(io.BytesIO(image_bytes))
+                # Convertir en RGB si nécessaire (HEIC peut être en RGBA)
+                if image.mode != 'RGB':
+                    image = image.convert('RGB')
 
-            # Convertir en base64
-            print(f"🔄 Conversion base64...")
-            image_b64 = image_to_base64(image)
+                # Sauvegarder en JPEG
+                buffer = io.BytesIO()
+                image.save(buffer, format='JPEG', quality=95)
+                image_bytes = buffer.getvalue()
+
+                print(f"✅ HEIC converti en JPEG : {image.size}")
+
+                # Convertir en base64
+                image_b64 = base64.b64encode(image_bytes).decode('utf-8')
+                content_data = image_b64
+                media_type = "image/jpeg"
+                print(f"✅ Base64 JPEG créé : {len(image_b64)} caractères")
+            except Exception as heic_error:
+                print(f"❌ Erreur conversion HEIC : {heic_error}")
+                raise Exception(f"Format HEIC non supporté ou fichier corrompu : {heic_error}")
+
+        elif file_extension in ['jpg', 'jpeg']:
+            # JPG/JPEG - traitement direct
+            print(f"🖼️ Image JPEG détectée, traitement direct...")
+            image_b64 = base64.b64encode(image_bytes).decode('utf-8')
+            content_data = image_b64
+            media_type = "image/jpeg"
+            print(f"✅ Base64 JPEG créé : {len(image_b64)} caractères")
+
+        elif file_extension == 'png':
+            # PNG - traitement direct
+            print(f"🖼️ Image PNG détectée, traitement direct...")
+            image_b64 = base64.b64encode(image_bytes).decode('utf-8')
             content_data = image_b64
             media_type = "image/png"
-            print(f"✅ Base64 créé : {len(image_b64)} caractères")
+            print(f"✅ Base64 PNG créé : {len(image_b64)} caractères")
+
+        elif file_extension == 'webp':
+            # WEBP - traitement direct
+            print(f"🖼️ Image WEBP détectée, traitement direct...")
+            image_b64 = base64.b64encode(image_bytes).decode('utf-8')
+            content_data = image_b64
+            media_type = "image/webp"
+            print(f"✅ Base64 WEBP créé : {len(image_b64)} caractères")
+
+        else:
+            # Format inconnu - essayer de charger comme image générique
+            print(f"🖼️ Format {file_extension.upper()} - tentative chargement générique...")
+            try:
+                image = Image.open(io.BytesIO(image_bytes))
+                print(f"✅ Image chargée : {image.size}")
+
+                # Convertir en base64 PNG
+                print(f"🔄 Conversion base64 PNG...")
+                image_b64 = image_to_base64(image)
+                content_data = image_b64
+                media_type = "image/png"
+                print(f"✅ Base64 créé : {len(image_b64)} caractères")
+            except Exception as img_error:
+                print(f"❌ Erreur chargement image : {img_error}")
+                raise Exception(f"Format {file_extension} non supporté : {img_error}")
 
         # Prompt d'extraction simplifié et robuste
         prompt = """Tu es un expert en factures d'énergie françaises. Analyse cette facture et extrait TOUTES les informations suivantes en JSON. Si une info est absente, mets null.
@@ -770,6 +855,8 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
   "date_fin_contrat": "date échéance contrat si mentionnée",
   "energie": "electricite ou gaz"
 }
+
+IMPORTANT pour montant_facture_ttc : Le montant total à payer TTC peut avoir différents noms sur la facture comme "Net à payer", "Montant à régler", "Total TTC", "Solde à payer", "Montant dû", "À payer", "Montant total", "Total à payer". Cherche ce montant partout sur la facture — il est souvent encadré, en gras, ou dans un cadre distinct. C'est généralement le montant le plus visible. Mets ce montant dans montant_facture_ttc SANS le symbole € (uniquement le nombre).
 
 Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, sans backticks."""
 
@@ -1044,10 +1131,23 @@ def submit_lead():
     try:
         data = request.get_json()
 
+        # Récupérer le montant, avec fallback sur montant_facture_ttc
+        montant = data.get("montant") or data.get("montant_facture_ttc") or 0
+        periode = data.get("periode") or data.get("periode_couverte") or "mensuel"
+
+        # Convertir période si nécessaire
+        if periode and isinstance(periode, int):
+            if periode == 1:
+                periode = "mensuel"
+            elif periode == 2:
+                periode = "bimestriel"
+            elif periode == 3:
+                periode = "trimestriel"
+
         # Calcul économies avec support gaz
         eco = calcul_economies(
-            montant=data.get("montant", 0),
-            periode=data.get("periode", "mensuel"),
+            montant=montant,
+            periode=periode,
             contrat=data.get("contrat", "inconnu"),
             type_energie=data.get("type_energie", "electricite"),
             contrat_gaz=data.get("contrat_gaz"),
