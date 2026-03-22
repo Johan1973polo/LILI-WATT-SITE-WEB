@@ -837,11 +837,35 @@
     transition: width 0.1s linear;
   }
 
-  /* Layout 3 colonnes hero - Images latérales visibles sur grand écran uniquement */
-  @media (min-width: 1024px) {
-    .hero-side-image {
-      display: block !important;
-    }
+  /* Hero layout avec images positionnées en absolute */
+  .hero-layout {
+    position: relative;
+    width: 100%;
+  }
+  .hero-img-left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-img-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 260px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-img-left img,
+  .hero-img-right img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  @media (max-width: 1100px) {
+    .hero-img-left, .hero-img-right { display: none; }
   }
 </style>
 </head>
@@ -867,33 +891,29 @@
 
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
-    <div class="hero-container">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 40px; max-width: 1400px; margin: 0 auto; padding: 0 20px;">
+    <div class="hero-container hero-layout">
+      <!-- Image gauche absolute -->
+      <div class="hero-img-left">
+        <img src="/images/cochon.png" alt="Cochon">
+      </div>
 
-        <!-- Image gauche -->
-        <div style="flex: 0 0 280px; display: none;" class="hero-side-image">
-          <img src="/images/imagegauche.png" alt="Problème énergie" style="width: 100%; height: 420px; object-fit: cover; border-radius: 20px; box-shadow: 0 20px 60px rgba(124,58,237,0.2);">
+      <!-- Contenu central existant (SANS MODIFICATION) -->
+      <div style="text-align: center; max-width: 600px; margin: 0 auto; position: relative; z-index: 1;">
+        <div class="hero-badge">Courtage énergie B2B & B2C</div>
+        <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
+        <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
+        <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
+
+        <div class="hero-features">
+          <div class="hero-feature">100% gratuit</div>
+          <div class="hero-feature">Sans engagement</div>
+          <div class="hero-feature">Analyse en 30 secondes</div>
         </div>
+      </div>
 
-        <!-- Contenu central existant -->
-        <div style="flex: 1; text-align: center; max-width: 600px;">
-          <div class="hero-badge">Courtage énergie B2B & B2C</div>
-          <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
-          <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
-          <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
-
-          <div class="hero-features">
-            <div class="hero-feature">100% gratuit</div>
-            <div class="hero-feature">Sans engagement</div>
-            <div class="hero-feature">Analyse en 30 secondes</div>
-          </div>
-        </div>
-
-        <!-- Image droite -->
-        <div style="flex: 0 0 280px; display: none;" class="hero-side-image">
-          <img src="/images/imagedroite.png" alt="Solution énergie" style="width: 100%; height: 420px; object-fit: cover; border-radius: 20px; box-shadow: 0 20px 60px rgba(124,58,237,0.2);">
-        </div>
-
+      <!-- Image droite absolute -->
+      <div class="hero-img-right">
+        <img src="/images/homme_a_droite.png" alt="Homme">
       </div>
     </div>
   </div>
