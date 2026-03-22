@@ -18,6 +18,119 @@
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo-liliwatt.png">
 
+  <style>
+    /* TEST DIAGONALES — TRÈS VISIBLE */
+    .clip-diagonal-right {
+      clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%) !important;
+      margin: -50px 0 !important;
+      padding: 120px 20px !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
+    .clip-diagonal-left {
+      clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%) !important;
+      margin: -50px 0 !important;
+      padding: 120px 20px !important;
+      position: relative !important;
+      z-index: 3 !important;
+    }
+
+    .clip-diagonal-strong-right {
+      clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%) !important;
+      margin: -60px 0 !important;
+      padding: 140px 20px !important;
+      position: relative !important;
+      z-index: 4 !important;
+    }
+
+    .clip-diagonal-strong-left {
+      clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%) !important;
+      margin: -60px 0 !important;
+      padding: 140px 20px !important;
+      position: relative !important;
+      z-index: 5 !important;
+    }
+
+    .diagonal-violet {
+      background: linear-gradient(135deg, #4C1D95, #7C3AED) !important;
+      color: white !important;
+    }
+
+    .diagonal-violet * {
+      color: white !important;
+    }
+
+    .diagonal-fuchsia {
+      background: linear-gradient(135deg, #D946EF, #9333EA) !important;
+      color: white !important;
+    }
+
+    .diagonal-fuchsia * {
+      color: white !important;
+    }
+
+    .diagonal-lavande {
+      background: linear-gradient(135deg, #F5F0FF, #EDE8FF) !important;
+    }
+
+    .diagonal-white {
+      background: #FFFFFF !important;
+    }
+
+    .diagonal-light {
+      background: #F9FAFB !important;
+    }
+
+    /* Force white text on dark backgrounds */
+    .inaction-section,
+    .inaction-section * {
+      color: white !important;
+    }
+
+    .cta-section.diagonal-violet,
+    .cta-section.diagonal-violet * {
+      color: white !important;
+    }
+
+    .diagonal-violet h1,
+    .diagonal-violet h2,
+    .diagonal-violet h3,
+    .diagonal-violet h4,
+    .diagonal-violet h5,
+    .diagonal-violet h6,
+    .diagonal-violet p,
+    .diagonal-violet li,
+    .diagonal-violet span,
+    .diagonal-violet div {
+      color: white !important;
+    }
+
+    .diagonal-fuchsia h1,
+    .diagonal-fuchsia h2,
+    .diagonal-fuchsia h3,
+    .diagonal-fuchsia h4,
+    .diagonal-fuchsia h5,
+    .diagonal-fuchsia h6,
+    .diagonal-fuchsia p,
+    .diagonal-fuchsia li,
+    .diagonal-fuchsia span,
+    .diagonal-fuchsia div {
+      color: white !important;
+    }
+
+    @media (max-width: 768px) {
+      .clip-diagonal-right,
+      .clip-diagonal-left,
+      .clip-diagonal-strong-right,
+      .clip-diagonal-strong-left {
+        clip-path: polygon(0 0, 100% 3%, 100% 100%, 0 97%) !important;
+        margin: -20px 0 !important;
+        padding: 80px 20px !important;
+      }
+    }
+  </style>
+
 </head>
 <body>
 
@@ -75,7 +188,7 @@
   </section>
 
   <!-- Section Vidéo Premium - Layout côte-à-côte -->
-  <section class="video-premium-section clip-diagonal-right diagonal-white">
+  <section class="video-premium-section clip-diagonal-right diagonal-white" style="clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); background: #FFFFFF; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 2;">
     <div class="container">
       <div class="video-premium-grid">
 
@@ -149,7 +262,7 @@
   </section>
 
   <!-- Pourquoi LILIWATT Section -->
-  <section class="section clip-diagonal-left diagonal-lavande">
+  <section class="section clip-diagonal-left diagonal-lavande" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: linear-gradient(135deg, #F5F0FF, #EDE8FF); margin: -40px 0; padding: 100px 20px; position: relative; z-index: 3;">
     <div class="container">
       <h2 class="section-title reveal">Pourquoi LILIWATT ?</h2>
 
@@ -209,7 +322,7 @@
   </section>
 
   <!-- Section Le coût de l'inaction -->
-  <section class="inaction-section clip-diagonal-right diagonal-violet">
+  <section class="inaction-section clip-diagonal-right diagonal-violet" style="clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); background: linear-gradient(135deg, #4C1D95, #7C3AED); color: white; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 4;">
     <div class="inaction-header">
       <p class="inaction-label">⚠️ PENDANT QUE VOUS LISEZ CES LIGNES...</p>
       <h2 class="inaction-title">
@@ -318,7 +431,7 @@
   </section>
 
   <!-- Secteurs Clients -->
-  <section class="section clip-diagonal-left diagonal-light">
+  <section class="section clip-diagonal-left diagonal-light" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: #F9FAFB; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 5;">
     <div class="container">
       <h2 class="section-title reveal">Tous les secteurs professionnels</h2>
       <p class="section-subtitle reveal">De la boulangerie à la PME multi-sites, LILIWATT optimise votre facture d'énergie.</p>
@@ -449,7 +562,7 @@
   </section>
 
   <!-- Témoignages -->
-  <section class="section clip-diagonal-left diagonal-white">
+  <section class="section clip-diagonal-left diagonal-white" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: #FFFFFF; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 6;">
     <div class="container">
       <h2 class="section-title reveal">Ils ont réduit leur facture avec LILIWATT</h2>
 
@@ -521,7 +634,7 @@
   </section>
 
   <!-- CTA Final -->
-  <section class="cta-section reveal clip-diagonal-left diagonal-violet">
+  <section class="cta-section reveal clip-diagonal-left diagonal-violet" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: linear-gradient(135deg, #4C1D95, #7C3AED); color: white; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 7;">
     <div class="container text-center">
       <h2 style="color: var(--white); margin-bottom: var(--spacing-md);">
         Votre facture cache une opportunité.<br>On vous la révèle — gratuitement.

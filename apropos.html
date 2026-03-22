@@ -10,6 +10,112 @@
 
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
+    /* TEST DIAGONALES — TRÈS VISIBLE */
+    .clip-diagonal-right {
+      clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%) !important;
+      margin: -50px 0 !important;
+      padding: 120px 20px !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
+    .clip-diagonal-left {
+      clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%) !important;
+      margin: -50px 0 !important;
+      padding: 120px 20px !important;
+      position: relative !important;
+      z-index: 3 !important;
+    }
+
+    .clip-diagonal-strong-right {
+      clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%) !important;
+      margin: -60px 0 !important;
+      padding: 140px 20px !important;
+      position: relative !important;
+      z-index: 4 !important;
+    }
+
+    .clip-diagonal-strong-left {
+      clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%) !important;
+      margin: -60px 0 !important;
+      padding: 140px 20px !important;
+      position: relative !important;
+      z-index: 5 !important;
+    }
+
+    .diagonal-violet {
+      background: linear-gradient(135deg, #4C1D95, #7C3AED) !important;
+      color: white !important;
+    }
+
+    .diagonal-violet * {
+      color: white !important;
+    }
+
+    .diagonal-fuchsia {
+      background: linear-gradient(135deg, #D946EF, #9333EA) !important;
+      color: white !important;
+    }
+
+    .diagonal-fuchsia * {
+      color: white !important;
+    }
+
+    .diagonal-lavande {
+      background: linear-gradient(135deg, #F5F0FF, #EDE8FF) !important;
+    }
+
+    .diagonal-white {
+      background: #FFFFFF !important;
+    }
+
+    .diagonal-light {
+      background: #F9FAFB !important;
+    }
+
+    /* Force white text on dark backgrounds */
+    .cta-section.diagonal-violet,
+    .cta-section.diagonal-violet * {
+      color: white !important;
+    }
+
+    .diagonal-violet h1,
+    .diagonal-violet h2,
+    .diagonal-violet h3,
+    .diagonal-violet h4,
+    .diagonal-violet h5,
+    .diagonal-violet h6,
+    .diagonal-violet p,
+    .diagonal-violet li,
+    .diagonal-violet span,
+    .diagonal-violet div {
+      color: white !important;
+    }
+
+    .diagonal-fuchsia h1,
+    .diagonal-fuchsia h2,
+    .diagonal-fuchsia h3,
+    .diagonal-fuchsia h4,
+    .diagonal-fuchsia h5,
+    .diagonal-fuchsia h6,
+    .diagonal-fuchsia p,
+    .diagonal-fuchsia li,
+    .diagonal-fuchsia span,
+    .diagonal-fuchsia div {
+      color: white !important;
+    }
+
+    @media (max-width: 768px) {
+      .clip-diagonal-right,
+      .clip-diagonal-left,
+      .clip-diagonal-strong-right,
+      .clip-diagonal-strong-left {
+        clip-path: polygon(0 0, 100% 3%, 100% 100%, 0 97%) !important;
+        margin: -20px 0 !important;
+        padding: 80px 20px !important;
+      }
+    }
+
     .team-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -160,7 +266,7 @@
   </section>
 
   <!-- Les valeurs -->
-  <section class="section clip-diagonal-right diagonal-lavande">
+  <section class="section clip-diagonal-right diagonal-lavande" style="clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); background: linear-gradient(135deg, #F5F0FF, #EDE8FF); margin: -40px 0; padding: 100px 20px; position: relative; z-index: 2;">
     <div class="container">
       <h2 class="section-title reveal">Nos valeurs</h2>
 
@@ -187,7 +293,7 @@
   </section>
 
   <!-- L'équipe -->
-  <section class="section clip-diagonal-left diagonal-white">
+  <section class="section clip-diagonal-left diagonal-white" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: #FFFFFF; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 3;">
     <div class="container">
       <h2 class="section-title reveal">L'équipe LILIWATT</h2>
       <p class="section-subtitle reveal">Des experts passionnés au service de votre performance énergétique.</p>
@@ -270,7 +376,7 @@
   </section>
 
   <!-- Chiffres clés -->
-  <section class="section clip-diagonal-right diagonal-violet">
+  <section class="section clip-diagonal-right diagonal-violet" style="clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); background: linear-gradient(135deg, #4C1D95, #7C3AED); color: white; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 4;">
     <div class="container">
       <h2 class="section-title reveal">LILIWATT en chiffres</h2>
 
@@ -296,7 +402,7 @@
   </section>
 
   <!-- Notre histoire -->
-  <section class="section clip-diagonal-left diagonal-light">
+  <section class="section clip-diagonal-left diagonal-light" style="clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%); background: #F9FAFB; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 5;">
     <div class="container">
       <div class="card reveal" style="max-width: 900px; margin: 0 auto;">
         <h2 style="margin-bottom: var(--spacing-md); text-align: center;">Notre histoire</h2>
@@ -317,7 +423,7 @@
   </section>
 
   <!-- CTA Final -->
-  <section class="cta-section reveal clip-diagonal-right diagonal-violet">
+  <section class="cta-section reveal clip-diagonal-right diagonal-violet" style="clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%); background: linear-gradient(135deg, #4C1D95, #7C3AED); color: white; margin: -40px 0; padding: 100px 20px; position: relative; z-index: 6;">
     <div class="container text-center">
       <h2 style="color: var(--white); margin-bottom: var(--spacing-md);">
         Faites confiance à LILIWATT pour optimiser votre facture d'énergie
