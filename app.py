@@ -1331,11 +1331,23 @@ def recrutement_form():
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
 
-@app.route('/api/contact-c2e', methods=['POST'])
+@app.route('/api/contact-c2e', methods=['POST', 'OPTIONS'])
 def contact_c2e():
     """Endpoint pour demandes de contact depuis le simulateur C2E"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
     try:
+        print("=== CONTACT C2E APPELÉ ===")
         data = request.get_json()
+        print(f"Data reçue : {data}")
+        print(f"GMAIL_USER : {os.environ.get('GMAIL_USER')}")
+
         prenom = data.get('prenom', '')
         nom    = data.get('nom', '')
         tel    = data.get('tel', '')
@@ -1372,14 +1384,23 @@ def contact_c2e():
 
         msg.attach(MIMEText(html_body, 'html'))
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        print("Envoi email via SMTP...")
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, 'contact@liliwatt.fr', msg.as_string())
 
-        return jsonify({'success': True})
+        print("Email envoyé avec succès")
+        response = jsonify({'success': True})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
     except Exception as e:
         print(f'Erreur contact_c2e : {e}')
-        return jsonify({'success': False}), 500
+        import traceback
+        traceback.print_exc()
+        response = jsonify({'success': False, 'error': str(e)})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response, 500
 
 @app.route('/api/c2e/simuler', methods=['POST'])
 def c2e_simuler():
