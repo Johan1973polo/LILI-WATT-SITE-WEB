@@ -320,7 +320,16 @@ def save_lead(data):
             data.get("ip_signature", ""),
             data.get("date_signature_mandat", ""),
         ]
-        sheet.append_row(row)
+
+        # IMPORTANT : Ne pas utiliser append_row() car ça décale les colonnes
+        # si des cellules vides existent au milieu de la ligne
+        # Trouver la prochaine ligne vide depuis la colonne A
+        col_a = sheet.col_values(1)  # Récupère toutes les valeurs de colonne A
+        next_row = len(col_a) + 1     # Prochaine ligne disponible
+
+        # Écrire les données en partant exactement de la colonne A
+        sheet.update(f'A{next_row}', [row])
+
         return True
     except Exception as e:
         print(f"Erreur Google Sheets : {e}")
