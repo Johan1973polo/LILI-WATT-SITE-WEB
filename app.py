@@ -922,6 +922,7 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
                     "type_media": media_type
                 }
                 print(f"   📦 Payload summary : {json.dumps(payload_summary, indent=2)}")
+                print(f"📊 Nombre de pages envoyées à Claude : {len(content_images)}")
 
                 try:
                     message = anthropic_client.messages.create(
@@ -961,10 +962,12 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
 
         # Extraire le JSON de la réponse
         response_text = message.content[0].text.strip()
-        print(f"📥 Réponse COMPLÈTE Claude ({len(response_text)} caractères) :")
-        print("─" * 60)
+
+        # Log de la réponse brute pour débogage
+        print("=" * 60)
+        print("RÉPONSE BRUTE DE CLAUDE :")
         print(response_text)
-        print("─" * 60)
+        print("=" * 60)
 
         # Nettoyer le texte pour extraire uniquement le JSON (regex robuste)
         import re
