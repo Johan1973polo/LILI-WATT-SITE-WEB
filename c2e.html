@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LILIWATT vous accompagne dans l'obtention de vos aides à la rénovation énergétique : MaPrimeRénov', CEE, Éco-PTZ. Service 100% gratuit.">
+  <meta name="keywords" content="MaPrimeRénov', CEE, aides rénovation, ANAH, éco-PTZ, prime énergie">
+  <title>C2E & Aides à la Rénovation Énergétique - LILIWATT</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+  <style>
+    .c2e-hero {
+      background: linear-gradient(135deg, #6d28d9, #a855f7);
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      padding: 120px 40px 160px;
+      text-align: center;
+      color: white;
+    }
+
+    .c2e-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .c2e-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .c2e-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 32px;
+      opacity: 0.95;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .c2e-badges {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .c2e-badges span {
+      background: rgba(255,255,255,0.15);
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .form-step {
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border: 2px solid #e5e7eb;
+      transition: all 0.3s;
+    }
+
+    .form-step.active {
+      border-color: #7c3aed;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.15);
+    }
+
+    .form-step h3 {
+      color: #7c3aed;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1e1b4b;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .radio-option input[type="radio"] {
+      display: none;
+    }
+
+    .radio-option label {
+      display: block;
+      padding: 12px 20px;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .radio-option input[type="radio"]:checked + label {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border-color: #7c3aed;
+      color: white;
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkbox-option:hover {
+      border-color: #7c3aed;
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .checkbox-option input[type="checkbox"]:checked {
+      accent-color: #7c3aed;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 40px;
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #7c3aed;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .c2e-title {
+        font-size: 2rem;
+      }
+
+      .c2e-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .radio-option {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="/assets/images/logo-transparent.png"
+             alt="LILIWATT"
+             class="navbar-logo"
+             style="height: 45px; width: auto; background: transparent;">
+      </a>
+
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="/offres" class="nav-link">Nos offres</a></li>
+          <li><a href="/apropos" class="nav-link">À propos</a></li>
+          <li><a href="/blog" class="nav-link">Blog</a></li>
+          <li><a href="/c2e" class="nav-link">Aides rénovation</a></li>
+          <li><a href="/contact" class="nav-link">Contact</a></li>
+          <li><a href="/recrutement" class="nav-link">Recrutement</a></li>
+        </ul>
+        <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
+      </nav>
+
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1 — Hero diagonal -->
+  <section class="c2e-hero">
+    <div class="container">
+      <span class="c2e-badge">NOUVEAU SERVICE</span>
+      <h1 class="c2e-title">Obtenez vos aides à la rénovation énergétique</h1>
+      <p class="c2e-subtitle">
+        LILIWATT vous accompagne dans la constitution de vos dossiers MaPrimeRénov', CEE et aides ANAH. Service 100% gratuit, sans engagement.
+      </p>
+      <div class="c2e-badges">
+        <span>✓ MaPrimeRénov'</span>
+        <span>✓ CEE</span>
+        <span>✓ Aides ANAH</span>
+      </div>
+      <a href="#simulateur" class="btn btn-white btn-lg">Simuler mes aides →</a>
+    </div>
+  </section>
+
+  <!-- SECTION 2 — Qui sommes-nous -->
+  <section class="section" style="padding: 80px 40px; background: white;">
+    <div class="container">
+      <h2 class="section-title reveal">LILIWATT, votre mandataire administratif</h2>
+
+      <div class="grid grid-3">
+        <div class="card reveal" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">📋</div>
+          <h3 style="color: #7c3aed; margin-bottom: 16px;">Constitution de dossiers</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Nous gérons l'intégralité de votre dossier de subvention de A à Z
+          </p>
+        </div>
+
+        <div class="card reveal" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">🏛️</div>
+          <h3 style="color: #7c3aed; margin-bottom: 16px;">Mandataire ANAH</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Habilités à soumettre vos demandes auprès de l'Agence Nationale de l'Habitat
+          </p>
+        </div>
+
+        <div class="card reveal" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">💰</div>
+          <h3 style="color: #7c3aed; margin-bottom: 16px;">100% gratuit</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Rémunérés par les organismes, aucun frais pour vous
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — Les aides -->
+  <section class="section" style="background: #f5f3ff; clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%); padding: 100px 40px; margin: -40px 0;">
+    <div class="container">
+      <h2 class="section-title reveal">Les aides disponibles</h2>
+
+      <div class="grid grid-2" style="gap: 24px;">
+        <div class="card reveal">
+          <div style="font-size: 2.5rem; margin-bottom: 16px;">🏠</div>
+          <h3 style="color: #7c3aed; margin-bottom: 12px;">MaPrimeRénov'</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Jusqu'à <strong>90% du montant des travaux</strong> selon revenus. Isolation, chauffage, ventilation.
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div>
+          <h3 style="color: #7c3aed; margin-bottom: 12px;">CEE (Certificats d'Économies d'Énergie)</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Primes versées par les fournisseurs d'énergie pour vos travaux.
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size: 2.5rem; margin-bottom: 16px;">🏦</div>
+          <h3 style="color: #7c3aed; margin-bottom: 12px;">Éco-PTZ</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Prêt à taux zéro jusqu'à <strong>50 000€</strong> pour financer vos rénovations.
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div style="font-size: 2.5rem; margin-bottom: 16px;">🌍</div>
+          <h3 style="color: #7c3aed; margin-bottom: 12px;">Aides locales</h3>
+          <p style="color: #6b7280; line-height: 1.7;">
+            Subventions régionales et communales cumulables avec les aides nationales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 — Simulateur -->
+  <section class="section" id="simulateur" style="padding: 80px 40px; background: white;">
+    <div class="container" style="max-width: 900px; margin: 0 auto;">
+      <h2 style="text-align: center; color: #7c3aed; margin-bottom: 16px; font-size: 2.5rem;">Simulez vos aides en 2 minutes</h2>
+      <p style="text-align: center; color: #6b7280; margin-bottom: 48px; font-size: 1.125rem;">
+        Découvrez le montant des aides auxquelles vous avez droit selon votre situation
+      </p>
+
+      <form id="form-simulateur">
+        <!-- ÉTAPE 1 -->
+        <div class="form-step active" id="step1">
+          <h3>Étape 1 — Votre profil</h3>
+
+          <div class="form-group">
+            <label>Statut</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="statut1" name="statut" value="propriétaire occupant" checked>
+                <label for="statut1">Propriétaire occupant</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="statut2" name="statut" value="propriétaire bailleur">
+                <label for="statut2">Propriétaire bailleur</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="statut3" name="statut" value="locataire">
+                <label for="statut3">Locataire</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="personnes">Nombre de personnes dans le foyer</label>
+            <input type="range" id="personnes" name="personnes" min="1" max="8" value="2" class="form-control" style="height: 40px;">
+            <p style="text-align: center; margin-top: 8px; font-weight: 600; color: #7c3aed;"><span id="personnes-display">2</span> personne(s)</p>
+          </div>
+
+          <div class="form-group">
+            <label for="revenu">Revenus annuels du foyer (€)</label>
+            <input type="number" id="revenu" name="revenu" value="30000" class="form-control" placeholder="Ex: 30000">
+          </div>
+        </div>
+
+        <!-- ÉTAPE 2 -->
+        <div class="form-step" id="step2">
+          <h3>Étape 2 — Votre logement</h3>
+
+          <div class="form-group">
+            <label>Type de logement</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="type1" name="type_logement" value="maison" checked>
+                <label for="type1">Maison</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="type2" name="type_logement" value="appartement">
+                <label for="type2">Appartement</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="code_postal">Code postal</label>
+            <input type="text" id="code_postal" name="code_postal" maxlength="5" pattern="[0-9]{5}" class="form-control" placeholder="Ex: 75001" required>
+          </div>
+
+          <div class="form-group">
+            <label>Année de construction</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="age1" name="age_logement" value="moins de 15 ans">
+                <label for="age1">Moins de 15 ans</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="age2" name="age_logement" value="au moins 15 ans" checked>
+                <label for="age2">15 ans ou plus</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dpe_actuel">DPE actuel (Diagnostic de Performance Énergétique)</label>
+            <input type="range" id="dpe_actuel" name="dpe_actuel" min="1" max="7" value="5" class="form-control" style="height: 40px;">
+            <p style="text-align: center; margin-top: 8px; font-weight: 600; color: #7c3aed;">
+              <span id="dpe-display">E</span> (étiquette énergie)
+            </p>
+          </div>
+        </div>
+
+        <!-- ÉTAPE 3 -->
+        <div class="form-step" id="step3">
+          <h3>Étape 3 — Vos travaux envisagés</h3>
+
+          <div class="form-group">
+            <label>Sélectionnez vos travaux</label>
+            <div class="checkbox-group">
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="isolation murs">
+                Isolation des murs
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="isolation toit">
+                Isolation du toit
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="isolation plancher">
+                Isolation du plancher
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="pompe à chaleur">
+                Pompe à chaleur
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="chaudière granulés">
+                Chaudière à granulés
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="fenêtres">
+                Fenêtres double vitrage
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="vmc">
+                Ventilation VMC
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="travaux" value="audit">
+                Audit énergétique
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="budget">Budget travaux estimé (€)</label>
+            <input type="number" id="budget" name="budget" value="20000" class="form-control" placeholder="Ex: 20000">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 24px;">
+            Calculer mes aides →
+          </button>
+        </div>
+      </form>
+
+      <!-- Loading -->
+      <div id="loading">
+        <div class="spinner"></div>
+        <p style="color: #7c3aed; font-weight: 600;">Calcul de vos aides en cours...</p>
+      </div>
+
+      <!-- Résultats -->
+      <div id="resultats" style="display: none; margin-top: 48px;">
+        <h3 style="color: #7c3aed; text-align: center; margin-bottom: 32px; font-size: 2rem;">Vos aides estimées</h3>
+        <div id="aides-container"></div>
+
+        <div style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg,#7c3aed,#a855f7); border-radius: 16px; color: white; text-align:center;">
+          <p style="font-size: 1.125rem; margin-bottom: 16px; font-weight: 600;">
+            Un conseiller LILIWATT peut vous accompagner gratuitement dans votre dossier
+          </p>
+          <a href="/contact.html" style="display: inline-block; background: white; color: #7c3aed; padding: 12px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: transform 0.2s;">
+            Être contacté gratuitement →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 — Accompagnement -->
+  <section class="section" style="background: linear-gradient(135deg, #7c3aed, #a855f7); clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%); padding: 100px 40px; color: white; margin: -40px 0;">
+    <div class="container">
+      <h2 class="section-title reveal" style="color: white !important;">Notre accompagnement de A à Z</h2>
+
+      <div class="grid grid-4" style="gap: 32px; margin-top: 48px;">
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px;">1</div>
+          <h4 style="margin-bottom: 12px; font-weight: 700;">Simulation gratuite de vos droits</h4>
+          <p style="opacity: 0.9;">Calcul personnalisé des aides selon votre situation</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px;">2</div>
+          <h4 style="margin-bottom: 12px; font-weight: 700;">Constitution complète du dossier</h4>
+          <p style="opacity: 0.9;">Nous rassemblons tous les documents nécessaires</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px;">3</div>
+          <h4 style="margin-bottom: 12px; font-weight: 700;">Soumission aux organismes</h4>
+          <p style="opacity: 0.9;">Dépôt auprès de l'ANAH, CEE et autres organismes</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 20px;">4</div>
+          <h4 style="margin-bottom: 12px; font-weight: 700;">Suivi jusqu'au versement</h4>
+          <p style="opacity: 0.9;">Accompagnement jusqu'à la réception des aides</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 — CTA final -->
+  <section class="section" style="background: #1e1b4b; padding: 80px 40px; text-align: center;">
+    <div class="container">
+      <h2 style="color: white; margin-bottom: 20px; font-size: 2.5rem;">Prêt à obtenir vos aides ?</h2>
+      <p style="color: rgba(255,255,255,0.9); margin-bottom: 32px; font-size: 1.25rem;">
+        Nos conseillers vous accompagnent gratuitement
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="#simulateur" class="btn btn-primary btn-lg">Démarrer ma simulation →</a>
+        <a href="/contact.html" class="btn btn-outline btn-lg" style="border-color: white; color: white;">Nous contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (copié depuis index.html) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo-large" style="display: flex; justify-content: center; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(124,58,237,0.4));">
+            <img src="/logo.png" alt="LILIWATT" style="height: 80px; width: auto;">
+          </div>
+          <p class="footer-tagline">Votre courtier en énergie B2B. Plus de pouvoir d'achat, moins de factures.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+            <a href="https://x.com/liliwatt93974" class="social-link" aria-label="X" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.258 5.622 5.907-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=1080008041863253" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/liliwatt.fr/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <p style="color: rgba(255,255,255,0.85); font-size: 14px; margin-bottom: 12px; font-weight: 600;">
+              📧 Inscrivez-vous à notre newsletter
+            </p>
+            <form id="newsletter-form" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="email" id="newsletter-email" placeholder="votre@email.fr" required style="flex: 1; min-width: 180px; padding: 10px 16px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 13px;">
+              <button type="submit" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap;">
+                S'inscrire
+              </button>
+            </form>
+            <p id="newsletter-msg" style="display:none; color: #a855f7; font-size: 13px; margin-top: 8px;">
+              ✓ Merci ! Vous êtes inscrit(e).
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="offres.html">Nos offres</a></li>
+            <li><a href="c2e.html">C2E & Aides</a></li>
+            <li><a href="apropos.html">À propos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Liens utiles</h4>
+          <ul>
+            <li><a href="https://www.cre.fr" target="_blank">CRE - Commission de Régulation de l'Énergie</a></li>
+            <li><a href="https://www.ademe.fr" target="_blank">ADEME</a></li>
+            <li><a href="https://www.anah.fr" target="_blank">ANAH</a></li>
+            <li><a href="https://france-renov.gouv.fr" target="_blank">France Rénov'</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+            <li>Tél : +33 (0)1 84 16 08 56</li>
+            <li>59 rue de Ponthieu, Bureau 326</li>
+            <li>75008 Paris</li>
+            <li>Lun-Ven : 9h-18h</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 LILIWATT — LILISTRAT STRATÉGIE SAS · Tous droits réservés</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+          <a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a> ·
+          <a href="https://www.liliwatt.fr">www.liliwatt.fr</a> ·
+          <a href="#">Mentions légales</a> ·
+          <a href="#">Politique de confidentialité</a> ·
+          <a href="#">RGPD</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    // Mise à jour affichage personnes
+    document.getElementById('personnes').addEventListener('input', function() {
+      document.getElementById('personnes-display').textContent = this.value;
+    });
+
+    // Mise à jour affichage DPE
+    const dpeLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    document.getElementById('dpe_actuel').addEventListener('input', function() {
+      document.getElementById('dpe-display').textContent = dpeLabels[this.value - 1];
+    });
+
+    // Soumission formulaire
+    document.getElementById('form-simulateur').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('resultats').style.display = 'none';
+
+      const data = {
+        statut: document.querySelector('input[name="statut"]:checked').value,
+        personnes: document.getElementById('personnes').value,
+        revenu: document.getElementById('revenu').value,
+        type_logement: document.querySelector('input[name="type_logement"]:checked').value,
+        code_postal: document.getElementById('code_postal').value,
+        age_logement: document.querySelector('input[name="age_logement"]:checked').value,
+        dpe_actuel: document.getElementById('dpe_actuel').value,
+        travaux: Array.from(document.querySelectorAll('input[name="travaux"]:checked')).map(cb => cb.value),
+        budget: document.getElementById('budget').value
+      };
+
+      try {
+        const response = await fetch('/api/c2e/simuler', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        afficherResultats(result);
+      } catch(err) {
+        console.log('Erreur API, affichage estimation locale', err);
+        afficherResultatsEstimes(data);
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('resultats').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    function afficherResultats(result) {
+      const container = document.getElementById('aides-container');
+      const aides = result.aides || [];
+
+      if (aides.length === 0) {
+        afficherResultatsEstimes({});
+        return;
+      }
+
+      container.innerHTML = aides.map(aide => `
+        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #7c3aed; box-shadow: 0 4px 20px rgba(124,58,237,0.1);">
+          <h4 style="color: #7c3aed; margin: 0 0 8px;">${aide.nom}</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">
+            ${aide.montant ? aide.montant + ' €' : 'Éligible'}
+          </p>
+          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">${aide.description || ''}</p>
+        </div>
+      `).join('');
+
+      document.getElementById('resultats').style.display = 'block';
+    }
+
+    function afficherResultatsEstimes(data) {
+      const revenu = parseInt(data.revenu) || 30000;
+      const personnes = parseInt(data.personnes) || 2;
+      const budget = parseInt(data.budget) || 20000;
+
+      let taux = 0.5;
+      if (revenu < 20000) taux = 0.9;
+      else if (revenu < 35000) taux = 0.7;
+      else if (revenu < 50000) taux = 0.5;
+      else taux = 0.3;
+
+      const mpr = Math.round(budget * taux);
+      const cee = Math.round(budget * 0.15);
+
+      const container = document.getElementById('aides-container');
+      container.innerHTML = `
+        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #7c3aed;">
+          <h4 style="color: #7c3aed; margin: 0 0 8px;">MaPrimeRénov'</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">~${mpr.toLocaleString()} €</p>
+          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">Estimation basée sur vos revenus (${taux*100}% des travaux)</p>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px; border-left: 4px solid #a855f7;">
+          <h4 style="color: #7c3aed; margin: 0 0 8px;">CEE - Prime énergie</h4>
+          <p style="font-size: 2rem; font-weight: 700; color: #1e1b4b; margin: 0;">~${cee.toLocaleString()} €</p>
+          <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0;">Prime versée par les fournisseurs d'énergie</p>
+        </div>
+        <div style="background: #f0fdf4; border-radius: 16px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #22c55e;">
+          <p style="color: #166534; font-weight: 600; margin: 0;">
+            💡 Total estimé : ~${(mpr+cee).toLocaleString()} € d'aides sur ${budget.toLocaleString()} € de travaux
+          </p>
+          <p style="color: #6b7280; font-size: 12px; margin: 8px 0 0;">
+            * Estimation indicative. Un conseiller LILIWATT calculera le montant exact selon votre dossier complet.
+          </p>
+        </div>
+      `;
+      document.getElementById('resultats').style.display = 'block';
+    }
+
+    // Newsletter
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      fetch('https://formspree.io/f/xwpkgwqr', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: email,
+          _subject: 'Inscription newsletter LILIWATT'
+        })
+      }).finally(() => {
+        document.getElementById('newsletter-msg').style.display = 'block';
+        document.getElementById('newsletter-email').value = '';
+      });
+    });
+  </script>
+
+</body>
+</html>
