@@ -39,7 +39,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 GOOGLE_SHEET_ID      = os.getenv("GOOGLE_SHEET_ID", "VOTRE_SHEET_ID_ICI")
 GOOGLE_CREDS_FILE    = os.getenv("GOOGLE_CREDS_FILE", "credentials.json")
 GMAIL_USER           = os.getenv("GMAIL_USER", "contact@liliwatt.fr")
-GMAIL_APP_PASSWORD   = os.getenv("GMAIL_APP_PASSWORD", "VOTRE_APP_PASSWORD")
+GMAIL_PASSWORD       = os.getenv("GMAIL_PASSWORD", "VOTRE_APP_PASSWORD")
 CONSEILLER_EMAIL     = os.getenv("CONSEILLER_EMAIL", "johan@liliwatt.fr")
 ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
 
@@ -489,7 +489,7 @@ def send_email_prospect(data, eco):
         msg.attach(MIMEText(html, "html"))
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, data["email"], msg.as_string())
         return True
     except Exception as e:
@@ -553,7 +553,7 @@ def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=Non
             msg.attach(pdf_attachment)
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, CONSEILLER_EMAIL, msg.as_string())
         return True
     except Exception as e:
@@ -595,7 +595,7 @@ def send_contact_email(nom, email, telephone, message, sujet):
         msg.attach(MIMEText(html, "html"))
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, "contact@liliwatt.fr", msg.as_string())
         return True
     except Exception as e:
