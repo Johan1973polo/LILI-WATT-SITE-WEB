@@ -1156,5 +1156,153 @@
 
   <script src="assets/js/recrutement-form.js"></script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- BANNIÈRE COOKIES RGPD -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 900px;
+  background: linear-gradient(135deg, #1e1b4b, #2d1b69);
+  color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  z-index: 99999;
+  box-shadow: 0 20px 60px rgba(124,58,237,0.4),
+              0 0 0 1px rgba(168,85,247,0.3);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.5s ease;
+">
+
+<style>
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+#cookie-banner .cookie-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+#cookie-banner .cookie-text {
+  flex: 1;
+  min-width: 200px;
+}
+#cookie-banner .cookie-text h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #ffffff;
+}
+#cookie-banner .cookie-text p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+  line-height: 1.5;
+}
+#cookie-banner .cookie-text a {
+  color: #a855f7;
+  text-decoration: underline;
+}
+#cookie-banner .cookie-buttons {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+#btn-accept-all {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(124,58,237,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#btn-accept-all:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124,58,237,0.5);
+}
+#btn-refuse {
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+#btn-refuse:hover {
+  background: rgba(255,255,255,0.1);
+  color: #ffffff;
+}
+@media (max-width: 600px) {
+  #cookie-banner {
+    bottom: 0;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+}
+</style>
+
+  <div class="cookie-icon">🍪</div>
+
+  <div class="cookie-text">
+    <h3>Nous utilisons des cookies</h3>
+    <p>
+      Pour améliorer votre expérience et analyser notre trafic.
+      Vos données restent confidentielles.
+      <a href="/mentions-legales.html">En savoir plus</a>
+    </p>
+  </div>
+
+  <div class="cookie-buttons">
+    <button id="btn-accept-all" onclick="acceptCookies()">
+      ✓ Tout accepter
+    </button>
+    <button id="btn-refuse" onclick="refuserCookies()">
+      Refuser
+    </button>
+  </div>
+
+</div>
+
+<script>
+function acceptCookies() {
+  localStorage.setItem('liliwatt_cookies', 'accepted');
+  document.getElementById('cookie-banner').style.animation =
+    'slideDown 0.3s ease forwards';
+  setTimeout(() => {
+    document.getElementById('cookie-banner').style.display = 'none';
+  }, 300);
+}
+function refuserCookies() {
+  localStorage.setItem('liliwatt_cookies', 'refused');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+if (localStorage.getItem('liliwatt_cookies')) {
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+</script>
 </body>
 </html>
