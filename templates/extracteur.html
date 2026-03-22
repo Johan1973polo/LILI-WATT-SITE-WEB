@@ -1492,7 +1492,14 @@ function goLoader() {
     let i = 0;
     const iv = setInterval(() => {
       if (i < steps.length) { document.getElementById(steps[i]).classList.add('done'); i++; }
-      else { clearInterval(iv); setTimeout(() => go('s-load', 's1', 30), 500); }
+      else {
+        clearInterval(iv);
+        // Particuliers : sauter secteur d'activité (s1) → aller directement à s2
+        // Professionnels : afficher secteur d'activité
+        const nextScreen = (D.profil === 'particulier') ? 's2' : 's1';
+        const nextProgress = (D.profil === 'particulier') ? 50 : 30;
+        setTimeout(() => go('s-load', nextScreen, nextProgress), 500);
+      }
     }, 650);
   });
 }
@@ -1734,6 +1741,7 @@ async function analyzeInvoiceContinue() {
     const result = await res.json();
 
     // Désactiver le laser scan
+    const laserScan = document.getElementById('laser-scan');
     if (laserScan) {
       laserScan.classList.remove('active');
     }
@@ -1781,9 +1789,13 @@ async function analyzeInvoiceContinue() {
       // Calculer les économies
       calcEco();
 
-      // Aller à l'écran secteur (s1) avec les données pré-remplies
+      // Aller à l'écran suivant avec les données pré-remplies
+      // Particuliers : sauter secteur d'activité (s1) → aller directement à s2
+      // Professionnels : afficher secteur d'activité
       setTimeout(() => {
-        go('s-load', 's1', 30);
+        const nextScreen = (D.profil === 'particulier') ? 's2' : 's1';
+        const nextProgress = (D.profil === 'particulier') ? 50 : 30;
+        go('s-load', nextScreen, nextProgress);
         // Sélectionner visuellement les pills correspondantes
         if (data.periode) {
           const periodePill = document.querySelector(`#pp-periode .pill[onclick*="${data.periode}"]`);
@@ -1796,15 +1808,19 @@ async function analyzeInvoiceContinue() {
       }, 1500);
 
     } else {
-      // En cas d'erreur, basculer vers saisie manuelle
+      // En cas d'erreur, basculer vers le formulaire adapté au profil
       alert('Nous n\'avons pas pu lire votre facture. Veuillez compléter manuellement.');
-      setTimeout(() => go('s-load', 's0', 8), 500);
+      // Rediriger selon le profil : particulier → estimation, professionnel → formulaire manuel
+      const targetScreen = (D.profil === 'particulier') ? 's-estimate-type' : 's0';
+      setTimeout(() => go('s-load', targetScreen, 8), 500);
     }
 
   } catch (err) {
     console.error('Erreur analyse facture:', err);
     alert('Erreur lors de l\'analyse. Veuillez compléter manuellement.');
-    setTimeout(() => go('s-load', 's0', 8), 500);
+    // Rediriger selon le profil : particulier → estimation, professionnel → formulaire manuel
+    const targetScreen = (D.profil === 'particulier') ? 's-estimate-type' : 's0';
+    setTimeout(() => go('s-load', targetScreen, 8), 500);
   }
 }
 
@@ -1900,7 +1916,14 @@ function startEstimation() {
     let i = 0;
     const iv = setInterval(() => {
       if (i < steps.length) { document.getElementById(steps[i]).classList.add('done'); i++; }
-      else { clearInterval(iv); setTimeout(() => go('s-load', 's1', 30), 500); }
+      else {
+        clearInterval(iv);
+        // Particuliers : sauter secteur d'activité (s1) → aller directement à s2
+        // Professionnels : afficher secteur d'activité
+        const nextScreen = (D.profil === 'particulier') ? 's2' : 's1';
+        const nextProgress = (D.profil === 'particulier') ? 50 : 30;
+        setTimeout(() => go('s-load', nextScreen, nextProgress), 500);
+      }
     }, 650);
   });
 }
