@@ -837,47 +837,32 @@
     transition: width 0.1s linear;
   }
 
-  /* Hero layout avec images positionnées en absolute */
-  .hero-layout {
-    position: relative;
-    min-height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  /* Hero grille 3 colonnes simple */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    align-items: end;
+    gap: 0;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-  .hero-img-left {
-    position: absolute;
-    left: -20px;
-    bottom: 0;
-    width: 280px;
-    z-index: 0;
-    opacity: 0.9;
-  }
-  .hero-img-right {
-    position: absolute;
-    right: -20px;
-    bottom: 0;
-    width: 280px;
-    z-index: 0;
-    opacity: 0.9;
-  }
-  .hero-img-left img,
-  .hero-img-right img {
+  .hero-col-left img,
+  .hero-col-right img {
     width: 100%;
     height: auto;
+    display: block;
   }
-  .hero-center {
-    position: relative;
-    z-index: 1;
+  .hero-col-center {
     text-align: center;
-    padding: 0 320px;
+    padding: 0 20px;
   }
-  @media (max-width: 1200px) {
-    .hero-center {
-      padding: 0 40px;
+  @media (max-width: 1100px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
     }
-    .hero-img-left, .hero-img-right {
+    .hero-col-left,
+    .hero-col-right {
       display: none;
     }
   }
@@ -905,29 +890,26 @@
 
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
-    <div class="hero-container hero-layout">
-      <!-- Image gauche absolute -->
-      <div class="hero-img-left">
-        <img src="/images/cochon.png" alt="Cochon">
-      </div>
-
-      <!-- Contenu central existant -->
-      <div class="hero-center">
-        <div class="hero-badge">Courtage énergie B2B & B2C</div>
-        <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
-        <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
-        <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
-
-        <div class="hero-features">
-          <div class="hero-feature">100% gratuit</div>
-          <div class="hero-feature">Sans engagement</div>
-          <div class="hero-feature">Analyse en 30 secondes</div>
+    <div class="hero-container">
+      <div class="hero-grid">
+        <div class="hero-col-left">
+          <img src="/images/cochon.png" alt="">
         </div>
-      </div>
+        <div class="hero-col-center">
+          <div class="hero-badge">Courtage énergie B2B & B2C</div>
+          <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
+          <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
+          <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
 
-      <!-- Image droite absolute -->
-      <div class="hero-img-right">
-        <img src="/images/homme_a_droite.png" alt="Homme">
+          <div class="hero-features">
+            <div class="hero-feature">100% gratuit</div>
+            <div class="hero-feature">Sans engagement</div>
+            <div class="hero-feature">Analyse en 30 secondes</div>
+          </div>
+        </div>
+        <div class="hero-col-right">
+          <img src="/images/homme_a_droite.png" alt="">
+        </div>
       </div>
     </div>
   </div>
