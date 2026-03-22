@@ -838,33 +838,38 @@
     transition: width 0.1s linear;
   }
 
-  /* Hero grille 3 colonnes simple */
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 250px 1fr 250px;
-    align-items: end;
-    gap: 0;
+  /* Hero layout avec images absolute */
+  .hero-layout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
   }
-  .hero-col-left img,
-  .hero-col-right img {
+  .hero-img-left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    pointer-events: none;
+  }
+  .hero-img-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    pointer-events: none;
+  }
+  .hero-img-left img,
+  .hero-img-right img {
     width: 100%;
     height: auto;
-    display: block;
-  }
-  .hero-col-center {
-    text-align: center;
-    padding: 0 20px;
-    min-width: 0;  /* évite le débordement grid */
+    object-fit: contain;
+    mix-blend-mode: lighten;
   }
   @media (max-width: 1100px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-    }
-    .hero-col-left,
-    .hero-col-right {
+    .hero-img-left,
+    .hero-img-right {
       display: none;
     }
   }
@@ -893,11 +898,10 @@
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
     <div class="hero-container">
-      <div class="hero-grid">
-        <div class="hero-col-left">
-          <img src="/images/cochon.png" alt="">
-        </div>
-        <div class="hero-col-center">
+      <div class="hero-layout">
+        <img src="/images/cochon.png" class="hero-img-left" alt="">
+
+        <div style="text-align: center; max-width: 600px; padding: 0 20px;">
           <div class="hero-badge">Courtage énergie B2B & B2C</div>
           <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
           <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
@@ -909,9 +913,8 @@
             <div class="hero-feature">Analyse en 30 secondes</div>
           </div>
         </div>
-        <div class="hero-col-right">
-          <img src="/images/homme_a_droite.png" alt="">
-        </div>
+
+        <img src="/images/homme_a_droite.png" class="hero-img-right" alt="">
       </div>
     </div>
   </div>
