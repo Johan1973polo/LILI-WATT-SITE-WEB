@@ -683,15 +683,29 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
         # Si c'est un PDF, convertir la première page en image
         if file_extension.lower() == 'pdf':
             print(f"📄 Conversion PDF en cours...")
-            # Chemin poppler sur macOS avec Homebrew
-            poppler_path = "/opt/homebrew/bin"
+            # Chemin poppler : macOS (/opt/homebrew/bin) vs Linux (/usr/bin)
+            import platform
+            system_os = platform.system()
+            print(f"   🖥️ Système d'exploitation : {system_os}")
+
+            poppler_path = "/opt/homebrew/bin" if system_os == "Darwin" else None
+            print(f"   📁 Chemin poppler : {poppler_path if poppler_path else 'Chemin système par défaut'}")
+
             try:
-                images = convert_from_bytes(
-                    image_bytes,
-                    first_page=1,
-                    last_page=1,
-                    poppler_path=poppler_path
-                )
+                if poppler_path:
+                    images = convert_from_bytes(
+                        image_bytes,
+                        first_page=1,
+                        last_page=1,
+                        poppler_path=poppler_path
+                    )
+                else:
+                    # Sur Linux/Render, utiliser le chemin système par défaut
+                    images = convert_from_bytes(
+                        image_bytes,
+                        first_page=1,
+                        last_page=1
+                    )
                 if not images:
                     print(f"❌ Échec conversion PDF : aucune image générée")
                     return {"error": "Impossible de convertir le PDF en image"}
@@ -699,6 +713,8 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                 print(f"✅ PDF converti : {image.size}")
             except Exception as pdf_error:
                 print(f"❌ Erreur conversion PDF : {pdf_error}")
+                import traceback
+                print(f"   Traceback complet :\n{traceback.format_exc()}")
                 return {"error": f"Erreur PDF: {str(pdf_error)}"}
         else:
             # Charger l'image directement
@@ -822,37 +838,47 @@ Si une valeur est introuvable, mets null."""
                 }
                 print(f"   📦 Payload summary : {json.dumps(payload_summary, indent=2)}")
 
-                message = anthropic_client.messages.create(
-                    model=model_name,
-                    max_tokens=1024,
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "image",
-                                    "source": {
-                                        "type": "base64",
-                                        "media_type": "image/png",
-                                        "data": image_b64,
+                try:
+                    message = anthropic_client.messages.create(
+                        model=model_name,
+                        max_tokens=1024,
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": [
+                                    {
+                                        "type": "image",
+                                        "source": {
+                                            "type": "base64",
+                                            "media_type": "image/png",
+                                            "data": image_b64,
+                                        },
                                     },
-                                },
-                                {
-                                    "type": "text",
-                                    "text": prompt
-                                }
-                            ],
-                        }
-                    ],
-                )
-                print(f"✅ Réponse Claude reçue")
-                print(f"   📊 Status : {message.stop_reason}")
-                print(f"   📊 Tokens utilisés : input={message.usage.input_tokens}, output={message.usage.output_tokens}")
-                print(f"   📊 ID message : {message.id}")
+                                    {
+                                        "type": "text",
+                                        "text": prompt
+                                    }
+                                ],
+                            }
+                        ],
+                    )
+                    print(f"✅ Réponse Claude reçue")
+                    print(f"   API Response: {message}")
+                    print(f"   📊 Status : {message.stop_reason}")
+                    print(f"   📊 Tokens utilisés : input={message.usage.input_tokens}, output={message.usage.output_tokens}")
+                    print(f"   📊 ID message : {message.id}")
+                except Exception as api_call_error:
+                    print(f"API ERROR:")
+                    import traceback
+                    print(traceback.format_exc())
+                    raise
+
                 break  # Success, exit retry loop
 
             except Exception as api_error:
                 print(f"⚠️ Erreur API Claude (tentative {attempt + 1}) : {api_error}")
+                import traceback
+                print(f"   Traceback API error:\n{traceback.format_exc()}")
                 if attempt < max_retries - 1:
                     print(f"⏳ Nouvelle tentative dans {retry_delay}s...")
                     time.sleep(retry_delay)
@@ -891,7 +917,9 @@ Si une valeur est introuvable, mets null."""
     except Exception as e:
         print(f"❌ Erreur générale analyse facture : {e}")
         import traceback
-        traceback.print_exc()
+        print("=== TRACEBACK COMPLET analyze_invoice_with_claude ===")
+        print(traceback.format_exc())
+        print("=" * 60)
         return {"error": str(e)}
 
 # ──── ROUTES PAGES STATIQUES ─────────────────────────────────
@@ -938,6 +966,10 @@ def blog_article():
 def analyze_invoice():
     """Endpoint pour analyser une facture uploadée"""
     try:
+        print("=== ANALYZE INVOICE CALLED ===")
+        print(f"File received: {request.files}")
+        print(f"API Key present: {bool(os.environ.get('ANTHROPIC_API_KEY'))}")
+
         print("\n" + "="*60)
         print("📥 NOUVEAU UPLOAD DE FACTURE")
         print("="*60)
@@ -948,6 +980,8 @@ def analyze_invoice():
         if ANTHROPIC_API_KEY:
             print(f"   Longueur clé : {len(ANTHROPIC_API_KEY)} caractères")
             print(f"   Préfixe : {ANTHROPIC_API_KEY[:10]}...")
+        else:
+            print(f"   ⚠️ Vérification os.environ : {bool(os.environ.get('ANTHROPIC_API_KEY'))}")
 
         # Vérifier qu'un fichier est présent
         print(f"📋 Headers requête : {dict(request.headers)}")
@@ -1006,8 +1040,11 @@ def analyze_invoice():
 
     except Exception as e:
         print(f"❌ EXCEPTION CRITIQUE dans endpoint analyze-invoice : {e}")
+        print(f"   Type d'erreur : {type(e).__name__}")
         import traceback
-        traceback.print_exc()
+        print("=== TRACEBACK COMPLET ENDPOINT ===")
+        print(traceback.format_exc())
+        print("=" * 60)
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/api/submit-lead", methods=["POST"])
