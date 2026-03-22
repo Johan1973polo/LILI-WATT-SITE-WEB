@@ -678,9 +678,14 @@ def image_to_base64(image):
 def analyze_invoice_with_claude(image_bytes, file_extension):
     """Analyse une facture avec Claude Vision API"""
     import time
+    import base64
 
     try:
-        # Si c'est un PDF, convertir la première page en image
+        # Variables pour stocker le contenu à envoyer à Claude
+        content_data = None
+        media_type = None
+
+        # Si c'est un PDF, essayer de convertir en image, sinon utiliser le PDF directement
         if file_extension.lower() == 'pdf':
             print(f"📄 Conversion PDF en cours...")
             # Chemin poppler : macOS (/opt/homebrew/bin) vs Linux (/usr/bin)
@@ -707,25 +712,42 @@ def analyze_invoice_with_claude(image_bytes, file_extension):
                         last_page=1
                     )
                 if not images:
-                    print(f"❌ Échec conversion PDF : aucune image générée")
-                    return {"error": "Impossible de convertir le PDF en image"}
+                    raise Exception("Aucune image générée par pdf2image")
+
                 image = images[0]
-                print(f"✅ PDF converti : {image.size}")
+                print(f"✅ PDF converti en image : {image.size}")
+
+                # Convertir l'image en base64
+                print(f"🔄 Conversion image base64...")
+                image_b64 = image_to_base64(image)
+                content_data = image_b64
+                media_type = "image/png"
+                print(f"✅ Base64 image créé : {len(image_b64)} caractères")
+
             except Exception as pdf_error:
-                print(f"❌ Erreur conversion PDF : {pdf_error}")
+                print(f"⚠️ Conversion PDF→image échouée : {pdf_error}")
                 import traceback
-                print(f"   Traceback complet :\n{traceback.format_exc()}")
-                return {"error": f"Erreur PDF: {str(pdf_error)}"}
+                print(f"   Traceback : {traceback.format_exc()}")
+
+                # FALLBACK : Envoyer le PDF directement à Claude (supporté nativement)
+                print(f"🔄 FALLBACK : Envoi du PDF directement à Claude...")
+                pdf_b64 = base64.b64encode(image_bytes).decode('utf-8')
+                content_data = pdf_b64
+                media_type = "application/pdf"
+                print(f"✅ Base64 PDF créé : {len(pdf_b64)} caractères")
+
         else:
             # Charger l'image directement
             print(f"🖼️ Chargement image {file_extension.upper()}...")
             image = Image.open(io.BytesIO(image_bytes))
             print(f"✅ Image chargée : {image.size}")
 
-        # Convertir en base64
-        print(f"🔄 Conversion base64...")
-        image_b64 = image_to_base64(image)
-        print(f"✅ Base64 créé : {len(image_b64)} caractères")
+            # Convertir en base64
+            print(f"🔄 Conversion base64...")
+            image_b64 = image_to_base64(image)
+            content_data = image_b64
+            media_type = "image/png"
+            print(f"✅ Base64 créé : {len(image_b64)} caractères")
 
         # Prompt d'extraction détaillé
         prompt = """Tu es un expert en facturation d'énergie française (électricité et gaz).
@@ -819,8 +841,12 @@ Si une valeur est introuvable, mets null."""
                 print(f"🤖 Appel Claude Vision (tentative {attempt + 1}/{max_retries})...")
                 print(f"   📌 Modèle : {model_name}")
                 print(f"   📌 Max tokens : 1024")
-                print(f"   📌 Taille payload image : {len(image_b64)} caractères base64")
+                print(f"   📌 Taille payload : {len(content_data)} caractères base64")
+                print(f"   📌 Type de média : {media_type}")
                 print(f"   📌 Taille prompt : {len(prompt)} caractères")
+
+                # Déterminer le type de contenu pour l'API
+                content_type = "document" if media_type == "application/pdf" else "image"
 
                 # Log du payload (sans les données base64 pour éviter de polluer les logs)
                 payload_summary = {
@@ -830,13 +856,33 @@ Si une valeur est introuvable, mets null."""
                         {
                             "role": "user",
                             "content": [
-                                {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data_length": len(image_b64)}},
+                                {"type": content_type, "source": {"type": "base64", "media_type": media_type, "data_length": len(content_data)}},
                                 {"type": "text", "text_length": len(prompt)}
                             ]
                         }
                     ]
                 }
                 print(f"   📦 Payload summary : {json.dumps(payload_summary, indent=2)}")
+
+                # Construire le content item selon le type de média
+                if media_type == "application/pdf":
+                    content_item = {
+                        "type": "document",
+                        "source": {
+                            "type": "base64",
+                            "media_type": media_type,
+                            "data": content_data,
+                        },
+                    }
+                else:
+                    content_item = {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": media_type,
+                            "data": content_data,
+                        },
+                    }
 
                 try:
                     message = anthropic_client.messages.create(
@@ -846,14 +892,7 @@ Si une valeur est introuvable, mets null."""
                             {
                                 "role": "user",
                                 "content": [
-                                    {
-                                        "type": "image",
-                                        "source": {
-                                            "type": "base64",
-                                            "media_type": "image/png",
-                                            "data": image_b64,
-                                        },
-                                    },
+                                    content_item,
                                     {
                                         "type": "text",
                                         "text": prompt
