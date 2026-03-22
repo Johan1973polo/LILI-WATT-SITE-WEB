@@ -602,6 +602,69 @@ def send_contact_email(nom, email, telephone, message, sujet):
         print(f"Erreur email contact : {e}")
         return False
 
+def send_recrutement_email(nom, email, telephone, poste, message, cv_filename=None, cv_bytes=None):
+    """Email pour formulaire de recrutement avec CV en pièce jointe"""
+    try:
+        msg = MIMEMultipart("mixed")
+        msg["Subject"] = f"[LILIWATT RECRUTEMENT] Candidature de {nom} — {poste}"
+        msg["From"]    = f"LILIWATT <{GMAIL_USER}>"
+        msg["To"]      = "recrutement@liliwatt.fr"
+        msg["Reply-To"] = email
+
+        html = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: #7C3AED; padding: 20px; text-align: center;">
+            <h1 style="color: white; margin: 0; font-family: monospace; letter-spacing: 4px;">LILIWATT</h1>
+            <p style="color: #A78BFA; margin: 5px 0; font-size: 12px; letter-spacing: 2px;">
+              Nouvelle candidature reçue
+            </p>
+          </div>
+          <div style="background: #0D0D1F; padding: 30px; color: #F0EEFF;">
+            <p><strong style="color: #A78BFA;">Poste visé :</strong> <span style="color: #D946EF; font-weight: 600;">{poste}</span></p>
+            <hr style="border: none; border-top: 1px solid #1E1B4B; margin: 15px 0;">
+            <p><strong style="color: #A78BFA;">Nom :</strong> {nom}</p>
+            <p><strong style="color: #A78BFA;">Email :</strong> <a href="mailto:{email}" style="color: #D946EF;">{email}</a></p>
+            <p><strong style="color: #A78BFA;">Téléphone :</strong> {telephone if telephone else 'Non fourni'}</p>
+            <hr style="border: none; border-top: 1px solid #1E1B4B; margin: 15px 0;">
+            <p><strong style="color: #A78BFA;">Message / Lettre de motivation :</strong></p>
+            <div style="background: #1E1B4B; padding: 15px; border-radius: 8px; margin-top: 10px;">
+              <p style="margin: 0; white-space: pre-wrap;">{message if message else '(Aucun message fourni)'}</p>
+            </div>
+            {f'<p style="margin-top: 15px;"><strong style="color: #A78BFA;">CV joint :</strong> 📎 {cv_filename}</p>' if cv_filename else ''}
+          </div>
+          <div style="background: #06060F; padding: 15px; text-align: center; color: #6B7280; font-size: 12px;">
+            LILIWATT · recrutement@liliwatt.fr · <a href="https://liliwatt.fr" style="color: #A78BFA;">liliwatt.fr</a>
+          </div>
+        </div>
+        """
+
+        # Attacher le corps HTML
+        msg_html = MIMEMultipart("alternative")
+        msg_html.attach(MIMEText(html, "html"))
+        msg.attach(msg_html)
+
+        # Ajouter le CV en pièce jointe si fourni
+        if cv_bytes and cv_filename:
+            # Déterminer le type MIME selon l'extension
+            ext = cv_filename.rsplit('.', 1)[1].lower() if '.' in cv_filename else ''
+            if ext == 'pdf':
+                cv_attachment = MIMEApplication(cv_bytes, _subtype="pdf")
+            elif ext in ['doc', 'docx']:
+                cv_attachment = MIMEApplication(cv_bytes, _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document")
+            else:
+                cv_attachment = MIMEApplication(cv_bytes)
+
+            cv_attachment.add_header('Content-Disposition', 'attachment', filename=cv_filename)
+            msg.attach(cv_attachment)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
+            server.sendmail(GMAIL_USER, "recrutement@liliwatt.fr", msg.as_string())
+        return True
+    except Exception as e:
+        print(f"Erreur email recrutement : {e}")
+        return False
+
 # ─── CLAUDE VISION — ANALYSE DE FACTURE ────────────────────
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -1001,6 +1064,47 @@ def contact_form():
 
     except Exception as e:
         print(f"❌ ERREUR API contact : {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
+
+@app.route("/api/recrutement", methods=["POST"])
+def recrutement_form():
+    """Endpoint pour formulaire de recrutement avec upload CV"""
+    try:
+        print("📧 Réception requête /api/recrutement")
+
+        # Récupérer les données du formulaire multipart
+        nom = request.form.get('nom', '')
+        email = request.form.get('email', '')
+        telephone = request.form.get('telephone', '')
+        poste = request.form.get('poste', 'Candidature spontanée')
+        message = request.form.get('message', '')
+
+        print(f"📨 Candidature de: {nom} ({email}) pour: {poste}")
+
+        # Récupérer le CV s'il est présent
+        cv_filename = None
+        cv_bytes = None
+        if 'cv' in request.files:
+            cv_file = request.files['cv']
+            if cv_file.filename:
+                cv_filename = secure_filename(cv_file.filename)
+                cv_bytes = cv_file.read()
+                print(f"📎 CV joint: {cv_filename} ({len(cv_bytes)} octets)")
+
+        # Envoi email à recrutement@liliwatt.fr
+        success = send_recrutement_email(nom, email, telephone, poste, message, cv_filename, cv_bytes)
+
+        if success:
+            print("✅ Email de candidature envoyé avec succès")
+            return jsonify({"success": True, "message": "Candidature envoyée avec succès"})
+        else:
+            print("❌ Échec envoi email candidature")
+            return jsonify({"success": False, "error": "Erreur lors de l'envoi de la candidature"}), 500
+
+    except Exception as e:
+        print(f"❌ ERREUR API recrutement : {type(e).__name__}: {str(e)}")
         import traceback
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Erreur serveur: {str(e)}"}), 500
