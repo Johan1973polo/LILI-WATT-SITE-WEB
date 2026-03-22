@@ -40,7 +40,7 @@ GOOGLE_SHEET_ID      = os.getenv("GOOGLE_SHEET_ID", "VOTRE_SHEET_ID_ICI")
 GOOGLE_CREDS_FILE    = os.getenv("GOOGLE_CREDS_FILE", "credentials.json")
 GMAIL_USER           = os.getenv("GMAIL_USER", "contact@liliwatt.fr")
 GMAIL_PASSWORD       = os.getenv("GMAIL_PASSWORD", "VOTRE_APP_PASSWORD")
-CONSEILLER_EMAIL     = os.getenv("CONSEILLER_EMAIL", "johan@liliwatt.fr")
+CONSEILLER_EMAIL     = os.getenv("CONSEILLER_EMAIL", "contact@liliwatt.fr")
 ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
 
 # Client Anthropic
@@ -498,7 +498,8 @@ def send_email_prospect(data, eco):
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = f"Votre analyse LILIWATT — {eco['eco_min']}€ à {eco['eco_max']}€ d'économies potentielles"
-        msg["From"]    = f"LILIWATT <{GMAIL_USER}>"
+        msg["From"]    = "LILIWATT <contact@liliwatt.fr>"
+        msg["Reply-To"] = "contact@liliwatt.fr"
         msg["To"]      = data["email"]
 
         html = f"""
@@ -542,7 +543,8 @@ def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=Non
     try:
         msg = MIMEMultipart("mixed")
         msg["Subject"] = f"🔔 Nouveau mandat signé — {data['prenom']} {data['nom']} — {eco['eco_min']}€ à {eco['eco_max']}€"
-        msg["From"]    = f"LILIWATT Leads <{GMAIL_USER}>"
+        msg["From"]    = "LILIWATT Leads <contact@liliwatt.fr>"
+        msg["Reply-To"] = "contact@liliwatt.fr"
         msg["To"]      = CONSEILLER_EMAIL
 
         mandat_section = ""
@@ -606,7 +608,7 @@ def send_contact_email(nom, email, telephone, message, sujet):
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = f"[LILIWATT] {sujet} — {nom}"
-        msg["From"]    = f"LILIWATT <{GMAIL_USER}>"
+        msg["From"]    = "LILIWATT <contact@liliwatt.fr>"
         msg["To"]      = "contact@liliwatt.fr"
         msg["Reply-To"] = email
 
@@ -648,7 +650,7 @@ def send_recrutement_email(nom, email, telephone, poste, message, cv_filename=No
     try:
         msg = MIMEMultipart("mixed")
         msg["Subject"] = f"[LILIWATT RECRUTEMENT] Candidature de {nom} — {poste}"
-        msg["From"]    = f"LILIWATT <{GMAIL_USER}>"
+        msg["From"]    = "LILIWATT <contact@liliwatt.fr>"
         msg["To"]      = "recrutement@liliwatt.fr"
         msg["Reply-To"] = email
 
