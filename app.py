@@ -82,6 +82,13 @@ def serve_html(filename):
         from flask import abort
         abort(404)
 
+@app.route('/logo2.png')
+def serve_logo():
+    """Sert le logo depuis le répertoire parent"""
+    from flask import send_from_directory
+    parent_dir = os.path.dirname(BASE_DIR)
+    return send_from_directory(parent_dir, 'logo2.png')
+
 @app.route('/images/<path:filename>')
 def serve_images(filename):
     """Sert les images depuis le dossier images"""
