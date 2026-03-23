@@ -1134,7 +1134,7 @@ img {
     border-left: 1px solid var(--border);
   }
 
-  .nav-menu.active {
+  .nav-menu.open {
     right: 0;
   }
 
