@@ -131,29 +131,24 @@
   }
 
   /* Responsive mobile pour l'extracteur */
-  @media (max-width: 480px) {
-    html, body {
-      overflow: auto !important;
-      height: auto !important;
-    }
-    #app-layout {
-      flex-direction: column !important;
-      height: auto !important;
-      overflow: visible !important;
-    }
+  @media (max-width: 768px) {
     #left-panel {
+      position: fixed !important;
       width: 100% !important;
-      height: auto !important;
-      overflow: visible !important;
-    }
-    #left-panel .screen {
-      padding: 40px 24px;
-    }
-    #left-panel .screen.on {
-      min-height: 100vh !important;
+      overflow-y: auto !important;
     }
     #right-panel {
       display: none !important;
+    }
+    .screen.on {
+      padding: 80px 24px 100px !important;
+      min-height: 100vh !important;
+    }
+    .hero-title {
+      font-size: 2rem !important;
+    }
+    .form-card {
+      padding: 24px 20px !important;
     }
   }
 
