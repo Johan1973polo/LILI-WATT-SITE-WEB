@@ -10,7 +10,7 @@
     --violet: #7C3AED;
     --violet-l: #A855F7;
     --fuchsia: #D946EF;
-    --bg: #F5F3FF;
+    --bg: #f0eeff;
     --card: #FFFFFF;
     --border: rgba(124, 58, 237, 0.15);
     --text: #1E1B4B;
@@ -516,12 +516,12 @@
   /* Hero Analyseur - Layout 2 colonnes */
   .hero-analyseur {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
     align-items: center;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 80px 40px;
+    padding: 60px 60px 40px;
     min-height: 80vh;
   }
 
@@ -532,7 +532,7 @@
   }
 
   .hero-logo-small {
-    height: 40px;
+    height: 48px;
     width: auto;
     margin-bottom: 20px;
     filter: brightness(1);
@@ -540,11 +540,13 @@
   }
 
   .hero-title {
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-size: clamp(2rem, 3.5vw, 3rem);
     font-weight: 800;
     color: #1e1b4b;
     line-height: 1.2;
     margin: 0;
+    white-space: normal;
+    max-width: 520px;
   }
 
   .hero-title .highlight {
@@ -1109,29 +1111,20 @@
           Voir mes économies gratuitement →
         </button>
 
-        <div class="hero-badges">
-          <div class="hero-badge-item">
-            ✓ Analyse en <strong>30 secondes</strong>
-          </div>
-          <div class="hero-badge-item">
-            🔒 Données <strong>100% sécurisées</strong> (RGPD)
-          </div>
-          <div class="hero-badge-item">
-            📊 <strong>+2 000</strong> factures analysées
-          </div>
+        <div style="display:flex;flex-direction:row;flex-wrap:wrap;gap:24px;margin-top:24px;font-size:14px;color:#374151;">
+          <span>✓ Analyse en <strong style="color:#7c3aed">30 secondes</strong></span>
+          <span>🔒 Données <strong style="color:#7c3aed">100% sécurisées</strong> (RGPD)</span>
+          <span>📊 <strong style="color:#7c3aed">+2 000</strong> factures analysées</span>
         </div>
       </div>
 
       <!-- COLONNE DROITE -->
-      <div class="hero-right" style="position: relative;">
-        <!-- Badge rond vert -->
-        <div style="position: absolute; top: -10px; right: 0; background: #0d9488; color: white; border-radius: 50%; width: 90px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 8px 24px rgba(13,148,136,0.4);">
-          <span style="font-size: 1.6rem; font-weight: 800; line-height: 1;">28%</span>
-          <span style="font-size: 9px; text-align: center; line-height: 1.2; opacity: 0.9;">d'économies<br>constatées</span>
+      <div class="hero-img-col" style="position:relative;">
+        <div style="position:absolute;top:0;right:-20px;background:#0d9488;color:white;border-radius:50%;width:110px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;font-size:2rem;font-weight:800;box-shadow:0 8px 24px rgba(13,148,136,0.4);">
+          <span style="line-height:1;">28%</span>
+          <span style="font-size:9px;text-align:center;line-height:1.3;margin-top:2px;opacity:0.9;">d'économies<br>constatées</span>
         </div>
-
-        <!-- Image photo.png -->
-        <img src="/images/photo.png" alt="Analyseur LILIWATT" style="width: 100%; max-width: 560px; height: auto; display: block; border-radius: 16px;">
+        <img src="/images/photo.png" alt="Analyseur LILIWATT" style="width:100%;height:auto;display:block;">
       </div>
     </div>
 
