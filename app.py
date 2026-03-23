@@ -1050,6 +1050,24 @@ def c2e():
     """Page C2E - Certificats d'Économies d'Énergie et aides à la rénovation"""
     return serve_html('c2e.html')
 
+@app.route('/mentions-legales')
+@app.route('/mentions-legales.html')
+def mentions_legales():
+    """Mentions légales"""
+    return serve_html('mentions-legales.html')
+
+@app.route('/politique-confidentialite')
+@app.route('/politique-confidentialite.html')
+def politique_confidentialite():
+    """Politique de confidentialité et RGPD"""
+    return serve_html('politique-confidentialite.html')
+
+@app.route('/rgpd')
+@app.route('/rgpd.html')
+def rgpd():
+    """Page d'exercice des droits RGPD"""
+    return serve_html('rgpd.html')
+
 @app.route('/extracteur')
 def extracteur():
     """Page extracteur de factures avec Claude Vision AI"""
