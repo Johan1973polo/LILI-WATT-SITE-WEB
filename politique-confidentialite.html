@@ -3,105 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Rejoignez LILIWATT : recrutement de conseillers commerciaux en énergie B2B. CDI, freelance, commissions attractives.">
-  <meta name="keywords" content="recrutement LILIWATT, emploi courtier énergie, conseiller commercial, télé prospecteur">
+  <meta name="description" content="Politique de confidentialité de LILIWATT - Protection de vos données personnelles et conformité RGPD.">
+  <meta name="keywords" content="politique confidentialité, RGPD, données personnelles, LILIWATT">
 
-  <title>Recrutement - Rejoignez LILIWATT</title>
+  <title>Politique de Confidentialité - LILIWATT</title>
 
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .job-card {
+    .legal-section {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: var(--spacing-lg);
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
       margin-bottom: var(--spacing-md);
-      gap: var(--spacing-md);
-      flex-wrap: wrap;
     }
 
-    .job-title {
-      flex: 1;
+    .legal-section h2 {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: var(--spacing-md);
+      font-size: 1.5rem;
+      font-weight: 700;
     }
 
-    .job-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .job-section {
-      margin: var(--spacing-md) 0;
-      background: linear-gradient(135deg, #6d28d9, #7c3aed);
-      padding: var(--spacing-lg);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.20);
-    }
-
-    .job-section h3 {
-      color: #ffffff !important;
-      font-weight: 700 !important;
+    .legal-section h3 {
+      color: #7c3aed;
+      margin-top: var(--spacing-md);
       margin-bottom: var(--spacing-sm);
       font-size: 1.125rem;
+      font-weight: 600;
     }
 
-    .job-section ul {
-      list-style: disc;
-      padding-left: var(--spacing-md);
-      color: rgba(255, 255, 255, 0.90) !important;
+    .legal-section p, .legal-section ul {
+      color: var(--steel);
       line-height: 1.8;
+      margin-bottom: var(--spacing-sm);
     }
 
-    .job-section li {
+    .legal-section ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .legal-section li {
+      padding-left: 1.5rem;
+      position: relative;
       margin-bottom: 0.5rem;
-      color: rgba(255, 255, 255, 0.90) !important;
     }
 
-    .job-section li::marker {
-      color: rgba(255, 255, 255, 0.70) !important;
+    .legal-section li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #7c3aed;
+      font-weight: bold;
     }
 
-    .job-section p,
-    .job-section .description {
-      color: rgba(255, 255, 255, 0.90) !important;
+    .legal-section a {
+      color: #7c3aed;
+      text-decoration: underline;
     }
 
-    .job-card h2 {
-      color: #3b1574 !important;
+    .legal-section a:hover {
+      color: #a855f7;
     }
 
-    .job-header p {
-      color: #6b7280 !important;
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--spacing-md) 0;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .indeed-banner {
-      background: linear-gradient(135deg, #2164F3, #1A4FD9);
-      padding: var(--spacing-xl);
-      border-radius: var(--radius-lg);
-      text-align: center;
-      margin: var(--spacing-xl) 0;
+    .data-table thead {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
     }
 
-    .indeed-banner h3 {
-      color: #ffffff;
-      margin-bottom: var(--spacing-md);
+    .data-table th {
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .indeed-banner p {
-      color: rgba(255,255,255,0.90);
-      margin-bottom: var(--spacing-md);
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #E5E7EB;
+      color: var(--steel);
+      font-size: 14px;
     }
 
-    .indeed-banner .btn-white {
-      color: #ffffff;
-      border-color: #ffffff;
+    .data-table tbody tr {
+      background: white;
+      transition: background 0.2s;
+    }
+
+    .data-table tbody tr:hover {
+      background: #F9FAFB;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .data-table {
+        display: block;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
@@ -139,342 +155,185 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="section section-hero page-hero" style="min-height: 60vh; background-image: url('/assets/images/recrutement-bg.png');">
+  <section class="section section-hero page-hero" style="min-height: 50vh; background: linear-gradient(135deg, #7c3aed, #a855f7);">
     <div class="container">
       <div class="hero-content">
-        <h1 class="hero-title reveal">Rejoignez LILIWATT</h1>
-        <p class="hero-subtitle reveal">Nous recrutons des conseillers commerciaux passionnés par l'énergie et la performance. Rejoignez une équipe dynamique sur un marché en pleine croissance.</p>
+        <h1 class="hero-title reveal" style="color: #ffffff;">Politique de Confidentialité</h1>
+        <p class="hero-subtitle reveal" style="color: rgba(255,255,255,0.9);">Vos données personnelles sont protégées et traitées dans le respect du RGPD</p>
       </div>
     </div>
   </section>
 
-  <!-- Pourquoi LILIWATT -->
+  <!-- Legal Content Section -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title reveal">Pourquoi LILIWATT ?</h2>
 
-      <div class="grid grid-4">
-        <div class="card reveal text-center">
-          <div class="card-icon">💰</div>
-          <h3 class="card-title">Commissions attractives</h3>
-          <p class="card-text">Système de rémunération variable déplafonné sur chaque contrat signé. Plus vous performez, plus vous gagnez.</p>
-        </div>
-
-        <div class="card reveal text-center">
-          <div class="card-icon">📈</div>
-          <h3 class="card-title">Marché en croissance</h3>
-          <p class="card-text">Le courtage en énergie B2B est en plein essor. Les professionnels cherchent activement à réduire leurs factures.</p>
-        </div>
-
-        <div class="card reveal text-center">
-          <div class="card-icon">🎯</div>
-          <h3 class="card-title">Outils performants</h3>
-          <p class="card-text">Extracteur de factures, CRM, support commercial : tous les outils pour maximiser vos conversions.</p>
-        </div>
-
-        <div class="card reveal text-center">
-          <div class="card-icon">🤝</div>
-          <h3 class="card-title">Formation & accompagnement</h3>
-          <p class="card-text">Formation initiale complète au marché de l'énergie et accompagnement terrain permanent.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Offres d'emploi -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title reveal">Nos offres d'emploi</h2>
-
-      <!-- Poste 1 : Conseiller Commercial -->
-      <div class="job-card reveal">
-        <div class="job-header">
-          <div class="job-title">
-            <h2 style="margin-bottom: 0.5rem;">Conseiller Commercial Énergie B2B</h2>
-            <p>📍 Île-de-France / Toute France · 💼 CDI ou Indépendant (agent commercial)</p>
-          </div>
-          <div class="job-tags">
-            <span class="badge badge-violet">Commercial</span>
-            <span class="badge badge-elec">CDI / Freelance</span>
-          </div>
-        </div>
-
-        <div class="job-section">
-          <h3>🎯 Missions</h3>
-          <ul>
-            <li><strong>Prospection :</strong> Identifier et contacter des prospects professionnels (hôtels, restaurants, boulangeries, PME, etc.)</li>
-            <li><strong>Analyse :</strong> Utiliser notre extracteur de factures pour analyser les opportunités d'économies</li>
-            <li><strong>Négociation :</strong> Présenter les offres de nos partenaires (OHM Énergie, MINT Énergie, Ilek) et convaincre</li>
-            <li><strong>Signature :</strong> Accompagner le client jusqu'à la signature du contrat et assurer le suivi</li>
-            <li><strong>Relation client :</strong> Fidéliser votre portefeuille et générer des recommandations</li>
-          </ul>
-        </div>
-
-        <div class="job-section">
-          <h3>👤 Profil recherché</h3>
-          <ul>
-            <li>Expérience en <strong>vente B2B</strong> (énergie, télécoms, assurances ou autre secteur concurrentiel)</li>
-            <li>Aisance au <strong>téléphone et en rendez-vous terrain</strong></li>
-            <li>Autonomie, ténacité et goût du challenge</li>
-            <li>Permis B souhaité pour les déplacements clients</li>
-            <li>Connaissance du marché de l'énergie appréciée mais <strong>formation assurée</strong></li>
-          </ul>
-        </div>
-
-        <div class="job-section">
-          <h3>💼 Rémunération & Avantages</h3>
-          <ul>
-            <li><strong>Fixe :</strong> à définir selon profil (CDI) ou 100% variable (agent commercial indépendant)</li>
-            <li><strong>Variable :</strong> Commissions déplafonnées sur chaque contrat signé (de 150€ à 800€ par contrat selon segment)</li>
-            <li><strong>Potentiel :</strong> 3 000€ à 6 000€/mois selon performance</li>
-            <li>Mutuelle (CDI), carte essence, téléphone professionnel</li>
-            <li>Formation initiale et continue</li>
-          </ul>
-        </div>
-
-        <button class="btn btn-primary btn-lg" data-modal="apply-modal-1">Postuler à cette offre</button>
+      <!-- Responsable du traitement -->
+      <div class="legal-section reveal">
+        <h2>1. Responsable du traitement des données</h2>
+        <p>Le responsable du traitement de vos données personnelles est :</p>
+        <ul>
+          <li><strong>Société :</strong> LILISTRAT STRATÉGIE SAS - Marque commerciale LILIWATT</li>
+          <li><strong>Siège social :</strong> 59 rue de Ponthieu, Bureau 326, 75008 Paris, France</li>
+          <li><strong>Email :</strong> <a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+          <li><strong>Téléphone :</strong> +33 (0)1 84 16 08 56</li>
+          <li><strong>Délégué à la Protection des Données (DPO) :</strong> <a href="mailto:dpo@liliwatt.fr">dpo@liliwatt.fr</a></li>
+        </ul>
       </div>
 
-      <!-- Poste 2 : Téléprospecteur -->
-      <div class="job-card reveal">
-        <div class="job-header">
-          <div class="job-title">
-            <h2 style="margin-bottom: 0.5rem;">Téléprospecteur(trice) Énergie</h2>
-            <p>📍 Télétravail possible · 💼 CDI ou Freelance</p>
-          </div>
-          <div class="job-tags">
-            <span class="badge badge-violet">Téléprospection</span>
-            <span class="badge badge-success">Télétravail</span>
-          </div>
-        </div>
+      <!-- Données collectées -->
+      <div class="legal-section reveal">
+        <h2>2. Données personnelles collectées</h2>
+        <p>Dans le cadre de nos activités de courtage en énergie, nous collectons et traitons les données personnelles suivantes :</p>
 
-        <div class="job-section">
-          <h3>🎯 Missions</h3>
-          <ul>
-            <li><strong>Prise de contact :</strong> Appeler des professionnels pour leur proposer une analyse gratuite de leur facture</li>
-            <li><strong>Qualification :</strong> Identifier les prospects à fort potentiel d'économies</li>
-            <li><strong>Prise de RDV :</strong> Fixer des rendez-vous (téléphoniques ou physiques) pour nos conseillers commerciaux</li>
-            <li><strong>Suivi CRM :</strong> Tenir à jour la base de données prospects</li>
-            <li><strong>Reporting :</strong> Remonter les informations terrain à la direction commerciale</li>
-          </ul>
-        </div>
-
-        <div class="job-section">
-          <h3>👤 Profil recherché</h3>
-          <ul>
-            <li><strong>Aisance téléphonique</strong> et excellent relationnel</li>
-            <li>Capacité à convaincre et à susciter l'intérêt rapidement</li>
-            <li>Résistance au refus et persévérance</li>
-            <li>Organisation et rigueur dans le suivi</li>
-            <li>Expérience en téléprospection B2B appréciée mais débutants motivés acceptés</li>
-          </ul>
-        </div>
-
-        <div class="job-section">
-          <h3>💼 Rémunération & Avantages</h3>
-          <ul>
-            <li><strong>Fixe :</strong> 1 800€ - 2 200€ brut/mois (CDI) selon profil</li>
-            <li><strong>Variable :</strong> Primes sur objectifs de RDV qualifiés (jusqu'à +500€/mois)</li>
-            <li>Possibilité de télétravail partiel ou total</li>
-            <li>Formation au discours commercial et aux outils</li>
-            <li>Évolution possible vers un poste de conseiller commercial</li>
-          </ul>
-        </div>
-
-        <button class="btn btn-primary btn-lg" data-modal="apply-modal-2">Postuler à cette offre</button>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Donnée collectée</th>
+              <th>Finalité du traitement</th>
+              <th>Durée de conservation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nom, Prénom, Email, Téléphone</td>
+              <td>Contact commercial et relation client</td>
+              <td>3 ans après dernier contact</td>
+            </tr>
+            <tr>
+              <td>CV, Lettre de motivation</td>
+              <td>Recrutement et gestion des candidatures</td>
+              <td>2 ans après réception</td>
+            </tr>
+            <tr>
+              <td>Facture d'énergie (PDF uploadé)</td>
+              <td>Analyse et établissement de devis personnalisé</td>
+              <td>1 an après analyse</td>
+            </tr>
+            <tr>
+              <td>Données du simulateur C2E</td>
+              <td>Calcul des aides à la rénovation énergétique</td>
+              <td>6 mois après simulation</td>
+            </tr>
+            <tr>
+              <td>Email (Newsletter)</td>
+              <td>Envoi d'actualités et informations sectorielles</td>
+              <td>Jusqu'à désinscription</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-  </section>
 
-  <!-- Indeed Banner -->
-  <section class="section">
-    <div class="container">
-      <div class="indeed-banner reveal">
-        <h3>🔍 Retrouvez toutes nos offres sur Indeed</h3>
-        <p>Consultez nos annonces détaillées et postulez directement en ligne via notre page Indeed.</p>
-        <a href="https://www.indeed.fr" target="_blank" rel="noopener noreferrer" class="btn btn-white btn-lg">Voir nos offres Indeed</a>
+      <!-- Bases légales -->
+      <div class="legal-section reveal">
+        <h2>3. Bases légales du traitement</h2>
+        <p>Conformément au RGPD, nous traitons vos données personnelles sur les bases légales suivantes :</p>
+        <ul>
+          <li><strong>Intérêt légitime :</strong> Prospection commerciale B2B, amélioration de nos services</li>
+          <li><strong>Consentement :</strong> Newsletter, cookies non essentiels, analyse de factures</li>
+          <li><strong>Exécution d'un contrat :</strong> Traitement des demandes clients, fourniture de devis</li>
+          <li><strong>Obligation légale :</strong> Conservation de documents comptables et fiscaux</li>
+        </ul>
       </div>
-    </div>
-  </section>
 
-  <!-- Culture d'entreprise -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title reveal">Notre culture d'entreprise</h2>
-
-      <div class="card reveal" style="max-width: 900px; margin: 0 auto;">
-        <h3 style="margin-bottom: var(--spacing-md); color: var(--white);">Ce que nous valorisons chez LILIWATT :</h3>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
-          <div>
-            <h4 style="color: var(--violet-l); margin-bottom: 0.5rem;">🚀 Performance</h4>
-            <p class="card-text">Nous encourageons l'ambition et récompensons les résultats. Votre réussite est notre réussite.</p>
-          </div>
-
-          <div>
-            <h4 style="color: var(--violet-l); margin-bottom: 0.5rem;">🤝 Esprit d'équipe</h4>
-            <p class="card-text">Entraide, partage de bonnes pratiques, émulation collective. On gagne ensemble.</p>
-          </div>
-
-          <div>
-            <h4 style="color: var(--violet-l); margin-bottom: 0.5rem;">📚 Formation continue</h4>
-            <p class="card-text">Le marché de l'énergie évolue constamment. Nous formons nos équipes en permanence.</p>
-          </div>
-
-          <div>
-            <h4 style="color: var(--violet-l); margin-bottom: 0.5rem;">⚖️ Équilibre vie pro/perso</h4>
-            <p class="card-text">Flexibilité, télétravail possible, respect des temps de repos. Performez sans vous épuiser.</p>
-          </div>
-        </div>
+      <!-- Destinataires -->
+      <div class="legal-section reveal">
+        <h2>4. Destinataires des données</h2>
+        <p>Vos données personnelles sont traitées par :</p>
+        <ul>
+          <li><strong>Personnel LILIWATT :</strong> Équipe commerciale et administrative (accès restreint selon les besoins)</li>
+          <li><strong>Prestataires techniques :</strong> Hébergeur web (Render), service d'emailing, intégration Google Sheets API</li>
+          <li><strong>Fournisseurs d'énergie partenaires :</strong> Uniquement avec votre accord explicite pour établir un devis</li>
+        </ul>
+        <p><strong>Transferts hors UE :</strong> Aucune donnée personnelle n'est transférée en dehors de l'Union Européenne.</p>
       </div>
+
+      <!-- Sécurité -->
+      <div class="legal-section reveal">
+        <h2>5. Sécurité de vos données</h2>
+        <p>LILIWATT met en œuvre des mesures techniques et organisationnelles appropriées pour garantir la sécurité de vos données :</p>
+        <ul>
+          <li>Chiffrement HTTPS pour toutes les communications</li>
+          <li>Accès restreints aux données (authentification et droits d'accès limités)</li>
+          <li>Sauvegardes régulières et sécurisées</li>
+          <li>Surveillance et mise à jour continue de nos systèmes de sécurité</li>
+          <li>Sensibilisation de nos collaborateurs à la protection des données</li>
+        </ul>
+      </div>
+
+      <!-- Droits -->
+      <div class="legal-section reveal">
+        <h2>6. Vos droits sur vos données personnelles</h2>
+        <p>Conformément au RGPD, vous disposez des droits suivants concernant vos données personnelles :</p>
+        <ul>
+          <li><strong>Droit d'accès :</strong> Obtenir une copie de vos données personnelles</li>
+          <li><strong>Droit de rectification :</strong> Corriger des données inexactes ou incomplètes</li>
+          <li><strong>Droit à l'effacement (droit à l'oubli) :</strong> Demander la suppression de vos données</li>
+          <li><strong>Droit d'opposition :</strong> Vous opposer à certains traitements de vos données</li>
+          <li><strong>Droit à la portabilité :</strong> Recevoir vos données dans un format structuré et lisible</li>
+          <li><strong>Droit à la limitation du traitement :</strong> Demander le gel temporaire de certains traitements</li>
+        </ul>
+        <p>Pour exercer ces droits, vous pouvez :</p>
+        <ul>
+          <li>Utiliser notre <a href="/rgpd.html">formulaire d'exercice des droits RGPD</a></li>
+          <li>Nous contacter par email : <a href="mailto:dpo@liliwatt.fr">dpo@liliwatt.fr</a></li>
+          <li>Nous écrire : LILIWATT - DPO, 59 rue de Ponthieu, Bureau 326, 75008 Paris</li>
+        </ul>
+        <p><strong>Délai de réponse :</strong> Nous nous engageons à répondre à votre demande dans un délai maximum de 1 mois suivant sa réception.</p>
+      </div>
+
+      <!-- Cookies -->
+      <div class="legal-section reveal">
+        <h2>7. Cookies et technologies similaires</h2>
+        <p>Notre site utilise des cookies pour améliorer votre expérience de navigation et analyser notre audience. Nous utilisons :</p>
+        <ul>
+          <li><strong>Cookies essentiels :</strong> Nécessaires au fonctionnement du site (session, sécurité)</li>
+          <li><strong>Cookies analytiques :</strong> Mesure d'audience et analyse du trafic (avec votre consentement)</li>
+          <li><strong>Cookies de préférence :</strong> Mémorisation de vos choix (langue, affichage)</li>
+        </ul>
+        <p>Vous pouvez à tout moment modifier vos préférences en matière de cookies via les paramètres de votre navigateur ou notre bannière de consentement.</p>
+      </div>
+
+      <!-- Recours -->
+      <div class="legal-section reveal">
+        <h2>8. Droit de réclamation</h2>
+        <p>Si vous estimez que vos droits concernant vos données personnelles ne sont pas respectés, vous pouvez introduire une réclamation auprès de l'autorité de contrôle compétente :</p>
+        <ul>
+          <li><strong>CNIL (Commission Nationale de l'Informatique et des Libertés)</strong></li>
+          <li>3 Place de Fontenoy - TSA 80715 - 75334 Paris Cedex 07</li>
+          <li>Téléphone : 01 53 73 22 22</li>
+          <li>Site web : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></li>
+          <li>Formulaire en ligne : <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer">https://www.cnil.fr/fr/plaintes</a></li>
+        </ul>
+      </div>
+
+      <!-- Modifications -->
+      <div class="legal-section reveal">
+        <h2>9. Modifications de la politique de confidentialité</h2>
+        <p>LILIWATT se réserve le droit de modifier cette politique de confidentialité à tout moment pour refléter les évolutions légales, réglementaires ou de nos pratiques.</p>
+        <p>Toute modification sera publiée sur cette page avec une nouvelle date de mise à jour. Nous vous encourageons à consulter régulièrement cette page.</p>
+        <p style="margin-top: var(--spacing-md); color: var(--steel); font-size: 0.9rem;"><em>Dernière mise à jour : Mars 2026</em></p>
+      </div>
+
+      <!-- Contact -->
+      <div class="legal-section reveal">
+        <h2>10. Nous contacter</h2>
+        <p>Pour toute question concernant cette politique de confidentialité ou le traitement de vos données personnelles :</p>
+        <ul>
+          <li><strong>Email DPO :</strong> <a href="mailto:dpo@liliwatt.fr">dpo@liliwatt.fr</a></li>
+          <li><strong>Email général :</strong> <a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
+          <li><strong>Téléphone :</strong> +33 (0)1 84 16 08 56</li>
+          <li><strong>Courrier :</strong> LILIWATT, 59 rue de Ponthieu, Bureau 326, 75008 Paris, France</li>
+        </ul>
+        <p style="margin-top: var(--spacing-md);">
+          <a href="/rgpd.html" style="display: inline-block; background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 600;">
+            Exercer mes droits RGPD
+          </a>
+        </p>
+      </div>
+
     </div>
   </section>
-
-  <!-- Candidature spontanée -->
-  <section class="cta-section reveal" style="background: linear-gradient(135deg, #6d28d9 0%, #a855f7 100%); clip-path: polygon(0 8%, 100% 0%, 100% 100%, 0% 100%); padding: 100px 40px 60px; color: #ffffff; position: relative; margin: -40px 0;">
-    <div class="container text-center">
-      <h2 style="color: #ffffff; margin-bottom: var(--spacing-md);">Vous ne trouvez pas l'offre qui vous correspond ?</h2>
-      <p style="color: #ffffff; margin-bottom: var(--spacing-md); font-size: 1.125rem;">Envoyez-nous une candidature spontanée, nous sommes toujours à l'écoute de nouveaux talents.</p>
-      <button class="btn btn-white btn-lg" data-modal="apply-modal-spontanee">Candidature spontanée</button>
-    </div>
-  </section>
-
-  <!-- Modal Candidature Poste 1 -->
-  <div id="apply-modal-1" class="modal">
-    <div class="modal-content">
-      <button class="modal-close">&times;</button>
-      <h2 class="modal-title">Postuler : Conseiller Commercial Énergie B2B</h2>
-
-      <form>
-        <div class="form-group">
-          <label class="form-label">Nom & Prénom *</label>
-          <input type="text" class="form-input" required placeholder="Jean Dupont">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email *</label>
-          <input type="email" class="form-input" required placeholder="jean.dupont@email.fr">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Téléphone *</label>
-          <input type="tel" class="form-input" required placeholder="06 12 34 56 78">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">CV (PDF, DOC, DOCX) *</label>
-          <input type="file" class="form-input" accept=".pdf,.doc,.docx" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Lettre de motivation (optionnel)</label>
-          <textarea class="form-textarea" placeholder="Présentez-vous et expliquez pourquoi vous souhaitez rejoindre LILIWATT..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <div class="form-checkbox">
-            <input type="checkbox" id="rgpd-apply-1" required>
-            <label for="rgpd-apply-1">J'accepte que LILIWATT traite mes données personnelles dans le cadre de ma candidature.</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-lg">Envoyer ma candidature</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Candidature Poste 2 -->
-  <div id="apply-modal-2" class="modal">
-    <div class="modal-content">
-      <button class="modal-close">&times;</button>
-      <h2 class="modal-title">Postuler : Téléprospecteur(trice) Énergie</h2>
-
-      <form>
-        <div class="form-group">
-          <label class="form-label">Nom & Prénom *</label>
-          <input type="text" class="form-input" required placeholder="Marie Martin">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email *</label>
-          <input type="email" class="form-input" required placeholder="marie.martin@email.fr">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Téléphone *</label>
-          <input type="tel" class="form-input" required placeholder="06 12 34 56 78">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">CV (PDF, DOC, DOCX) *</label>
-          <input type="file" class="form-input" accept=".pdf,.doc,.docx" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Lettre de motivation (optionnel)</label>
-          <textarea class="form-textarea" placeholder="Présentez-vous et expliquez pourquoi vous souhaitez rejoindre LILIWATT..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <div class="form-checkbox">
-            <input type="checkbox" id="rgpd-apply-2" required>
-            <label for="rgpd-apply-2">J'accepte que LILIWATT traite mes données personnelles dans le cadre de ma candidature.</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-lg">Envoyer ma candidature</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Candidature Spontanée -->
-  <div id="apply-modal-spontanee" class="modal">
-    <div class="modal-content">
-      <button class="modal-close">&times;</button>
-      <h2 class="modal-title">Candidature spontanée</h2>
-
-      <form>
-        <div class="form-group">
-          <label class="form-label">Nom & Prénom *</label>
-          <input type="text" class="form-input" required placeholder="Prénom Nom">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email *</label>
-          <input type="email" class="form-input" required placeholder="prenom.nom@email.fr">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Téléphone *</label>
-          <input type="tel" class="form-input" required placeholder="06 12 34 56 78">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Poste / Fonction visée</label>
-          <input type="text" class="form-input" placeholder="Ex : Commercial terrain, Analyste tarifs...">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">CV (PDF, DOC, DOCX) *</label>
-          <input type="file" class="form-input" accept=".pdf,.doc,.docx" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Message *</label>
-          <textarea class="form-textarea" required placeholder="Présentez-vous, vos compétences et ce que vous pourriez apporter à LILIWATT..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <div class="form-checkbox">
-            <input type="checkbox" id="rgpd-apply-spontanee" required>
-            <label for="rgpd-apply-spontanee">J'accepte que LILIWATT traite mes données personnelles dans le cadre de ma candidature.</label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-lg">Envoyer ma candidature</button>
-      </form>
-    </div>
-  </div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -512,7 +371,7 @@
 
           <div style="margin-top: 24px;">
             <p style="color: rgba(255,255,255,0.85); font-size: 14px; margin-bottom: 12px; font-weight: 600;">
-              📧 Inscrivez-vous à notre newsletter
+              Inscrivez-vous à notre newsletter
             </p>
             <form id="newsletter-form" style="display: flex; gap: 8px; flex-wrap: wrap;">
               <input type="email" id="newsletter-email" placeholder="votre@email.fr" required style="flex: 1; min-width: 180px; padding: 10px 16px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 13px;">
@@ -521,7 +380,7 @@
               </button>
             </form>
             <p id="newsletter-msg" style="display:none; color: #a855f7; font-size: 13px; margin-top: 8px;">
-              ✓ Merci ! Vous êtes inscrit(e).
+              Merci ! Vous êtes inscrit(e).
             </p>
           </div>
         </div>
@@ -551,7 +410,7 @@
         </div>
 
         <div class="footer-section">
-                    <h4>Contact</h4>
+          <h4>Contact</h4>
           <ul>
             <li><a href="mailto:contact@liliwatt.fr">contact@liliwatt.fr</a></li>
             <li>Tél : +33 (0)1 84 16 08 56</li>
@@ -616,14 +475,14 @@
             </svg>
           </div>
           <div class="lili-msg-content">
-            Bonjour ! Je suis LILI, votre conseillère énergie 😊<br><br>
+            Bonjour ! Je suis LILI, votre conseillère énergie.<br><br>
             Comment puis-je vous aider aujourd'hui ?
           </div>
         </div>
         <div class="lili-suggestions">
-          <button onclick="sendSuggestion('Quels sont vos tarifs ?')">💰 Vos tarifs ?</button>
-          <button onclick="sendSuggestion('Comment comparer les fournisseurs ?')">⚡ Comparer les fournisseurs</button>
-          <button onclick="sendSuggestion('Puis-je changer de fournisseur ?')">🔄 Changer de fournisseur</button>
+          <button onclick="sendSuggestion('Quels sont vos tarifs ?')">Vos tarifs ?</button>
+          <button onclick="sendSuggestion('Comment comparer les fournisseurs ?')">Comparer les fournisseurs</button>
+          <button onclick="sendSuggestion('Puis-je changer de fournisseur ?')">Changer de fournisseur</button>
         </div>
       </div>
 
@@ -732,12 +591,11 @@
 
     /* Fenêtre de chat */
     #lili-window {
-      position: fixed;
+      position: absolute;
       bottom: 80px;
-      right: 20px;
+      right: 0;
       width: 340px;
       height: 480px;
-      max-height: calc(100vh - 120px);
       background: white;
       border-radius: 16px;
       box-shadow: 0 12px 48px rgba(0,0,0,0.2);
@@ -958,11 +816,10 @@
     /* Mobile responsive */
     @media (max-width: 480px) {
       #lili-window {
-        width: calc(100vw - 40px);
+        width: calc(100vw - 20px);
         height: 480px;
-        max-height: calc(100vh - 100px);
-        right: 20px;
-        bottom: 80px;
+        right: 10px;
+        bottom: 90px;
       }
 
       #lili-bubble {
@@ -976,7 +833,7 @@
     /* ═══════════════════════════════════════════════════════════════════════ */
     /* CHATBOT LILI - JAVASCRIPT */
     /* ═══════════════════════════════════════════════════════════════════════ */
-    
+
     /* ═══════════════════════════════════════════════════════════════════════ */
     /* CHATBOT SPRING PHYSICS & IDLE ANIMATION */
     /* ═══════════════════════════════════════════════════════════════════════ */
@@ -1065,13 +922,13 @@
         if (data.success) {
           addMessage(data.reply, 'bot');
         } else {
-          addMessage("Désolée, je rencontre un problème technique. Appelez-nous au 01 84 16 08 56 😊", 'bot');
+          addMessage("Désolée, je rencontre un problème technique. Appelez-nous au 01 84 16 08 56", 'bot');
         }
       })
       .catch(err => {
         hideTyping();
         console.error('Chat error:', err);
-        addMessage("Désolée, je rencontre un problème technique. Appelez-nous au 01 84 16 08 56 😊", 'bot');
+        addMessage("Désolée, je rencontre un problème technique. Appelez-nous au 01 84 16 08 56", 'bot');
       });
     }
 
@@ -1163,7 +1020,6 @@
     }, 8000);
   </script>
 
-  <script src="assets/js/recrutement-form.js"></script>
 
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -1288,7 +1144,7 @@
 
   <div class="cookie-buttons">
     <button id="btn-accept-all" onclick="acceptCookies()">
-      ✓ Tout accepter
+      Tout accepter
     </button>
     <button id="btn-refuse" onclick="refuserCookies()">
       Refuser
