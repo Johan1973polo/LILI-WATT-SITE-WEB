@@ -535,10 +535,12 @@
     height: 40px;
     width: auto;
     margin-bottom: 20px;
+    filter: brightness(1);
+    opacity: 1;
   }
 
   .hero-title {
-    font-size: 2.8rem;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
     font-weight: 800;
     color: #1e1b4b;
     line-height: 1.2;
@@ -1064,21 +1066,6 @@
     z-index: 2;
     margin-top: auto;
   }
-  /* Images fixed aux bords de l'écran */
-  .hero-side-fixed {
-    position: fixed;
-    bottom: 0;
-    width: 220px;
-    height: auto;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 1;
-  }
-  @media (max-width: 1200px) {
-    .hero-side-fixed {
-      display: none !important;
-    }
-  }
 </style>
 </head>
 <body>
@@ -1103,9 +1090,6 @@
 
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
-    <img src="/images/cochon.png" class="hero-side-fixed" style="left: 0;" alt="">
-    <img src="/images/homme_a_droite.png" class="hero-side-fixed" style="right: 0;" alt="">
-
     <div class="hero-analyseur">
       <!-- COLONNE GAUCHE -->
       <div class="hero-left">
@@ -1139,43 +1123,15 @@
       </div>
 
       <!-- COLONNE DROITE -->
-      <div class="hero-right">
+      <div class="hero-right" style="position: relative;">
         <!-- Badge rond vert -->
-        <div class="hero-badge-round">
-          <div class="percent">28%</div>
-          <div class="label">d'économies<br>constatées</div>
+        <div style="position: absolute; top: -10px; right: 0; background: #0d9488; color: white; border-radius: 50%; width: 90px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 8px 24px rgba(13,148,136,0.4);">
+          <span style="font-size: 1.6rem; font-weight: 800; line-height: 1;">28%</span>
+          <span style="font-size: 9px; text-align: center; line-height: 1.2; opacity: 0.9;">d'économies<br>constatées</span>
         </div>
 
-        <!-- Mockup Laptop -->
-        <div class="mockup-laptop">
-          <!-- Barre du haut style laptop -->
-          <div class="laptop-bar">
-            <div class="laptop-dot red"></div>
-            <div class="laptop-dot yellow"></div>
-            <div class="laptop-dot green"></div>
-            <span class="laptop-title">LILIWATT Analyseur</span>
-          </div>
-
-          <!-- Card principale résultat -->
-          <div class="result-card-main">
-            <p class="label">Vous payez</p>
-            <p class="value">+18 % trop cher</p>
-            <div class="result-progress"></div>
-          </div>
-
-          <!-- Card facture -->
-          <div class="facture-card">
-            <div class="facture-header">
-              <span class="facture-icon">📄</span>
-              <span class="facture-name">Facture EDF.pdf</span>
-              <span class="facture-rating">★★★★★</span>
-            </div>
-            <p class="facture-amount">
-              +2 485 € <span class="unit">d'économies/an</span>
-            </p>
-            <p class="facture-link">› Voir en détail</p>
-          </div>
-        </div>
+        <!-- Image photo.png -->
+        <img src="/images/photo.png" alt="Analyseur LILIWATT" style="width: 100%; max-width: 560px; height: auto; display: block; border-radius: 16px;">
       </div>
     </div>
 
@@ -1625,22 +1581,6 @@
 
 <script>
 const D = {};
-
-// ─── MASQUAGE IMAGES HERO QUAND ON QUITTE LA SECTION ─────────────────
-const heroImages = document.querySelectorAll('.hero-side-fixed');
-function toggleHeroImages() {
-  const heroVisible = document.getElementById('s-hero').classList.contains('on');
-  heroImages.forEach(img => {
-    img.style.display = heroVisible ? 'block' : 'none';
-  });
-}
-// Observer les changements de classe sur #s-hero
-const observer = new MutationObserver(toggleHeroImages);
-observer.observe(document.getElementById('s-hero'), {
-  attributes: true,
-  attributeFilter: ['class']
-});
-toggleHeroImages();
 
 // ─── ANIMATION LOGOS FOURNISSEURS ────────────────────────────────────
 const fournisseurs = [
