@@ -1194,7 +1194,7 @@
 <body>
 <div id="app-layout" style="display:flex;flex-direction:row;position:fixed;top:0;left:0;height:100vh;width:100vw;overflow:hidden;">
   <!-- COLONNE GAUCHE : tous les screens -->
-  <div id="left-panel" style="flex:0 0 42%;width:42%;height:100vh;overflow-y:auto;overflow-x:hidden;background:#ffffff;position:relative;z-index:2;box-shadow:4px 0 30px rgba(0,0,0,0.08);">
+  <div id="left-panel" style="position:fixed !important;top:0 !important;left:0 !important;width:42% !important;height:100vh !important;overflow-y:auto !important;background:#ffffff !important;z-index:2 !important;box-shadow:4px 0 30px rgba(0,0,0,0.08);">
 
     <!-- Loading overlay pour animations fournisseurs -->
     <div id="loading-overlay">
@@ -1646,9 +1646,8 @@
   </div><!-- fin left-panel -->
 
   <!-- COLONNE DROITE : image fixe permanente -->
-  <div id="right-panel" style="flex:0 0 58%;width:58%;height:100vh;overflow:hidden;position:relative;flex-shrink:0;background:red !important;">
-    <p style="color:white;font-size:3rem;font-weight:900;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99;margin:0;">TEST</p>
-    <img src="/images/photo.png" alt="" style="display:block !important;position:absolute !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;object-fit:cover !important;z-index:1 !important;">
+  <div id="right-panel" style="position:fixed !important;top:0 !important;right:0 !important;width:58% !important;height:100vh !important;overflow:hidden !important;z-index:1 !important;background:red !important;">
+    <img src="/images/photo.png" alt="" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">
   </div><!-- fin right-panel -->
 
 </div><!-- fin app-layout -->
