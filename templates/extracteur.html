@@ -19,14 +19,17 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
-  }
-
-  body {
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
@@ -37,21 +40,21 @@
     max-width: 520px;
   }
 
-  /* Layout 2 colonnes fixe pour l'extracteur */
+  /* Layout 2 colonnes flexbox pour l'extracteur */
   #app-layout {
-    display: grid !important;
-    grid-template-columns: 42% 58% !important;
+    display: flex !important;
+    flex-direction: row !important;
     height: 100vh !important;
     width: 100vw !important;
     overflow: hidden !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
   }
 
   #left-panel {
+    flex: 0 0 42% !important;
+    width: 42% !important;
     height: 100vh !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     background: #ffffff !important;
     position: relative !important;
     z-index: 2 !important;
@@ -59,11 +62,22 @@
   }
 
   #right-panel {
-    position: sticky !important;
-    top: 0 !important;
+    flex: 0 0 58% !important;
+    width: 58% !important;
     height: 100vh !important;
     overflow: hidden !important;
-    flex-shrink: 0 !important;
+    position: relative !important;
+  }
+
+  #right-panel img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center left !important;
+    z-index: 0 !important;
   }
 
   /* Logo */
@@ -113,19 +127,18 @@
   /* Responsive mobile pour l'extracteur */
   @media (max-width: 768px) {
     html, body {
-      overflow: auto;
+      overflow: auto !important;
+      height: auto !important;
     }
     #app-layout {
-      position: relative !important;
-      display: block !important;
+      flex-direction: column !important;
       height: auto !important;
-      width: 100% !important;
       overflow: visible !important;
     }
     #left-panel {
+      width: 100% !important;
       height: auto !important;
-      overflow-y: visible !important;
-      width: 100%;
+      overflow: visible !important;
     }
     #left-panel .screen {
       padding: 40px 24px;
@@ -1627,11 +1640,9 @@
   </div><!-- fin left-panel -->
 
   <!-- COLONNE DROITE : image fixe permanente -->
-  <div id="right-panel" style="position:sticky;top:0;height:100vh;overflow:hidden;flex-shrink:0;">
+  <div id="right-panel">
     <!-- Image en fond via balise img -->
-    <img src="/images/photo.png"
-         alt=""
-         style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center left;z-index:0;">
+    <img src="/images/photo.png" alt="">
 
     <!-- Badge 28% par-dessus -->
     <div style="position:absolute;top:40px;right:40px;background:#0d9488;color:white;border-radius:50%;width:100px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(13,148,136,0.4);z-index:2;">
