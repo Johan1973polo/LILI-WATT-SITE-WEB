@@ -35,10 +35,19 @@
     align-items: stretch;
   }
 
-  .wrap { width: 100%; max-width: 520px; }
+  .wrap {
+    width: 100%;
+    max-width: 520px;
+  }
 
   .wrap:has(#s-hero.on) {
     max-width: 100%;
+    background-image: url('/images/photo.png');
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 
   .wrap:has(#s-hero.on) > .logo,
@@ -66,8 +75,35 @@
   .pbar { height: 100%; background: linear-gradient(90deg, var(--violet), var(--fuchsia)); border-radius: 2px; transition: width 0.5s ease; }
 
   /* Screens */
-  .screen { display: none; }
-  .screen.on { display: block; }
+  .screen {
+    display: none;
+  }
+  .screen.on {
+    display: block;
+  }
+
+  /* Screens dans le mode extracteur (avec fond photo.png) */
+  .wrap:has(#s-hero.on) .screen {
+    max-width: 580px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    background: rgba(255,255,255,0.93) !important;
+    backdrop-filter: blur(8px) !important;
+    min-height: 100vh !important;
+    padding: 60px 48px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    box-shadow: 4px 0 40px rgba(0,0,0,0.08) !important;
+  }
+
+  /* Responsive mobile pour l'extracteur */
+  @media (max-width: 768px) {
+    .wrap:has(#s-hero.on) .screen {
+      max-width: 100% !important;
+      background: rgba(255,255,255,0.97) !important;
+      padding: 40px 24px !important;
+    }
+  }
 
   .step-lbl { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--violet); text-transform: uppercase; margin-bottom: 8px; }
   .step-title { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
@@ -1092,47 +1128,26 @@
 
   <!-- ── HERO LANDING PAGE ── -->
   <div class="screen on" id="s-hero">
-    <div class="hero-analyseur">
-      <!-- COLONNE GAUCHE -->
-      <div class="hero-left">
-        <img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" class="hero-logo-small">
+    <img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" class="hero-logo-small">
 
-        <h1 class="hero-title">
-          Découvrez en <span class="highlight">30 secondes</span><br>
-          si vous payez <span class="highlight">votre</span><br>
-          énergie trop cher
-        </h1>
+    <h1 class="hero-title">
+      Découvrez en <span class="highlight">30 secondes</span><br>
+      si vous payez <span class="highlight">votre</span><br>
+      énergie trop cher
+    </h1>
 
-        <p class="hero-subtitle">
-          Notre analyseur intelligent décrypte votre facture et identifie immédiatement les économies possibles, sans engagement.
-        </p>
+    <p class="hero-subtitle">
+      Notre analyseur intelligent décrypte votre facture et identifie immédiatement les économies possibles, sans engagement.
+    </p>
 
-        <button class="hero-cta" onclick="go('s-hero','s-profile',2)">
-          Voir mes économies gratuitement →
-        </button>
+    <button class="hero-cta" onclick="go('s-hero','s-profile',2)">
+      Voir mes économies gratuitement →
+    </button>
 
-        <div style="display:flex;flex-direction:row;flex-wrap:wrap;gap:24px;margin-top:24px;font-size:14px;color:#374151;">
-          <span>✓ Analyse en <strong style="color:#7c3aed">30 secondes</strong></span>
-          <span>🔒 Données <strong style="color:#7c3aed">100% sécurisées</strong> (RGPD)</span>
-          <span>📊 <strong style="color:#7c3aed">+2 000</strong> factures analysées</span>
-        </div>
-      </div>
-
-      <!-- COLONNE DROITE -->
-      <div class="hero-img-col" style="position:relative;">
-        <div style="position:absolute;top:0;right:-20px;background:#0d9488;color:white;border-radius:50%;width:110px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;font-size:2rem;font-weight:800;box-shadow:0 8px 24px rgba(13,148,136,0.4);">
-          <span style="line-height:1;">28%</span>
-          <span style="font-size:9px;text-align:center;line-height:1.3;margin-top:2px;opacity:0.9;">d'économies<br>constatées</span>
-        </div>
-        <img src="/images/photo.png" alt="Analyseur LILIWATT" style="width:100%;height:auto;display:block;">
-      </div>
-    </div>
-
-    <!-- Barre de réassurance -->
-    <div class="reassurance-bar">
-      <span>✓ Analyse en 30 secondes</span>
-      <span>🔒 Données 100% sécurisées (RGPD)</span>
-      <span>📊 +2 000 factures analysées</span>
+    <div style="display:flex;flex-direction:row;flex-wrap:wrap;gap:24px;margin-top:24px;font-size:14px;color:#374151;">
+      <span>✓ Analyse en <strong style="color:#7c3aed">30 secondes</strong></span>
+      <span>🔒 Données <strong style="color:#7c3aed">100% sécurisées</strong> (RGPD)</span>
+      <span>📊 <strong style="color:#7c3aed">+2 000</strong> factures analysées</span>
     </div>
   </div>
 
