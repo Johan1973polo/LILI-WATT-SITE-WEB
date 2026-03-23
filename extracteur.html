@@ -121,7 +121,7 @@
         <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
       </nav>
 
-      <div class="menu-toggle" onclick="document.querySelector('.nav-menu').classList.toggle('open')">
+      <div class="menu-toggle" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
@@ -1063,5 +1063,13 @@
   </script>
 
 
+<script>
+function toggleMenu() {
+  const nav = document.querySelector('.nav-menu');
+  if (nav) {
+    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+  }
+}
+</script>
 </body>
 </html>
