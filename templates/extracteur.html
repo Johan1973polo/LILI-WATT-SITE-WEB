@@ -40,19 +40,32 @@
     max-width: 520px;
   }
 
-  .wrap:has(#s-hero.on) {
-    max-width: 100%;
-    background-image: url('/images/photo.png');
-    background-size: cover;
-    background-position: center right;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+  /* Layout 2 colonnes fixe pour l'extracteur */
+  #app-layout {
+    display: grid;
+    grid-template-columns: 42% 58%;
     min-height: 100vh;
+    width: 100%;
+    position: relative;
   }
 
-  .wrap:has(#s-hero.on) > .logo,
-  .wrap:has(#s-hero.on) > .pbar-wrap {
-    display: none;
+  #left-panel {
+    background: #ffffff;
+    overflow-y: auto;
+    padding: 0;
+    position: relative;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.08);
+    z-index: 2;
+  }
+
+  #right-panel {
+    background-image: url('/images/photo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: sticky;
+    top: 0;
+    height: 100vh;
   }
 
   /* Logo */
@@ -82,26 +95,30 @@
     display: block;
   }
 
-  /* Screens dans le mode extracteur (avec fond photo.png) */
-  .wrap:has(#s-hero.on) .screen {
-    max-width: 580px !important;
-    width: 100% !important;
-    margin: 0 !important;
-    background: rgba(255,255,255,0.93) !important;
-    backdrop-filter: blur(8px) !important;
-    min-height: 100vh !important;
-    padding: 60px 48px !important;
-    box-sizing: border-box !important;
-    overflow-y: auto !important;
-    box-shadow: 4px 0 40px rgba(0,0,0,0.08) !important;
+  /* Screens dans la colonne gauche */
+  #left-panel .screen {
+    padding: 48px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   /* Responsive mobile pour l'extracteur */
   @media (max-width: 768px) {
-    .wrap:has(#s-hero.on) .screen {
-      max-width: 100% !important;
-      background: rgba(255,255,255,0.97) !important;
-      padding: 40px 24px !important;
+    #app-layout {
+      grid-template-columns: 1fr;
+    }
+    #right-panel {
+      display: none;
+    }
+    #left-panel {
+      width: 100%;
+    }
+    #left-panel .screen {
+      padding: 40px 24px;
     }
   }
 
@@ -576,13 +593,13 @@
   }
 
   .hero-title {
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: 2.2rem;
     font-weight: 800;
     color: #1e1b4b;
     line-height: 1.2;
     margin: 0;
-    white-space: normal;
-    max-width: 520px;
+    text-align: left;
+    max-width: 100%;
   }
 
   .hero-title .highlight {
@@ -594,6 +611,7 @@
     color: #6b7280;
     line-height: 1.6;
     margin: 0;
+    text-align: left;
   }
 
   .hero-cta {
@@ -610,6 +628,10 @@
     font-family: 'DM Sans', sans-serif;
     display: inline-block;
     width: fit-content;
+  }
+
+  #s-hero {
+    text-align: left;
   }
 
   .hero-cta:hover {
@@ -1121,16 +1143,16 @@
   </div>
 </div>
 
-<div class="wrap">
+<div id="app-layout">
+  <!-- COLONNE GAUCHE : tous les screens -->
+  <div id="left-panel">
 
-  <div class="logo"><img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" style="height: 160px; width: auto;"></div>
-  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+    <div class="logo"><img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" style="height: 160px; width: auto;"></div>
+    <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
 
-  <!-- ── HERO LANDING PAGE ── -->
-  <div class="screen on" id="s-hero">
-    <img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" class="hero-logo-small">
-
-    <h1 class="hero-title">
+    <!-- ── HERO LANDING PAGE ── -->
+    <div class="screen on" id="s-hero">
+      <h1 class="hero-title">
       Découvrez en <span class="highlight">30 secondes</span><br>
       si vous payez <span class="highlight">votre</span><br>
       énergie trop cher
@@ -1517,7 +1539,18 @@
     <div class="mention">LILIWATT · Courtage Énergie B2B & B2C<br>contact@liliwatt.fr · www.liliwatt.fr</div>
   </div>
 
-</div>
+  </div><!-- fin left-panel -->
+
+  <!-- COLONNE DROITE : image fixe permanente -->
+  <div id="right-panel">
+    <!-- Badge 28% -->
+    <div style="position: absolute; top: 40px; right: 40px; background: #0d9488; color: white; border-radius: 50%; width: 100px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(13,148,136,0.4);">
+      <span style="font-size:1.8rem;font-weight:800;line-height:1;">28%</span>
+      <span style="font-size:9px;text-align:center;line-height:1.3;opacity:0.9;margin-top:2px;">d'économies<br>constatées</span>
+    </div>
+  </div><!-- fin right-panel -->
+
+</div><!-- fin app-layout -->
 
 <!-- Modal RGPD -->
 <div class="modal-overlay" id="rgpd-modal" onclick="closeRgpdModal()">
