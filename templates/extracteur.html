@@ -44,6 +44,9 @@
   #app-layout {
     display: flex !important;
     flex-direction: row !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     height: 100vh !important;
     width: 100vw !important;
     overflow: hidden !important;
@@ -1189,7 +1192,7 @@
 </style>
 </head>
 <body>
-<div id="app-layout" style="display:flex;flex-direction:row;height:100vh;width:100vw;overflow:hidden;">
+<div id="app-layout" style="display:flex;flex-direction:row;position:fixed;top:0;left:0;height:100vh;width:100vw;overflow:hidden;">
   <!-- COLONNE GAUCHE : tous les screens -->
   <div id="left-panel" style="flex:0 0 42%;width:42%;height:100vh;overflow-y:auto;overflow-x:hidden;background:#ffffff;position:relative;z-index:2;box-shadow:4px 0 30px rgba(0,0,0,0.08);">
 
