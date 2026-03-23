@@ -1050,6 +1050,24 @@ def c2e():
     """Page C2E - Certificats d'Économies d'Énergie et aides à la rénovation"""
     return serve_html('c2e.html')
 
+@app.route('/mentions-legales')
+@app.route('/mentions-legales.html')
+def mentions_legales():
+    """Mentions légales"""
+    return serve_html('mentions-legales.html')
+
+@app.route('/politique-confidentialite')
+@app.route('/politique-confidentialite.html')
+def politique_confidentialite():
+    """Politique de confidentialité et RGPD"""
+    return serve_html('politique-confidentialite.html')
+
+@app.route('/rgpd')
+@app.route('/rgpd.html')
+def rgpd():
+    """Page d'exercice des droits RGPD"""
+    return serve_html('rgpd.html')
+
 @app.route('/extracteur')
 def extracteur():
     """Page extracteur de factures avec Claude Vision AI"""
@@ -1396,6 +1414,84 @@ def contact_c2e():
         return response
     except Exception as e:
         print(f'Erreur contact_c2e : {e}')
+        import traceback
+        traceback.print_exc()
+        response = jsonify({'success': False, 'error': str(e)})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response, 500
+
+@app.route('/api/rgpd-demande', methods=['POST', 'OPTIONS'])
+def rgpd_demande():
+    """Endpoint pour demandes RGPD depuis la page rgpd.html"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
+    try:
+        print("=== DEMANDE RGPD REÇUE ===")
+        data = request.get_json()
+        print(f"Data reçue : {data}")
+
+        nom = data.get('nom', '')
+        prenom = data.get('prenom', '')
+        email = data.get('email', '')
+        type_demande = data.get('type_demande', '')
+        description = data.get('description', '')
+
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = f'[LILIWATT RGPD] Demande {type_demande} — {prenom} {nom}'
+        msg['From'] = f'LILIWATT <{GMAIL_USER}>'
+        msg['To'] = 'dpo@liliwatt.fr'
+        msg['Reply-To'] = email
+
+        html_body = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#7c3aed,#a855f7);
+            padding:24px;border-radius:12px 12px 0 0;text-align:center;">
+            <h2 style="color:#fff;margin:0;">Demande RGPD reçue</h2>
+            <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;">
+              Type : {type_demande}</p>
+          </div>
+          <div style="background:#f5f3ff;padding:24px;border-radius:0 0 12px 12px;">
+            <table style="width:100%;font-size:15px;border-collapse:collapse;">
+              <tr><td style="color:#6b7280;padding:8px 0;width:160px;">Prénom</td>
+                <td style="font-weight:600;color:#1e1b4b;">{prenom}</td></tr>
+              <tr><td style="color:#6b7280;padding:8px 0;">Nom</td>
+                <td style="font-weight:600;color:#1e1b4b;">{nom}</td></tr>
+              <tr><td style="color:#6b7280;padding:8px 0;">Email</td>
+                <td style="color:#7c3aed;">{email}</td></tr>
+              <tr><td style="color:#6b7280;padding:8px 0;">Type demande</td>
+                <td style="font-weight:600;color:#1e1b4b;">{type_demande}</td></tr>
+              <tr><td style="color:#6b7280;padding:8px 0;vertical-align:top;">Description</td>
+                <td style="color:#1e1b4b;">{description}</td></tr>
+            </table>
+            <div style="margin-top:20px;padding:16px;background:#ede9fe;
+              border-radius:8px;border-left:4px solid #7c3aed;">
+              <p style="margin:0;font-size:13px;color:#6b7280;">
+                ⚠️ Délai légal de réponse : 1 mois à compter de la réception (art. 12 RGPD)
+              </p>
+            </div>
+          </div>
+        </div>"""
+
+        msg.attach(MIMEText(html_body, 'html'))
+
+        print("Envoi email RGPD via SMTP...")
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
+            server.sendmail(GMAIL_USER, 'dpo@liliwatt.fr', msg.as_string())
+
+        print("Email RGPD envoyé avec succès")
+        response = jsonify({'success': True})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+    except Exception as e:
+        print(f'Erreur rgpd_demande : {e}')
         import traceback
         traceback.print_exc()
         response = jsonify({'success': False, 'error': str(e)})
