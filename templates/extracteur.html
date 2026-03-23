@@ -1761,6 +1761,23 @@
 <script>
 const D = {};
 
+// ─── RESPONSIVE MOBILE FORCE ──────────────────────────────────────────
+function applyResponsive() {
+  const leftPanel = document.getElementById('left-panel');
+  const rightPanel = document.getElementById('right-panel');
+
+  if (window.innerWidth <= 768) {
+    leftPanel.style.setProperty('width', '100%', 'important');
+    leftPanel.style.setProperty('overflow-y', 'auto', 'important');
+    rightPanel.style.setProperty('display', 'none', 'important');
+  } else {
+    leftPanel.style.setProperty('width', '42%', 'important');
+    rightPanel.style.setProperty('display', 'block', 'important');
+  }
+}
+applyResponsive();
+window.addEventListener('resize', applyResponsive);
+
 // ─── ANIMATION LOGOS FOURNISSEURS ────────────────────────────────────
 const fournisseurs = [
   { name: "Alterna", logo: "/images/LOGO FOURNISSEUR/alterna.webp" },
