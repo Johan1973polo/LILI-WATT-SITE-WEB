@@ -30,7 +30,21 @@
     padding: 40px 16px 60px;
   }
 
+  body:has(#s-hero.on) {
+    padding: 0;
+    align-items: stretch;
+  }
+
   .wrap { width: 100%; max-width: 520px; }
+
+  .wrap:has(#s-hero.on) {
+    max-width: 100%;
+  }
+
+  .wrap:has(#s-hero.on) > .logo,
+  .wrap:has(#s-hero.on) > .pbar-wrap {
+    display: none;
+  }
 
   /* Logo */
   .logo {
@@ -499,78 +513,271 @@
   }
 
   /* Hero Landing Page */
-  .hero-container {
-    text-align: center;
-    padding: 60px 0 40px;
+  /* Hero Analyseur - Layout 2 colonnes */
+  .hero-analyseur {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    min-height: 80vh;
   }
-  .hero-badge {
-    display: inline-block;
-    background: rgba(124,58,237,0.15);
-    border: 1px solid var(--violet);
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--violet);
-    margin-bottom: 24px;
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
-  .hero-title {
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 500;
-    line-height: 1.2;
+
+  .hero-logo-small {
+    height: 40px;
+    width: auto;
     margin-bottom: 20px;
-    white-space: normal;
-    background: linear-gradient(135deg, var(--text) 0%, var(--violet) 50%, var(--fuchsia) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
+
+  .hero-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #1e1b4b;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .hero-title .highlight {
+    color: #7c3aed;
+  }
+
   .hero-subtitle {
-    font-size: 18px;
-    color: var(--gray);
+    font-size: 1rem;
+    color: #6b7280;
     line-height: 1.6;
-    margin-bottom: 32px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0;
   }
+
   .hero-cta {
-    background: linear-gradient(135deg, var(--violet), var(--violet-l));
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 18px 40px;
-    border: none;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #ffffff;
+    padding: 16px 32px;
     border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 10px 30px rgba(124,58,237,0.3);
+    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
     font-family: 'DM Sans', sans-serif;
+    display: inline-block;
+    width: fit-content;
   }
+
   .hero-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(124,58,237,0.4);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.4);
   }
-  .hero-features {
+
+  .hero-badges {
     display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 40px;
     flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 8px;
   }
-  .hero-feature {
-    font-size: 12px;
-    color: var(--gray);
+
+  .hero-badge-item {
+    font-size: 14px;
+    color: #374151;
     display: flex;
     align-items: center;
     gap: 6px;
   }
-  .hero-feature::before {
-    content: '✓';
-    color: #34D399;
+
+  .hero-badge-item strong {
+    color: #7c3aed;
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-badge-round {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #0d9488;
+    color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(13,148,136,0.4);
+    z-index: 10;
+  }
+
+  .hero-badge-round .percent {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .hero-badge-round .label {
+    font-size: 11px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .mockup-laptop {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(124,58,237,0.2);
+    padding: 20px;
+    max-width: 480px;
+    position: relative;
+  }
+
+  .laptop-bar {
+    background: #1e1b4b;
+    border-radius: 12px 12px 0 0;
+    padding: 8px 16px;
+    display: flex;
+    gap: 6px;
+    margin: -20px -20px 16px;
+    align-items: center;
+  }
+
+  .laptop-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .laptop-dot.red { background: #ff5f57; }
+  .laptop-dot.yellow { background: #ffbd2e; }
+  .laptop-dot.green { background: #28c840; }
+
+  .laptop-title {
+    color: white;
+    font-size: 11px;
+    margin-left: auto;
+  }
+
+  .result-card-main {
+    background: #f5f3ff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .result-card-main .label {
+    color: #6b7280;
+    font-size: 12px;
+    margin: 0 0 4px;
+  }
+
+  .result-card-main .value {
+    color: #7c3aed;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .result-progress {
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 8px;
+    width: 75%;
+  }
+
+  .facture-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .facture-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .facture-icon {
+    font-size: 16px;
+  }
+
+  .facture-name {
+    font-size: 13px;
+    color: #374151;
+    font-weight: 600;
+  }
+
+  .facture-rating {
+    margin-left: auto;
+    color: #f59e0b;
+    font-size: 12px;
+  }
+
+  .facture-amount {
+    color: #7c3aed;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .facture-amount .unit {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 400;
+    color: #6b7280;
+  }
+
+  .facture-link {
+    color: #7c3aed;
+    font-size: 13px;
+    margin: 8px 0 0;
+    cursor: pointer;
+  }
+
+  .reassurance-bar {
+    background: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    border-top: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #374151;
+  }
+
+  @media (max-width: 900px) {
+    .hero-analyseur {
+      grid-template-columns: 1fr;
+      padding: 40px 20px;
+      gap: 40px;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-right {
+      display: none;
+    }
+
+    .reassurance-bar {
+      gap: 20px;
+      font-size: 12px;
+    }
   }
 
   /* Profile & Energy Selection */
@@ -841,10 +1048,21 @@
   /* Hero section */
   #s-hero {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
-  #s-hero .hero-container {
+
+  #s-hero .hero-analyseur {
+    flex: 1;
     position: relative;
     z-index: 2;
+  }
+
+  #s-hero .reassurance-bar {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
   }
   /* Images fixed aux bords de l'écran */
   .hero-side-fixed {
@@ -888,19 +1106,84 @@
     <img src="/images/cochon.png" class="hero-side-fixed" style="left: 0;" alt="">
     <img src="/images/homme_a_droite.png" class="hero-side-fixed" style="right: 0;" alt="">
 
-    <div class="hero-container">
-      <div style="text-align: center; max-width: 600px; margin: 0 auto; padding: 0 20px;">
-        <div class="hero-badge">Courtage énergie B2B & B2C</div>
-        <h1 class="hero-title">Réduisez vos factures d'énergie jusqu'à 30%</h1>
-        <p class="hero-subtitle">Analyse gratuite et sans engagement de votre contrat électricité ou gaz. Nos experts négocient pour vous les meilleurs tarifs du marché.</p>
-        <button class="hero-cta" onclick="go('s-hero','s-profile',2)">Analyser ma facture gratuitement →</button>
+    <div class="hero-analyseur">
+      <!-- COLONNE GAUCHE -->
+      <div class="hero-left">
+        <img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" class="hero-logo-small">
 
-        <div class="hero-features">
-          <div class="hero-feature">100% gratuit</div>
-          <div class="hero-feature">Sans engagement</div>
-          <div class="hero-feature">Analyse en 30 secondes</div>
+        <h1 class="hero-title">
+          Découvrez en <span class="highlight">30 secondes</span><br>
+          si vous payez <span class="highlight">votre</span><br>
+          énergie trop cher
+        </h1>
+
+        <p class="hero-subtitle">
+          Notre analyseur intelligent décrypte votre facture et identifie immédiatement les économies possibles, sans engagement.
+        </p>
+
+        <button class="hero-cta" onclick="go('s-hero','s-profile',2)">
+          Voir mes économies gratuitement →
+        </button>
+
+        <div class="hero-badges">
+          <div class="hero-badge-item">
+            ✓ Analyse en <strong>30 secondes</strong>
+          </div>
+          <div class="hero-badge-item">
+            🔒 Données <strong>100% sécurisées</strong> (RGPD)
+          </div>
+          <div class="hero-badge-item">
+            📊 <strong>+2 000</strong> factures analysées
+          </div>
         </div>
       </div>
+
+      <!-- COLONNE DROITE -->
+      <div class="hero-right">
+        <!-- Badge rond vert -->
+        <div class="hero-badge-round">
+          <div class="percent">28%</div>
+          <div class="label">d'économies<br>constatées</div>
+        </div>
+
+        <!-- Mockup Laptop -->
+        <div class="mockup-laptop">
+          <!-- Barre du haut style laptop -->
+          <div class="laptop-bar">
+            <div class="laptop-dot red"></div>
+            <div class="laptop-dot yellow"></div>
+            <div class="laptop-dot green"></div>
+            <span class="laptop-title">LILIWATT Analyseur</span>
+          </div>
+
+          <!-- Card principale résultat -->
+          <div class="result-card-main">
+            <p class="label">Vous payez</p>
+            <p class="value">+18 % trop cher</p>
+            <div class="result-progress"></div>
+          </div>
+
+          <!-- Card facture -->
+          <div class="facture-card">
+            <div class="facture-header">
+              <span class="facture-icon">📄</span>
+              <span class="facture-name">Facture EDF.pdf</span>
+              <span class="facture-rating">★★★★★</span>
+            </div>
+            <p class="facture-amount">
+              +2 485 € <span class="unit">d'économies/an</span>
+            </p>
+            <p class="facture-link">› Voir en détail</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre de réassurance -->
+    <div class="reassurance-bar">
+      <span>✓ Analyse en 30 secondes</span>
+      <span>🔒 Données 100% sécurisées (RGPD)</span>
+      <span>📊 +2 000 factures analysées</span>
     </div>
   </div>
 
