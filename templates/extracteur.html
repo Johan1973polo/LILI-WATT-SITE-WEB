@@ -89,14 +89,20 @@
 
   /* Screens */
   .screen {
-    display: none;
+    display: none !important;
   }
   .screen.on {
-    display: block;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 48px 40px;
+    box-sizing: border-box;
+    width: 100%;
   }
 
-  /* Screens dans la colonne gauche */
-  #left-panel .screen {
+  /* Screens dans la colonne gauche - uniquement pour les screens actifs */
+  #left-panel .screen.on {
     padding: 48px 40px;
     width: 100%;
     box-sizing: border-box;
@@ -120,6 +126,20 @@
     #left-panel .screen {
       padding: 40px 24px;
     }
+  }
+
+  /* Form card avec bordure violette lumineuse */
+  .form-card {
+    background: #ffffff;
+    border: 2px solid #7c3aed;
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow:
+      0 0 0 4px rgba(124,58,237,0.08),
+      0 0 30px rgba(124,58,237,0.15),
+      0 8px 40px rgba(124,58,237,0.12);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .step-lbl { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--violet); text-transform: uppercase; margin-bottom: 8px; }
@@ -1147,8 +1167,14 @@
   <!-- COLONNE GAUCHE : tous les screens -->
   <div id="left-panel">
 
-    <div class="logo"><img src="/assets/images/logo-sans-fond.png" alt="LILIWATT" style="height: 160px; width: auto;"></div>
-    <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+    <!-- Logo fixe unique en haut -->
+    <div style="padding: 20px 40px; border-bottom: 1px solid #f0eeff; position: sticky; top: 0; background: white; z-index: 10;">
+      <img src="/assets/images/logo-sans-fond.png"
+           alt="LILIWATT"
+           style="height: 36px; width: auto;">
+    </div>
+
+    <div class="pbar-wrap" style="margin: 0;"><div class="pbar" id="pbar" style="width:0%"></div></div>
 
     <!-- ── HERO LANDING PAGE ── -->
     <div class="screen on" id="s-hero">
@@ -1176,20 +1202,23 @@
   <!-- ── SÉLECTION PROFIL ── -->
   <div class="screen" id="s-profile">
     <button class="back-btn" onclick="go('s-profile','s-hero',0)">← Retour</button>
-    <div class="step-lbl">Étape 1 sur 3</div>
-    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Vous êtes ?</div>
-    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez votre profil</div>
 
-    <div class="selection-grid">
-      <div class="selection-card" onclick="selectProfile('particulier')">
-        <span class="selection-icon">👤</span>
-        <div class="selection-title">Particulier</div>
-        <div class="selection-desc">Logement personnel</div>
-      </div>
-      <div class="selection-card" onclick="selectProfile('professionnel')">
-        <span class="selection-icon">🏢</span>
-        <div class="selection-title">Professionnel</div>
-        <div class="selection-desc">Entreprise, local commercial</div>
+    <div class="form-card">
+      <div class="step-lbl">Étape 1 sur 3</div>
+      <div class="step-title" style="text-align:center; margin-bottom: 8px;">Vous êtes ?</div>
+      <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez votre profil</div>
+
+      <div class="selection-grid">
+        <div class="selection-card" onclick="selectProfile('particulier')">
+          <span class="selection-icon">👤</span>
+          <div class="selection-title">Particulier</div>
+          <div class="selection-desc">Logement personnel</div>
+        </div>
+        <div class="selection-card" onclick="selectProfile('professionnel')">
+          <span class="selection-icon">🏢</span>
+          <div class="selection-title">Professionnel</div>
+          <div class="selection-desc">Entreprise, local commercial</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1197,43 +1226,48 @@
   <!-- ── SÉLECTION TYPE D'ÉNERGIE ── -->
   <div class="screen" id="s-energy">
     <button class="back-btn" onclick="go('s-energy','s-profile',2)">← Retour</button>
-    <div class="step-lbl">Étape 2 sur 3</div>
-    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Type d'énergie</div>
-    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Quelle facture souhaitez-vous analyser ?</div>
 
-    <div class="selection-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-      <div class="selection-card" onclick="selectEnergy('electricite')">
-        <span class="selection-icon">⚡</span>
-        <div class="selection-title">Électricité</div>
-      </div>
-      <div class="selection-card" onclick="selectEnergy('gaz')">
-        <span class="selection-icon">🔥</span>
-        <div class="selection-title">Gaz</div>
-      </div>
-      <div class="selection-card" onclick="selectEnergy('les_deux')">
-        <span class="selection-icon">⚡🔥</span>
-        <div class="selection-title">Les deux</div>
+    <div class="form-card">
+      <div class="step-lbl">Étape 2 sur 3</div>
+      <div class="step-title" style="text-align:center; margin-bottom: 8px;">Type d'énergie</div>
+      <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Quelle facture souhaitez-vous analyser ?</div>
+
+      <div class="selection-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="selection-card" onclick="selectEnergy('electricite')">
+          <span class="selection-icon">⚡</span>
+          <div class="selection-title">Électricité</div>
+        </div>
+        <div class="selection-card" onclick="selectEnergy('gaz')">
+          <span class="selection-icon">🔥</span>
+          <div class="selection-title">Gaz</div>
+        </div>
+        <div class="selection-card" onclick="selectEnergy('les_deux')">
+          <span class="selection-icon">⚡🔥</span>
+          <div class="selection-title">Les deux</div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- ── ÉCRAN DE CHOIX ── -->
   <div class="screen" id="s-start">
-    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Comment voulez-vous procéder ?</div>
-    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Choisissez la méthode la plus simple pour vous</div>
+    <div class="form-card">
+      <div class="step-title" style="text-align:center; margin-bottom: 8px;">Comment voulez-vous procéder ?</div>
+      <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Choisissez la méthode la plus simple pour vous</div>
 
-    <div class="choice-cards">
-      <div class="choice-card" onclick="goUpload()">
-        <div class="choice-icon">📄</div>
-        <div class="choice-title">J'ai ma facture</div>
-        <div class="choice-sub">Importez votre facture PDF ou photo<br>Analyse automatique en 30 secondes</div>
-        <div class="choice-badge">RECOMMANDÉ · PLUS RAPIDE</div>
-      </div>
+      <div class="choice-cards">
+        <div class="choice-card" onclick="goUpload()">
+          <div class="choice-icon">📄</div>
+          <div class="choice-title">J'ai ma facture</div>
+          <div class="choice-sub">Importez votre facture PDF ou photo<br>Analyse automatique en 30 secondes</div>
+          <div class="choice-badge">RECOMMANDÉ · PLUS RAPIDE</div>
+        </div>
 
-      <div class="choice-card" onclick="go('s-start','s-estimate-type',8)">
-        <div class="choice-icon">✏️</div>
-        <div class="choice-title">Je n'ai pas ma facture</div>
-        <div class="choice-sub">Estimation sans facture — Saisie manuelle<br>En 2 minutes chrono</div>
+        <div class="choice-card" onclick="go('s-start','s-estimate-type',8)">
+          <div class="choice-icon">✏️</div>
+          <div class="choice-title">Je n'ai pas ma facture</div>
+          <div class="choice-sub">Estimation sans facture — Saisie manuelle<br>En 2 minutes chrono</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1241,127 +1275,140 @@
   <!-- ── ÉCRAN ESTIMATION : TYPE CONSOMMATEUR ── -->
   <div class="screen" id="s-estimate-type">
     <button class="back-btn" onclick="go('s-estimate-type','s-start',5)">← Retour</button>
-    <div class="step-lbl">Estimation sans facture</div>
-    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Quel est votre profil de consommation ?</div>
-    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez le profil qui vous correspond le mieux</div>
 
-    <div class="estimate-cards" id="estimate-cards-container">
-      <!-- Les cartes seront générées dynamiquement par JavaScript selon profil et type d'énergie -->
+    <div class="form-card">
+      <div class="step-lbl">Estimation sans facture</div>
+      <div class="step-title" style="text-align:center; margin-bottom: 8px;">Quel est votre profil de consommation ?</div>
+      <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Sélectionnez le profil qui vous correspond le mieux</div>
+
+      <div class="estimate-cards" id="estimate-cards-container">
+        <!-- Les cartes seront générées dynamiquement par JavaScript selon profil et type d'énergie -->
+      </div>
     </div>
   </div>
 
   <!-- ── ÉCRAN ESTIMATION : SLIDER CONSOMMATION ── -->
   <div class="screen" id="s-estimate-slider">
     <button class="back-btn" onclick="go('s-estimate-slider','s-estimate-type',8)">← Retour</button>
-    <div class="step-lbl">Affinez votre estimation</div>
-    <div class="step-title" style="text-align:center; margin-bottom: 8px;">Ajustez votre consommation</div>
-    <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Utilisez le curseur pour affiner votre estimation</div>
 
-    <div class="estimate-slider-container">
-      <div class="estimate-profile-display">
-        <div class="estimate-profile-icon" id="profile-icon">⚡</div>
-        <div class="estimate-profile-name" id="profile-name">Consommateur moyen</div>
-      </div>
+    <div class="form-card">
+      <div class="step-lbl">Affinez votre estimation</div>
+      <div class="step-title" style="text-align:center; margin-bottom: 8px;">Ajustez votre consommation</div>
+      <div class="step-sub" style="text-align:center; margin-bottom: 32px;">Utilisez le curseur pour affiner votre estimation</div>
 
-      <div class="slider-wrapper">
-        <input type="range" id="consumption-slider" class="consumption-slider"
-               min="1000" max="20000" step="100" value="5000"
-               oninput="updateConsumptionEstimate()">
-        <div class="slider-labels">
-          <span id="slider-min">1 000 kWh</span>
-          <span id="slider-max">20 000 kWh</span>
+      <div class="estimate-slider-container">
+        <div class="estimate-profile-display">
+          <div class="estimate-profile-icon" id="profile-icon">⚡</div>
+          <div class="estimate-profile-name" id="profile-name">Consommateur moyen</div>
         </div>
-      </div>
 
-      <div class="estimate-display">
-        <div class="estimate-result">
-          <div class="estimate-label">Votre consommation estimée</div>
-          <div class="estimate-value" id="consumption-value">5 000 kWh/an</div>
+        <div class="slider-wrapper">
+          <input type="range" id="consumption-slider" class="consumption-slider"
+                 min="1000" max="20000" step="100" value="5000"
+                 oninput="updateConsumptionEstimate()">
+          <div class="slider-labels">
+            <span id="slider-min">1 000 kWh</span>
+            <span id="slider-max">20 000 kWh</span>
+          </div>
         </div>
-        <div class="estimate-cost">
-          <div class="estimate-cost-label">Soit environ</div>
-          <div class="estimate-cost-value" id="cost-value">104 € par mois</div>
-          <div class="estimate-cost-sub">au tarif actuel (0.25€/kWh)</div>
-        </div>
-      </div>
 
-      <button class="btn btn-main" onclick="startEstimation()">Estimer mes économies →</button>
+        <div class="estimate-display">
+          <div class="estimate-result">
+            <div class="estimate-label">Votre consommation estimée</div>
+            <div class="estimate-value" id="consumption-value">5 000 kWh/an</div>
+          </div>
+          <div class="estimate-cost">
+            <div class="estimate-cost-label">Soit environ</div>
+            <div class="estimate-cost-value" id="cost-value">104 € par mois</div>
+            <div class="estimate-cost-sub">au tarif actuel (0.25€/kWh)</div>
+          </div>
+        </div>
+
+        <button class="btn btn-main" onclick="startEstimation()">Estimer mes économies →</button>
+      </div>
     </div>
   </div>
 
   <!-- ── ÉCRAN UPLOAD ── -->
   <div class="screen" id="s-upload">
     <button class="back-btn" onclick="go('s-upload','s-start',0)">← Retour</button>
-    <div class="step-lbl">Analyse automatique</div>
-    <div class="step-title">Importez votre facture</div>
-    <div class="step-sub">Formats acceptés : PDF, JPG, PNG, HEIC</div>
 
-    <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
-      <div class="dropzone-icon">📁</div>
-      <div class="dropzone-text">Glissez votre facture ici ou cliquez pour importer</div>
-      <div class="dropzone-sub">PDF, JPG, PNG, HEIC — 16 MB max</div>
-    </div>
-    <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none" onchange="handleFileSelect(event)">
+    <div class="form-card">
+      <div class="step-lbl">Analyse automatique</div>
+      <div class="step-title">Importez votre facture</div>
+      <div class="step-sub">Formats acceptés : PDF, JPG, PNG, HEIC</div>
 
-    <div class="file-preview" id="file-preview">
-      <div class="file-preview-header">
-        <span class="file-preview-name" id="file-name"></span>
-        <button class="file-preview-remove" onclick="removeFile()">✕</button>
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+        <div class="dropzone-icon">📁</div>
+        <div class="dropzone-text">Glissez votre facture ici ou cliquez pour importer</div>
+        <div class="dropzone-sub">PDF, JPG, PNG, HEIC — 16 MB max</div>
       </div>
-      <div class="file-preview-img" id="file-img">
-        <div class="laser-scan-container" id="laser-scan">
-          <div class="laser-line"></div>
+      <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none" onchange="handleFileSelect(event)">
+
+      <div class="file-preview" id="file-preview">
+        <div class="file-preview-header">
+          <span class="file-preview-name" id="file-name"></span>
+          <button class="file-preview-remove" onclick="removeFile()">✕</button>
+        </div>
+        <div class="file-preview-img" id="file-img">
+          <div class="laser-scan-container" id="laser-scan">
+            <div class="laser-line"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <button class="btn btn-main" id="btn-upload" disabled onclick="analyzeInvoice()">Analyser ma facture →</button>
+      <button class="btn btn-main" id="btn-upload" disabled onclick="analyzeInvoice()">Analyser ma facture →</button>
+    </div>
   </div>
 
   <!-- ── STEP 0 : Facture ── -->
   <div class="screen" id="s0">
-    <div class="step-lbl">Démarrage</div>
-    <div class="step-title">Analysez votre facture d'énergie</div>
-    <div class="step-sub">En 2 minutes, découvrez combien vous pourriez économiser. Gratuit et sans engagement.</div>
+    <div class="form-card">
+      <div class="step-lbl">Démarrage</div>
+      <div class="step-title">Analysez votre facture d'énergie</div>
+      <div class="step-sub">En 2 minutes, découvrez combien vous pourriez économiser. Gratuit et sans engagement.</div>
 
-    <div class="ifield">
-      <label>Montant de votre dernière facture (TTC)</label>
-      <div class="suf"><input type="number" id="f-montant" placeholder="ex : 850" min="1" oninput="chk0()"><em>€</em></div>
-    </div>
-
-    <div class="ifield">
-      <label>Période couverte</label>
-      <div class="pills tri" id="pp-periode">
-        <div class="pill" onclick="pick('periode','mensuel',this)"><b>1 mois</b></div>
-        <div class="pill" onclick="pick('periode','bimestriel',this)"><b>2 mois</b></div>
-        <div class="pill" onclick="pick('periode','trimestriel',this)"><b>3 mois</b></div>
+      <div class="ifield">
+        <label>Montant de votre dernière facture (TTC)</label>
+        <div class="suf"><input type="number" id="f-montant" placeholder="ex : 850" min="1" oninput="chk0()"><em>€</em></div>
       </div>
-    </div>
 
-    <div class="ifield">
-      <label>Votre fournisseur actuel</label>
-      <div class="pills" id="pp-fourn">
-        <div class="pill" onclick="pick('fourn','EDF',this)"><b>EDF</b></div>
-        <div class="pill" onclick="pick('fourn','Engie',this)"><b>Engie</b></div>
-        <div class="pill" onclick="pick('fourn','Autre fournisseur',this)"><b>Autre fournisseur</b></div>
-        <div class="pill" onclick="pick('fourn','Ne sait pas',this)"><b>Je ne sais pas</b></div>
+      <div class="ifield">
+        <label>Période couverte</label>
+        <div class="pills tri" id="pp-periode">
+          <div class="pill" onclick="pick('periode','mensuel',this)"><b>1 mois</b></div>
+          <div class="pill" onclick="pick('periode','bimestriel',this)"><b>2 mois</b></div>
+          <div class="pill" onclick="pick('periode','trimestriel',this)"><b>3 mois</b></div>
+        </div>
       </div>
-    </div>
 
-    <button class="btn btn-main" id="btn0" disabled onclick="goLoader()">Analyser ma facture →</button>
+      <div class="ifield">
+        <label>Votre fournisseur actuel</label>
+        <div class="pills" id="pp-fourn">
+          <div class="pill" onclick="pick('fourn','EDF',this)"><b>EDF</b></div>
+          <div class="pill" onclick="pick('fourn','Engie',this)"><b>Engie</b></div>
+          <div class="pill" onclick="pick('fourn','Autre fournisseur',this)"><b>Autre fournisseur</b></div>
+          <div class="pill" onclick="pick('fourn','Ne sait pas',this)"><b>Je ne sais pas</b></div>
+        </div>
+      </div>
+
+      <button class="btn btn-main" id="btn0" disabled onclick="goLoader()">Analyser ma facture →</button>
+    </div>
   </div>
 
   <!-- ── LOADER 1 ── -->
   <div class="screen" id="s-load">
-    <div class="loader-wrap">
-      <div class="spinner"></div>
-      <div class="load-title">Analyse en cours…</div>
-      <div class="load-sub">Veuillez patienter quelques secondes</div>
-      <div class="load-steps">
-        <div class="lstep" id="ls0">Récupération des données tarifaires</div>
-        <div class="lstep" id="ls1">Identification de votre profil</div>
-        <div class="lstep" id="ls2">Comparaison avec le marché</div>
-        <div class="lstep" id="ls3">Calcul des économies potentielles</div>
+    <div class="form-card">
+      <div class="loader-wrap">
+        <div class="spinner"></div>
+        <div class="load-title">Analyse en cours…</div>
+        <div class="load-sub">Veuillez patienter quelques secondes</div>
+        <div class="load-steps">
+          <div class="lstep" id="ls0">Récupération des données tarifaires</div>
+          <div class="lstep" id="ls1">Identification de votre profil</div>
+          <div class="lstep" id="ls2">Comparaison avec le marché</div>
+          <div class="lstep" id="ls3">Calcul des économies potentielles</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1369,112 +1416,126 @@
   <!-- ── STEP 1 : Secteur ── -->
   <div class="screen" id="s1">
     <button class="back-btn" onclick="go('s1','s0',8)">← Retour</button>
-    <div class="step-lbl">Question 1 / 2</div>
-    <div class="step-title">Votre secteur d'activité</div>
-    <div class="step-sub">Pour affiner le calcul selon votre profil de consommation.</div>
-    <div class="pills" id="pp-secteur">
-      <div class="pill" onclick="pick('secteur','Restaurant / Café',this)"><b>Restaurant / Café</b><span>Forte conso cuisine</span></div>
-      <div class="pill" onclick="pick('secteur','Hôtel / Hébergement',this)"><b>Hôtel / Hébergement</b><span>Conso 24h/24</span></div>
-      <div class="pill" onclick="pick('secteur','Boulangerie / Artisan',this)"><b>Boulangerie / Artisan</b><span>Fours & équipements</span></div>
-      <div class="pill" onclick="pick('secteur','Laverie / Pressing',this)"><b>Laverie / Pressing</b><span>Très forte conso</span></div>
-      <div class="pill" onclick="pick('secteur','Bureaux / PME',this)"><b>Bureaux / PME</b><span>Éclairage & IT</span></div>
-      <div class="pill" onclick="pick('secteur','Autre',this)"><b>Autre activité</b><span></span></div>
+
+    <div class="form-card">
+      <div class="step-lbl">Question 1 / 2</div>
+      <div class="step-title">Votre secteur d'activité</div>
+      <div class="step-sub">Pour affiner le calcul selon votre profil de consommation.</div>
+      <div class="pills" id="pp-secteur">
+        <div class="pill" onclick="pick('secteur','Restaurant / Café',this)"><b>Restaurant / Café</b><span>Forte conso cuisine</span></div>
+        <div class="pill" onclick="pick('secteur','Hôtel / Hébergement',this)"><b>Hôtel / Hébergement</b><span>Conso 24h/24</span></div>
+        <div class="pill" onclick="pick('secteur','Boulangerie / Artisan',this)"><b>Boulangerie / Artisan</b><span>Fours & équipements</span></div>
+        <div class="pill" onclick="pick('secteur','Laverie / Pressing',this)"><b>Laverie / Pressing</b><span>Très forte conso</span></div>
+        <div class="pill" onclick="pick('secteur','Bureaux / PME',this)"><b>Bureaux / PME</b><span>Éclairage & IT</span></div>
+        <div class="pill" onclick="pick('secteur','Autre',this)"><b>Autre activité</b><span></span></div>
+      </div>
+      <button class="btn btn-main" id="btn1" disabled onclick="go('s1','s2',50)">Continuer →</button>
     </div>
-    <button class="btn btn-main" id="btn1" disabled onclick="go('s1','s2',50)">Continuer →</button>
   </div>
 
   <!-- ── STEP 2 : Type contrat ── -->
   <div class="screen" id="s2">
     <button class="back-btn" onclick="go('s2','s1',30)">← Retour</button>
-    <div class="step-lbl">Question 2 / 2</div>
-    <div class="step-title">Votre type de contrat</div>
-    <div class="step-sub">Si vous ne savez pas, sélectionnez "Je ne sais pas" — on l'identifie pour vous.</div>
-    <div class="pills" id="pp-contrat">
-      <div class="pill" onclick="pick('contrat','indexe',this)"><b>Prix indexé</b><span>Variable selon le marché</span></div>
-      <div class="pill" onclick="pick('contrat','fixe',this)"><b>Prix fixe garanti</b><span>Stable sur la durée</span></div>
-      <div class="pill" onclick="pick('contrat','trv',this)"><b>Tarif réglementé</b><span>TRV EDF / Engie</span></div>
-      <div class="pill" onclick="pick('contrat','inconnu',this)"><b>Je ne sais pas</b><span>On identifie pour vous</span></div>
+
+    <div class="form-card">
+      <div class="step-lbl">Question 2 / 2</div>
+      <div class="step-title">Votre type de contrat</div>
+      <div class="step-sub">Si vous ne savez pas, sélectionnez "Je ne sais pas" — on l'identifie pour vous.</div>
+      <div class="pills" id="pp-contrat">
+        <div class="pill" onclick="pick('contrat','indexe',this)"><b>Prix indexé</b><span>Variable selon le marché</span></div>
+        <div class="pill" onclick="pick('contrat','fixe',this)"><b>Prix fixe garanti</b><span>Stable sur la durée</span></div>
+        <div class="pill" onclick="pick('contrat','trv',this)"><b>Tarif réglementé</b><span>TRV EDF / Engie</span></div>
+        <div class="pill" onclick="pick('contrat','inconnu',this)"><b>Je ne sais pas</b><span>On identifie pour vous</span></div>
+      </div>
+      <button class="btn btn-main" id="btn2" disabled onclick="goTeaser()">Voir mes résultats →</button>
     </div>
-    <button class="btn btn-main" id="btn2" disabled onclick="goTeaser()">Voir mes résultats →</button>
   </div>
 
   <!-- ── STEP 3 : Teaser ── -->
   <div class="screen" id="s3">
-    <div class="step-lbl">Résultats prêts</div>
-    <div class="step-title">Vos économies ont été calculées</div>
-    <div class="step-sub">Renseignez vos coordonnées pour découvrir votre potentiel d'économies exact.</div>
+    <div class="form-card">
+      <div class="step-lbl">Résultats prêts</div>
+      <div class="step-title">Vos économies ont été calculées</div>
+      <div class="step-sub">Renseignez vos coordonnées pour découvrir votre potentiel d'économies exact.</div>
 
-    <div class="teaser-card">
-      <div class="teaser-label">Économies estimées sur 12 mois</div>
-      <div class="teaser-amount" id="teaser-blur">████ € — ████ €</div>
-      <div class="teaser-pct" id="teaser-pct">soit XX% à XX% d'économies potentielles</div>
-    </div>
+      <div class="teaser-card">
+        <div class="teaser-label">Économies estimées sur 12 mois</div>
+        <div class="teaser-amount" id="teaser-blur">████ € — ████ €</div>
+        <div class="teaser-pct" id="teaser-pct">soit XX% à XX% d'économies potentielles</div>
+      </div>
 
-    <div class="unlock-card">
-      <div class="unlock-title">Découvrir mon potentiel d'économies</div>
-      <div class="unlock-sub">Entrez vos coordonnées ci-dessous — un conseiller LILIWATT vous rappelle sous 24h avec une offre personnalisée.</div>
-      <button class="btn btn-main" style="margin-top:0" onclick="go('s3','s4',65)">Je veux voir mes économies →</button>
+      <div class="unlock-card">
+        <div class="unlock-title">Découvrir mon potentiel d'économies</div>
+        <div class="unlock-sub">Entrez vos coordonnées ci-dessous — un conseiller LILIWATT vous rappelle sous 24h avec une offre personnalisée.</div>
+        <button class="btn btn-main" style="margin-top:0" onclick="go('s3','s4',65)">Je veux voir mes économies →</button>
+      </div>
+      <div class="mention">Sans engagement · Gratuit · RGPD conforme</div>
     </div>
-    <div class="mention">Sans engagement · Gratuit · RGPD conforme</div>
   </div>
 
   <!-- ── STEP 4 : Formulaire ── -->
   <div class="screen" id="s4">
     <button class="back-btn" onclick="go('s4','s3',55)">← Retour</button>
-    <div class="step-lbl">Dernière étape</div>
-    <div class="step-title">Vos coordonnées</div>
-    <div class="step-sub">Pour recevoir votre analyse complète et être rappelé par votre conseiller LILIWATT.</div>
 
-    <!-- Champ Nom de société - affiché seulement pour professionnel -->
-    <div class="ifield" id="field-entreprise" style="display:none;">
-      <label>Nom de la société *</label>
-      <input type="text" id="f-entreprise" placeholder="DUPONT SARL" oninput="chk4()">
-    </div>
+    <div class="form-card">
+      <div class="step-lbl">Dernière étape</div>
+      <div class="step-title">Vos coordonnées</div>
+      <div class="step-sub">Pour recevoir votre analyse complète et être rappelé par votre conseiller LILIWATT.</div>
 
-    <div class="row2">
-      <div class="ifield"><label>Prénom *</label><input type="text" id="f-prenom" placeholder="Jean" oninput="chk4()"></div>
-      <div class="ifield"><label>Nom *</label><input type="text" id="f-nom" placeholder="Dupont" oninput="chk4()"></div>
-    </div>
-    <div class="ifield"><label>Téléphone *</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="chk4()"></div>
-    <div class="ifield">
-      <label>Email professionnel *</label>
-      <input type="email" id="f-email" placeholder="contact@monentreprise.fr" oninput="chk4()">
-      <div id="email-error" style="display: none; color: #EF4444; font-size: 12px; margin-top: 4px;">
-        ⚠️ Format d'email invalide
+      <!-- Champ Nom de société - affiché seulement pour professionnel -->
+      <div class="ifield" id="field-entreprise" style="display:none;">
+        <label>Nom de la société *</label>
+        <input type="text" id="f-entreprise" placeholder="DUPONT SARL" oninput="chk4()">
       </div>
-    </div>
 
-    <!-- Case RGPD obligatoire -->
-    <label class="rgpd-checkbox" for="rgpd-consent">
-      <input type="checkbox" id="rgpd-consent" onchange="chk4()">
-      <div class="rgpd-label">
-        <strong>J'autorise LILIWATT</strong> (marque de LILISTRAT STRATÉGIE SAS) à accéder à mes données de consommation Enedis/GRDF, à transmettre mes informations à ses partenaires fournisseurs d'énergie dans le cadre d'une demande de changement de contrat, et à me contacter par téléphone et email concernant mon offre énergie.
-        <br><span class="rgpd-link" onclick="event.stopPropagation(); openRgpdModal()">Lire les conditions complètes ▼</span>
+      <div class="row2">
+        <div class="ifield"><label>Prénom *</label><input type="text" id="f-prenom" placeholder="Jean" oninput="chk4()"></div>
+        <div class="ifield"><label>Nom *</label><input type="text" id="f-nom" placeholder="Dupont" oninput="chk4()"></div>
       </div>
-    </label>
+      <div class="ifield"><label>Téléphone *</label><input type="tel" id="f-tel" placeholder="06 XX XX XX XX" oninput="chk4()"></div>
+      <div class="ifield">
+        <label>Email professionnel *</label>
+        <input type="email" id="f-email" placeholder="contact@monentreprise.fr" oninput="chk4()">
+        <div id="email-error" style="display: none; color: #EF4444; font-size: 12px; margin-top: 4px;">
+          ⚠️ Format d'email invalide
+        </div>
+      </div>
 
-    <button class="btn btn-main" id="btn4" disabled onclick="submitLead()">Voir mes économies maintenant →</button>
-    <div class="mention">Vos données sont utilisées uniquement par LILIWATT pour vous contacter.<br>Aucune revente. Conformité RGPD totale.</div>
+      <!-- Case RGPD obligatoire -->
+      <label class="rgpd-checkbox" for="rgpd-consent">
+        <input type="checkbox" id="rgpd-consent" onchange="chk4()">
+        <div class="rgpd-label">
+          <strong>J'autorise LILIWATT</strong> (marque de LILISTRAT STRATÉGIE SAS) à accéder à mes données de consommation Enedis/GRDF, à transmettre mes informations à ses partenaires fournisseurs d'énergie dans le cadre d'une demande de changement de contrat, et à me contacter par téléphone et email concernant mon offre énergie.
+          <br><span class="rgpd-link" onclick="event.stopPropagation(); openRgpdModal()">Lire les conditions complètes ▼</span>
+        </div>
+      </label>
+
+      <button class="btn btn-main" id="btn4" disabled onclick="submitLead()">Voir mes économies maintenant →</button>
+      <div class="mention">Vos données sont utilisées uniquement par LILIWATT pour vous contacter.<br>Aucune revente. Conformité RGPD totale.</div>
+    </div>
   </div>
 
   <!-- ── LOADER 2 ── -->
   <div class="screen" id="s-load2">
-    <div class="loader-wrap">
-      <div class="spinner"></div>
-      <div class="load-title">Finalisation de votre analyse…</div>
-      <div class="load-sub">Un instant</div>
+    <div class="form-card">
+      <div class="loader-wrap">
+        <div class="spinner"></div>
+        <div class="load-title">Finalisation de votre analyse…</div>
+        <div class="load-sub">Un instant</div>
+      </div>
     </div>
   </div>
 
   <!-- ── STEP 5 : Résultat ── -->
   <div class="screen" id="s5">
-    <div class="result-hero">
-      <div class="res-greeting" id="r-greeting">Bonjour Jean,</div>
-      <div class="res-label">votre potentiel d'économies annuel est de</div>
-      <div class="res-amount" id="r-min">—</div>
-      <div class="res-range" id="r-range">à — € selon le fournisseur retenu</div>
-      <div class="res-badge" id="r-pct">—% d'économies potentielles</div>
-    </div>
+    <div class="form-card">
+      <div class="result-hero">
+        <div class="res-greeting" id="r-greeting">Bonjour Jean,</div>
+        <div class="res-label">votre potentiel d'économies annuel est de</div>
+        <div class="res-amount" id="r-min">—</div>
+        <div class="res-range" id="r-range">à — € selon le fournisseur retenu</div>
+        <div class="res-badge" id="r-pct">—% d'économies potentielles</div>
+      </div>
 
     <!-- Bloc électricité (affiché si type_energie = electricite ou les_deux) -->
     <div class="contract-detail" id="bloc-elec" style="display:none;">
