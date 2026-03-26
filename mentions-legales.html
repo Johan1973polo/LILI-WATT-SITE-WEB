@@ -224,7 +224,7 @@
       <div class="footer-content">
         <div class="footer-section">
           <div class="footer-logo-large" style="display: flex; justify-content: center; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(124,58,237,0.4));">
-            <img src="/logo2.png" alt="LILIWATT" style="height: 120px; width: auto;">
+            <span style="font-family: 'DM Sans', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 16px;">LILIWATT</span>
           </div>
           <p class="footer-tagline">Votre courtier en énergie B2B. Plus de pouvoir d'achat, moins de factures.</p>
           <div class="social-links">
@@ -472,17 +472,19 @@
 
     /* Fenêtre de chat */
     #lili-window {
-      position: absolute;
-      bottom: 80px;
-      right: 0;
-      width: 340px;
-      height: 480px;
+      position: fixed !important;
+      bottom: 80px !important;
+      right: 20px !important;
+      width: 340px !important;
+      height: 480px !important;
+      max-height: calc(100vh - 100px) !important;
+      border-radius: 20px !important;
+      overflow: hidden !important;
+      z-index: 99998 !important;
+      display: none;
       background: white;
-      border-radius: 16px;
       box-shadow: 0 12px 48px rgba(0,0,0,0.2);
-      display: flex;
       flex-direction: column;
-      overflow: hidden;
       animation: slideUp 0.3s ease;
     }
 
