@@ -1821,18 +1821,29 @@ def chat():
         return response
 
     try:
+        print(f"=== CHAT LILI APPELÉ ===")
         data = request.get_json()
         messages = data.get('messages', [])
 
+        # Debug message
+        if messages and len(messages) > 0:
+            last_msg = messages[-1]
+            if last_msg.get('role') == 'user':
+                print(f"Message reçu : {last_msg.get('content', '')[:100]}")
+
         # Debug: vérifier la présence de la clé API
         api_key = os.getenv('ANTHROPIC_API_KEY')
-        print(f"ANTHROPIC_API_KEY présente: {bool(api_key)}")
+        print(f"Clé API présente : {bool(api_key)}")
+        print(f"Longueur clé : {len(api_key) if api_key else 0}")
         if not api_key:
             raise Exception("ANTHROPIC_API_KEY non définie dans les variables d'environnement")
 
         # Limiter l'historique à 10 messages
         if len(messages) > 10:
             messages = messages[-10:]
+
+        print(f"Nombre de messages dans l'historique : {len(messages)}")
+        print(f"Modèle utilisé : claude-haiku-4-5-20251001")
 
         client = anthropic.Anthropic(api_key=api_key)
 
@@ -1844,6 +1855,8 @@ def chat():
         )
 
         reply = response_api.content[0].text
+        print(f"Réponse générée : {reply[:100]}...")
+        print(f"=== CHAT LILI TERMINÉ AVEC SUCCÈS ===")
 
         response = jsonify({
             'success': True,
