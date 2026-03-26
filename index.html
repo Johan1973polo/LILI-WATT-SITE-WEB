@@ -1150,47 +1150,90 @@
     /* ═══════════════════════════════════════════════════════════════════════ */
     
     /* ═══════════════════════════════════════════════════════════════════════ */
-    /* CHATBOT SPRING PHYSICS & IDLE ANIMATION */
+    /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
-      const chatWidget = document.getElementById('lili-chat-widget');
-      if (!chatWidget) return;
+      const liliBtn = document.getElementById('lili-bubble');
+      if (!liliBtn) return;
 
-      let targetY = window.innerHeight / 2;
-      let currentY = window.innerHeight / 2;
+      // Couleurs selon position de scroll
+      const scrollColors = [
+        { pos: 0,    bg: 'linear-gradient(135deg, #7c3aed, #a855f7)', shadow: 'rgba(124,58,237,0.4)' },
+        { pos: 300,  bg: 'linear-gradient(135deg, #a855f7, #d946ef)', shadow: 'rgba(217,70,239,0.4)' },
+        { pos: 600,  bg: 'linear-gradient(135deg, #d946ef, #ec4899)', shadow: 'rgba(236,72,153,0.4)' },
+        { pos: 900,  bg: 'linear-gradient(135deg, #0d9488, #14b8a6)', shadow: 'rgba(13,148,136,0.4)' },
+        { pos: 1200, bg: 'linear-gradient(135deg, #7c3aed, #a855f7)', shadow: 'rgba(124,58,237,0.4)' },
+      ];
+
+      // Animation physique ressort
+      let targetY = window.scrollY;
+      let currentY = window.scrollY;
       let velocity = 0;
-      const stiffness = 0.08;
-      const damping = 0.75;
-      let idleTimer;
 
-      function updateWidgetPosition() {
-        targetY = window.scrollY + window.innerHeight / 2;
-        const force = (targetY - currentY) * stiffness;
-        velocity = (velocity + force) * damping;
+      function updateLili() {
+        targetY = window.scrollY;
+
+        // Ressort
+        const force = (targetY - currentY) * 0.08;
+        velocity = (velocity + force) * 0.75;
         currentY += velocity;
-        chatWidget.style.position = 'absolute';
-        chatWidget.style.top = currentY + 'px';
-        chatWidget.style.transform = 'translateY(-50%)';
-        chatWidget.style.right = '24px';
-        requestAnimationFrame(updateWidgetPosition);
+
+        // Couleur selon scroll
+        const scroll = window.scrollY;
+        let color = scrollColors[0];
+        for (let i = scrollColors.length - 1; i >= 0; i--) {
+          if (scroll >= scrollColors[i].pos) {
+            color = scrollColors[i];
+            break;
+          }
+        }
+
+        // Appliquer couleur avec transition douce
+        if (liliBtn) {
+          liliBtn.style.background = color.bg;
+          liliBtn.style.boxShadow = `0 8px 30px ${color.shadow}`;
+          liliBtn.style.transition = 'background 0.8s ease, box-shadow 0.8s ease';
+        }
+
+        // Rotation légère selon vitesse de scroll
+        const rotation = Math.max(-15, Math.min(15, velocity * 0.5));
+        const icon = liliBtn ? liliBtn.querySelector('.lili-avatar-btn, svg, span') : null;
+        if (icon) {
+          icon.style.transform = `rotate(${rotation}deg)`;
+          icon.style.transition = 'transform 0.3s ease';
+        }
+
+        requestAnimationFrame(updateLili);
       }
 
-      // Gestion de l'animation idle (rebond)
-      function resetIdleTimer() {
-        chatWidget.classList.remove('chatbot-idle');
+      // Rebond idle
+      let idleTimer;
+      function resetIdle() {
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
-          chatWidget.classList.add('chatbot-idle');
+          if (liliBtn) {
+            liliBtn.style.animation = 'liliBounce 0.6s ease';
+            setTimeout(() => liliBtn.style.animation = '', 600);
+          }
         }, 3000);
       }
 
-      window.addEventListener('scroll', resetIdleTimer);
-      window.addEventListener('mousemove', resetIdleTimer);
-      window.addEventListener('click', resetIdleTimer);
+      // CSS animation rebond
+      const style = document.createElement('style');
+      style.textContent = `
+      @keyframes liliBounce {
+        0%   { transform: translateY(0) scale(1); }
+        30%  { transform: translateY(-12px) scale(1.1); }
+        60%  { transform: translateY(4px) scale(0.95); }
+        80%  { transform: translateY(-4px) scale(1.02); }
+        100% { transform: translateY(0) scale(1); }
+      }
+      `;
+      document.head.appendChild(style);
 
-      chatWidget.style.position = 'absolute';
-      updateWidgetPosition();
-      resetIdleTimer();
+      window.addEventListener('scroll', resetIdle);
+      resetIdle();
+      updateLili();
     })();
 
 
