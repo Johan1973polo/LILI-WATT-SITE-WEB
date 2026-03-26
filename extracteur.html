@@ -515,9 +515,9 @@
           </div>
         </div>
         <div class="lili-suggestions">
-          <button onclick="sendSuggestion('Quels sont vos tarifs ?')">💰 Vos tarifs ?</button>
-          <button onclick="sendSuggestion('Comment comparer les fournisseurs ?')">⚡ Comparer les fournisseurs</button>
-          <button onclick="sendSuggestion('Puis-je changer de fournisseur ?')">🔄 Changer de fournisseur</button>
+          <button onclick="sendSuggestion('Je veux analyser ma facture')">💡 Analyser ma facture</button>
+          <button onclick="sendSuggestion('Quelles aides pour la rénovation ?')">🏠 Aides rénovation</button>
+          <button onclick="sendSuggestion('Je veux être rappelé')">📞 Être rappelé</button>
         </div>
       </div>
 
@@ -627,20 +627,17 @@
     /* Fenêtre de chat */
     #lili-window {
       position: fixed !important;
-      bottom: 80px !important;
+      bottom: 0 !important;
       right: 20px !important;
-      width: 340px !important;
-      height: auto !important;
-      max-height: calc(100vh - 100px) !important;
-      min-height: 300px !important;
-      border-radius: 20px !important;
+      width: 360px !important;
+      height: 520px !important;
+      max-height: 80vh !important;
+      border-radius: 20px 20px 0 0 !important;
       overflow: hidden !important;
       z-index: 99998 !important;
       display: none;
-      background: white;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.2);
       flex-direction: column;
-      animation: slideUp 0.3s ease;
+      box-shadow: 0 -8px 40px rgba(124,58,237,0.25);
     }
 
     @keyframes slideUp {
@@ -853,13 +850,20 @@
 
     /* Mobile responsive */
     @media (max-width: 480px) {
-      #lili-window {
-        width: calc(100vw - 40px);
-        height: 480px;
-        max-height: calc(100vh - 100px);
-        right: 20px;
-        bottom: 80px;
-      }
+    #lili-window {
+      position: fixed !important;
+      bottom: 0 !important;
+      right: 20px !important;
+      width: 360px !important;
+      height: 520px !important;
+      max-height: 80vh !important;
+      border-radius: 20px 20px 0 0 !important;
+      overflow: hidden !important;
+      z-index: 99998 !important;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 -8px 40px rgba(124,58,237,0.25);
+    }
 
       #lili-bubble {
         width: 56px;
@@ -923,7 +927,30 @@
     })();
 
 
-    let chatHistory = [];
+    let chatHistory = [{
+      role: 'system',
+      content: `Tu es LILI, conseillère énergie LILIWATT.
+Réponds TOUJOURS en 1-2 phrases maximum, jamais plus.
+Sois directe et utile. Pas de listes, pas de titres.
+Si la question est complexe, propose un rappel téléphonique.
+
+LILIWATT propose :
+- Courtage énergie B2B et B2C (électricité et gaz)
+- Analyse gratuite des factures, économies moyennes 18%
+- Changement de fournisseur sans coupure ni frais
+- Aides à la rénovation énergétique :
+  * MaPrimeRénov : jusqu'à 90% des travaux selon revenus
+  * CEE (Certificats d'Économies d'Énergie) : primes fournisseurs
+  * Éco-PTZ : prêt taux zéro jusqu'à 50 000€
+  * Aides ANAH pour propriétaires modestes
+  * LILIWATT est mandataire administratif pour ces dossiers
+- Contact : contact@liliwatt.fr / 01 84 16 08 56
+- Adresse : 59 rue de Ponthieu, Bureau 326, 75008 Paris
+
+Si quelqu'un demande une analyse : renvoie vers liliwatt.fr/extracteur
+Si quelqu'un veut les aides rénovation : renvoie vers liliwatt.fr/c2e
+Pour tout RDV ou rappel : demande nom + téléphone`
+    }];
 
     function toggleChat() {
       const panel = document.getElementById('lili-window');
