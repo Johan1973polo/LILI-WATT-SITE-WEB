@@ -414,6 +414,7 @@
     /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
+      try {
       const liliBtn = document.getElementById('lili-bubble');
       if (!liliBtn) return;
 
@@ -495,6 +496,9 @@
       window.addEventListener('scroll', resetIdle);
       resetIdle();
       updateLili();
+      } catch(e) {
+        console.log('Scroll animation error:', e);
+      }
     })();
 
 

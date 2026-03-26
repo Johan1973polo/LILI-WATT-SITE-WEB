@@ -818,10 +818,9 @@
     #lili-chat-widget {
       position: fixed;
       right: 20px;
+      bottom: 24px;
       z-index: 9999;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      transition: none;
-      will-change: top;
     }
 
     /* Bouton flottant */
@@ -1153,8 +1152,9 @@
     /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
-      const liliBtn = document.getElementById('lili-bubble');
-      if (!liliBtn) return;
+      try {
+        const liliBtn = document.getElementById('lili-bubble');
+        if (!liliBtn) return;
 
       // Couleurs selon position de scroll
       const scrollColors = [
@@ -1234,6 +1234,9 @@
       window.addEventListener('scroll', resetIdle);
       resetIdle();
       updateLili();
+      } catch(e) {
+        console.log('Scroll animation error:', e);
+      }
     })();
 
 
