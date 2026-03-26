@@ -909,8 +909,9 @@
       bottom: 80px !important;
       right: 20px !important;
       width: 340px !important;
-      height: 480px !important;
+      height: auto !important;
       max-height: calc(100vh - 100px) !important;
+      min-height: 300px !important;
       border-radius: 20px !important;
       overflow: hidden !important;
       z-index: 99998 !important;
@@ -1199,14 +1200,19 @@
     let chatHistory = [];
 
     function toggleChat() {
-      const window = document.getElementById('lili-window');
+      const panel = document.getElementById('lili-window');
       const notif = document.getElementById('lili-notif');
 
-      if (window.style.display === 'none') {
-        window.style.display = 'flex';
+      if (panel.style.display === 'none') {
+        // Calculer la hauteur dynamique selon le viewport
+        const btnBottom = 80;
+        const maxHeight = window.innerHeight - btnBottom - 20;
+        panel.style.height = Math.min(480, maxHeight) + 'px';
+        panel.style.bottom = btnBottom + 'px';
+        panel.style.display = 'flex';
         notif.style.display = 'none';
       } else {
-        window.style.display = 'none';
+        panel.style.display = 'none';
       }
     }
 
