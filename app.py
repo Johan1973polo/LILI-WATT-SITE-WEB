@@ -1809,9 +1809,17 @@ contact@liliwatt.fr
 Formulaire : /contact
 """
 
-@app.route('/api/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST', 'OPTIONS'])
 def chat():
     """Route API pour le chatbot LILI - IA Claude"""
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'ok': True})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
     try:
         data = request.get_json()
         messages = data.get('messages', [])
@@ -1824,28 +1832,32 @@ def chat():
             api_key=os.getenv('ANTHROPIC_API_KEY')
         )
 
-        response = client.messages.create(
+        response_api = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=500,
             system=LILI_SYSTEM_PROMPT,
             messages=messages
         )
 
-        reply = response.content[0].text
+        reply = response_api.content[0].text
 
-        return jsonify({
+        response = jsonify({
             'success': True,
             'reply': reply
         })
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
     except Exception as e:
         print(f"Chat error: {e}")
         import traceback
         traceback.print_exc()
-        return jsonify({
+        response = jsonify({
             'success': False,
             'reply': "Désolée, je rencontre un problème technique. Appelez-nous au 01 84 16 08 56 😊"
         })
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
 # ──── ROUTE 404 ──────────────────────────────────────────────
 @app.errorhandler(404)
