@@ -1824,13 +1824,17 @@ def chat():
         data = request.get_json()
         messages = data.get('messages', [])
 
+        # Debug: vérifier la présence de la clé API
+        api_key = os.getenv('ANTHROPIC_API_KEY')
+        print(f"ANTHROPIC_API_KEY présente: {bool(api_key)}")
+        if not api_key:
+            raise Exception("ANTHROPIC_API_KEY non définie dans les variables d'environnement")
+
         # Limiter l'historique à 10 messages
         if len(messages) > 10:
             messages = messages[-10:]
 
-        client = anthropic.Anthropic(
-            api_key=os.getenv('ANTHROPIC_API_KEY')
-        )
+        client = anthropic.Anthropic(api_key=api_key)
 
         response_api = client.messages.create(
             model="claude-haiku-4-5-20251001",
