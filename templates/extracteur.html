@@ -1270,7 +1270,7 @@
       Notre analyseur intelligent décrypte votre facture et identifie immédiatement les économies possibles, sans engagement.
     </p>
 
-    <button class="hero-cta" onclick="go('s-hero','s-profile',2)">
+    <button class="hero-cta" onclick="gtag('event', 'begin_checkout', {event_category: 'Funnel', event_label: 'Début parcours extracteur', value: 1}); go('s-hero','s-profile',2)">
       Voir mes économies gratuitement →
     </button>
 
@@ -1774,6 +1774,31 @@
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════════════════
+   GA4 CONVERSIONS TRACKING
+   ═══════════════════════════════════════════════════════════════════════
+   Les événements suivants sont trackés pour mesurer les conversions :
+
+   1. generate_lead (CONVERSION PRINCIPALE)
+      - Déclenché lors de la soumission du formulaire de coordonnées
+      - À marquer comme conversion dans GA4 Dashboard
+      - Événement : Formulaire → Extracteur - Soumission coordonnées
+
+   2. upload_facture (Engagement utilisateur)
+      - Déclenché quand un utilisateur upload une facture PDF/image
+      - Événement : Engagement → Upload facture PDF/image
+
+   3. begin_checkout (Début du funnel)
+      - Déclenché au clic sur "Voir mes économies gratuitement"
+      - Événement : Funnel → Début parcours extracteur
+
+   CONFIGURATION GA4 :
+   Pour marquer generate_lead comme conversion :
+   1. Aller dans GA4 Dashboard → Configuration → Événements
+   2. Trouver l'événement "generate_lead"
+   3. Activer "Marquer comme conversion"
+   ═══════════════════════════════════════════════════════════════════════ */
+
 const D = {};
 
 // ─── RESPONSIVE MOBILE FORCE ──────────────────────────────────────────
@@ -2023,6 +2048,13 @@ function goTeaser() {
 async function submitLead() {
   go('s4', 's-load2', 88);
 
+  // GA4 Conversion tracking
+  gtag('event', 'generate_lead', {
+    event_category: 'Formulaire',
+    event_label: 'Extracteur - Soumission coordonnées',
+    value: 1
+  });
+
   const payload = {
     // Informations de base
     prenom:  document.getElementById('f-prenom').value.trim(),
@@ -2191,6 +2223,13 @@ function removeFile() {
 
 async function analyzeInvoice() {
   if (!uploadedFile) return;
+
+  // GA4 Engagement tracking
+  gtag('event', 'upload_facture', {
+    event_category: 'Engagement',
+    event_label: 'Upload facture PDF/image',
+    value: 1
+  });
 
   // Activer l'effet laser scan
   const laserScan = document.getElementById('laser-scan');
