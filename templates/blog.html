@@ -56,7 +56,7 @@
         <a href="/extracteur" class="btn btn-primary">Analyser ma facture</a>
       </nav>
 
-      <div class="menu-toggle">
+      <div class="menu-toggle" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
@@ -284,6 +284,20 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  function toggleMenu() {
+    const nav = document.querySelector('.nav-menu');
+    const toggle = document.querySelector('.menu-toggle');
+
+    if (nav) {
+      nav.classList.toggle('open');
+    }
+    if (toggle) {
+      toggle.classList.toggle('open');
+    }
+  }
+  </script>
 
   <script src="/assets/js/main.js"></script>
 </body>
