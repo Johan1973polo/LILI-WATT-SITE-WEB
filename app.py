@@ -45,7 +45,7 @@ GMAIL_USER           = os.getenv("GMAIL_USER", "contact@liliwatt.fr")
 GMAIL_PASSWORD       = os.getenv("GMAIL_PASSWORD", "VOTRE_APP_PASSWORD")
 CONSEILLER_EMAIL     = os.getenv("CONSEILLER_EMAIL", "contact@liliwatt.fr")
 ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
-PDFSHIFT_API_KEY     = os.getenv("PDFSHIFT_API_KEY", "sk_e673176851840a5914f85f27fcf04d7e42cda567")
+PDFSHIFT_API_KEY     = os.getenv("PDFSHIFT_API_KEY", "")
 
 # Client Anthropic
 anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
