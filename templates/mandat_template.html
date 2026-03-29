@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --purple:     #6d28d9;
+    --purple-mid: #8b5cf6;
+    --purple-soft:#ede9fe;
+    --purple-xlt: #f5f3ff;
+    --ink:        #1e1b4b;
+    --text:       #374151;
+    --muted:      #6b7280;
+    --border:     #e5e7eb;
+    --bg:         #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9pt;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 0;
+    position: relative;
+    page-break-after: always;
+  }
+
+  .header {
+    background: var(--ink);
+    padding: 22px 36px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--purple-mid);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .logo-name {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+  }
+
+  .logo-tagline {
+    font-size: 7.5pt;
+    color: #a5b4fc;
+    letter-spacing: 0.5px;
+    margin-left: 36px;
+    font-weight: 300;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .doc-title {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+  }
+
+  .doc-signed {
+    font-size: 7.5pt;
+    color: #a5b4fc;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .header-accent {
+    height: 3px;
+    background: linear-gradient(90deg, var(--purple) 0%, var(--purple-mid) 60%, transparent 100%);
+  }
+
+  .body {
+    padding: 28px 36px;
+  }
+
+  .section {
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: var(--purple-xlt);
+    border-bottom: 1px solid var(--purple-soft);
+  }
+
+  .section-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--purple);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .section-body {
+    padding: 14px 16px;
+    background: #ffffff;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .field-label {
+    font-size: 7pt;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .field-value {
+    font-size: 9pt;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .field-value.empty {
+    font-weight: 400;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bullet-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 8.5pt;
+    color: var(--text);
+  }
+
+  .bullet-list li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .cond-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .cond-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cond-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .cond-table td {
+    padding: 7px 0;
+    font-size: 8.5pt;
+    vertical-align: top;
+  }
+
+  .cond-key {
+    width: 110px;
+    font-weight: 600;
+    color: var(--ink);
+    padding-right: 12px;
+    font-size: 8pt;
+  }
+
+  .cond-val {
+    color: var(--text);
+  }
+
+  .rgpd-section {
+    margin-bottom: 18px;
+    border: 1px solid #ddd6fe;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .rgpd-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: var(--purple-xlt);
+    border-bottom: 1px solid #ddd6fe;
+  }
+
+  .rgpd-body {
+    padding: 16px;
+    background: #fdfcff;
+  }
+
+  .rgpd-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .rgpd-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .rgpd-icon {
+    width: 22px;
+    height: 22px;
+    background: var(--purple-soft);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px;
+  }
+
+  .rgpd-text {
+    flex: 1;
+  }
+
+  .rgpd-key {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 1px;
+  }
+
+  .rgpd-val {
+    font-size: 8.5pt;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .rgpd-divider {
+    height: 1px;
+    background: #ede9fe;
+    margin: 10px 0;
+  }
+
+  .signature-box {
+    border: 1.5px solid var(--purple-soft);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+
+  .signature-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: var(--purple-xlt);
+    border-bottom: 1px solid var(--purple-soft);
+  }
+
+  .signature-body {
+    padding: 16px;
+    background: #fdfcff;
+  }
+
+  .sig-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .checkmark {
+    width: 20px;
+    height: 20px;
+    background: var(--purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .sig-accepted {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--purple);
+  }
+
+  .sig-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sig-note {
+    font-size: 7.5pt;
+    color: var(--muted);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 36px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    font-size: 7pt;
+    color: #a5b4fc;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-right {
+    font-size: 6.5pt;
+    color: #6b7280;
+    text-align: right;
+  }
+
+  .footer-mid {
+    font-size: 6.5pt;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  .page2-header {
+    background: var(--ink);
+    padding: 14px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .p2-logo {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+  }
+
+  .p2-doctitle {
+    font-size: 9pt;
+    color: #a5b4fc;
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ PAGE 1 ══ -->
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <div class="logo-icon">⚡</div>
+        <div class="logo-name">LILIWATT</div>
+      </div>
+      <div class="logo-tagline">COURTAGE ÉNERGIE · B2B &amp; B2C</div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">MANDAT DE COURTAGE</div>
+      <div class="doc-signed">Signé le {{ date_signature }}</div>
+    </div>
+  </div>
+  <div class="header-accent"></div>
+
+  <div class="body">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Le Mandant (Client)</div>
+      </div>
+      <div class="section-body">
+        <div class="grid">
+          <div class="field">
+            <div class="field-label">Nom / Prénom</div>
+            <div class="field-value">{{ nom_prenom }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Adresse</div>
+            <div class="field-value {{ adresse_class }}">{{ adresse }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Téléphone</div>
+            <div class="field-value">{{ telephone }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Email</div>
+            <div class="field-value">{{ email }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Site de Consommation</div>
+      </div>
+      <div class="section-body">
+        <div class="grid">
+          <div class="field">
+            <div class="field-label">PDL – Électricité</div>
+            <div class="field-value {{ pdl_class }}">{{ pdl }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">PCE – Gaz</div>
+            <div class="field-value {{ pce_class }}">{{ pce }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Fournisseur actuel</div>
+            <div class="field-value">{{ fournisseur }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Le Mandataire</div>
+      </div>
+      <div class="section-body">
+        <div class="grid">
+          <div class="field">
+            <div class="field-label">Société</div>
+            <div class="field-value">LILISTRAT STRATÉGIE SAS</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Marque commerciale</div>
+            <div class="field-value">LILIWATT</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Email</div>
+            <div class="field-value">contact@liliwatt.fr</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Site internet</div>
+            <div class="field-value">www.liliwatt.fr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">LILIWATT</div>
+    <div class="footer-mid">LILISTRAT STRATÉGIE SAS · contact@liliwatt.fr · www.liliwatt.fr</div>
+    <div class="footer-right">Document : {{ doc_id }}</div>
+  </div>
+
+</div><!-- /page 1 -->
+
+
+<!-- ══════════════════ PAGE 2 ══ -->
+<div class="page">
+
+  <div class="page2-header">
+    <div class="p2-logo">⚡ LILIWATT</div>
+    <div class="p2-doctitle">MANDAT DE COURTAGE</div>
+  </div>
+  <div class="header-accent"></div>
+
+  <div class="body">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Objet du Mandat</div>
+      </div>
+      <div class="section-body">
+        <p style="font-size:8.5pt; color:#374151; margin-bottom:10px;">
+          Le Mandant confie à <strong>LILIWATT</strong> un mandat non exclusif de courtage en énergie afin de :
+        </p>
+        <ul class="bullet-list">
+          <li>Rechercher les meilleures offres d'énergie du marché</li>
+          <li>Négocier les tarifs auprès des fournisseurs partenaires</li>
+          <li>Accéder aux données de consommation Enedis / GRDF</li>
+          <li>Transmettre les données aux fournisseurs dans le cadre d'une demande d'offre</li>
+          <li>Accompagner le changement de fournisseur le cas échéant</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-title">Conditions</div>
+      </div>
+      <div class="section-body">
+        <table class="cond-table">
+          <tr>
+            <td class="cond-key">Durée</td>
+            <td class="cond-val">12 mois à compter de la date de signature, renouvelable par tacite reconduction</td>
+          </tr>
+          <tr>
+            <td class="cond-key">Rémunération</td>
+            <td class="cond-val">LILIWATT est rémunéré directement par les fournisseurs. <strong>Aucun frais au Mandant.</strong></td>
+          </tr>
+          <tr>
+            <td class="cond-key">Résiliation</td>
+            <td class="cond-val">Résiliable à tout moment par email à <strong>contact@liliwatt.fr</strong></td>
+          </tr>
+          <tr>
+            <td class="cond-key">Exclusivité</td>
+            <td class="cond-val">Mandat non exclusif — le Mandant reste libre de contracter directement</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="rgpd-section">
+      <div class="rgpd-header">
+        <div class="section-dot"></div>
+        <div class="section-title" style="color:var(--purple);">Données Personnelles &amp; RGPD</div>
+      </div>
+      <div class="rgpd-body">
+
+        <div class="rgpd-row">
+          <div class="rgpd-icon">📋</div>
+          <div class="rgpd-text">
+            <div class="rgpd-key">Base légale &amp; finalité</div>
+            <div class="rgpd-val">Conformément au RGPD (UE 2016/679), les données collectées sont traitées sur la base de votre consentement et utilisées <strong>uniquement</strong> dans le cadre de l'exécution du présent mandat de courtage en énergie.</div>
+          </div>
+        </div>
+
+        <div class="rgpd-divider"></div>
+
+        <div class="rgpd-row">
+          <div class="rgpd-icon">🔒</div>
+          <div class="rgpd-text">
+            <div class="rgpd-key">Protection &amp; confidentialité</div>
+            <div class="rgpd-val">Vos données personnelles ne sont <strong>jamais revendues</strong> ni transmises à des tiers en dehors des fournisseurs d'énergie partenaires sollicités dans le cadre de votre demande d'offre.</div>
+          </div>
+        </div>
+
+        <div class="rgpd-divider"></div>
+
+        <div class="rgpd-row">
+          <div class="rgpd-icon">✉️</div>
+          <div class="rgpd-text">
+            <div class="rgpd-key">Vos droits (accès, rectification, suppression)</div>
+            <div class="rgpd-val">Vous disposez d'un droit d'accès, de rectification et de suppression de vos données à tout moment. Pour exercer ces droits, contactez-nous à <strong>contact@liliwatt.fr</strong>.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="signature-box">
+      <div class="signature-header">
+        <div class="section-dot"></div>
+        <div class="section-title" style="color:var(--purple);">Signature Électronique</div>
+      </div>
+      <div class="signature-body">
+        <div class="sig-check">
+          <div class="checkmark">✓</div>
+          <div class="sig-accepted">Accepté en ligne le {{ date_signature }}</div>
+        </div>
+        <div class="sig-meta">
+          <div class="field">
+            <div class="field-label">Signataire</div>
+            <div class="field-value" style="font-size:8.5pt;">{{ nom_prenom }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Email</div>
+            <div class="field-value" style="font-size:8pt;">{{ email }}</div>
+          </div>
+          <div class="field">
+            <div class="field-label">Adresse IP</div>
+            <div class="field-value" style="font-size:8.5pt;">{{ ip }}</div>
+          </div>
+        </div>
+        <div class="sig-note">
+          La case cochée par le signataire vaut consentement au sens de l'article 7 du RGPD et constitue une preuve de signature électronique.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">LILIWATT</div>
+    <div class="footer-mid">LILISTRAT STRATÉGIE SAS · contact@liliwatt.fr · www.liliwatt.fr</div>
+    <div class="footer-right">Document : {{ doc_id }}</div>
+  </div>
+
+</div><!-- /page 2 -->
+
+</body>
+</html>
