@@ -227,6 +227,12 @@
     .screen.on {
       padding-bottom: 40px !important;
     }
+
+    /* Masquer le header lavande fixe sur mobile */
+    div[style*="position:fixed"][style*="top:0"][style*="width:100vw"][style*="height:70px"],
+    div[style*="position:fixed"][style*="background:#f0eeff"] {
+      display: none !important;
+    }
   }
 
   /* Form card avec bordure violette lumineuse */
