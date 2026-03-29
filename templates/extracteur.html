@@ -2047,6 +2047,18 @@ function go(from, to, pct) {
   if (to === 's-estimate-type') {
     loadEstimateCards();
   }
+
+  // Masquer header "Analyseur Intelligent" sur écran résultats mobile
+  const header = document.querySelector('div[style*="Analyseur Intelligent"]');
+  if (header) {
+    if (to === 's5') {
+      // Sur écran résultats, masquer le header
+      header.style.display = 'none';
+    } else {
+      // Sur autres écrans, afficher seulement si desktop
+      header.style.display = window.innerWidth > 768 ? 'flex' : 'none';
+    }
+  }
 }
 
 function goLoader() {
