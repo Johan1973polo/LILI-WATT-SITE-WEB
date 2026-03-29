@@ -22,6 +22,8 @@ import base64
 from pdf2image import convert_from_bytes
 from werkzeug.utils import secure_filename
 from utils.generate_mandat import generate_mandat_pdf, generate_mandat_data
+from xhtml2pdf import pisa
+from io import BytesIO
 
 # Charger les variables d'environnement
 load_dotenv()
@@ -547,8 +549,8 @@ def send_email_prospect(data, eco):
         print(f"Erreur email prospect : {e}")
         return False
 
-def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=None, mandat_filename=None):
-    """Email conseiller - AVEC pièce jointe PDF du mandat"""
+def send_alert_conseiller(data, eco, doc_id=None):
+    """Email conseiller - génère et joint le PDF du mandat depuis le HTML"""
     try:
         msg = MIMEMultipart("mixed")
         msg["Subject"] = f"🔔 Nouveau mandat signé — {data['prenom']} {data['nom']} — {eco['eco_min']}€ à {eco['eco_max']}€"
@@ -556,14 +558,31 @@ def send_alert_conseiller(data, eco, mandat_drive_url=None, mandat_pdf_bytes=Non
         msg["Reply-To"] = "contact@liliwatt.fr"
         msg["To"]      = CONSEILLER_EMAIL
 
+        # Générer le PDF du mandat depuis le HTML pour l'email
+        mandat_pdf_bytes = None
+        mandat_filename = None
+        if doc_id and doc_id in mandats_temp:
+            try:
+                mandat_data = mandats_temp[doc_id]
+                # Rendre le template HTML
+                html_content = render_template('mandat_template.html', **mandat_data)
+                # Convertir HTML en PDF
+                pdf_buffer = BytesIO()
+                pisa_status = pisa.CreatePDF(BytesIO(html_content.encode('utf-8')), dest=pdf_buffer)
+                if not pisa_status.err:
+                    mandat_pdf_bytes = pdf_buffer.getvalue()
+                    mandat_filename = f"mandat_{data.get('nom', '')}_{doc_id}.pdf"
+            except Exception as e:
+                print(f"Erreur génération PDF mandat : {e}")
+
         mandat_section = ""
-        if mandat_drive_url:
+        if mandat_pdf_bytes:
             mandat_section = f"""
               <tr><td colspan="2"><hr style="border:none;border-top:1px solid #e5e7eb;margin:8px 0"></td></tr>
               <tr><td style="color:#6B7280;padding:6px 0">Mandat signé</td>
                   <td>
-                    <a href="{mandat_drive_url}" style="color:#7C3AED;font-weight:600" target="_blank">📎 Voir le mandat sur Drive</a>
-                    <br><span style="font-size:11px;color:#6B7280;">PDF en pièce jointe ci-dessous</span>
+                    <span style="color:#10B981;font-weight:600">✅ PDF du mandat joint ci-dessous</span>
+                    <br><span style="font-size:11px;color:#6B7280;">Document généré électroniquement</span>
                   </td></tr>
             """
 
@@ -1222,6 +1241,7 @@ def submit_lead():
         mandat_pdf_bytes = None
         mandat_filename = None
         mandat_drive_url = None
+        doc_id = None
 
         # Générer le PDF du mandat si consentement RGPD
         if data.get("rgpd_consent"):
@@ -1265,7 +1285,7 @@ def submit_lead():
 
         # Envoyer emails
         send_email_prospect(data, eco)  # Prospect sans PDF
-        send_alert_conseiller(data, eco, mandat_drive_url, mandat_pdf_bytes, mandat_filename)  # Conseiller avec PDF
+        send_alert_conseiller(data, eco, doc_id)  # Conseiller avec PDF généré depuis HTML
 
         return jsonify({
             "success": True,
