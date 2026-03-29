@@ -230,8 +230,15 @@
 
     /* Masquer le header lavande fixe sur mobile */
     div[style*="position:fixed"][style*="top:0"][style*="width:100vw"][style*="height:70px"],
-    div[style*="position:fixed"][style*="background:#f0eeff"] {
+    div[style*="position:fixed"][style*="background:#f0eeff"],
+    div[style*="100vw"][style*="70px"],
+    div[style*="Analyseur Intelligent"] {
       display: none !important;
+    }
+
+    /* Ajuster padding-top sur left-panel pour compenser */
+    #left-panel {
+      padding-top: 0 !important;
     }
   }
 
