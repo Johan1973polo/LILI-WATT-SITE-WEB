@@ -1010,7 +1010,7 @@
 
   <script>
         /* ═══════════════════════════════════════════════════════════════════════ */
-    /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE */
+    /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE (DESKTOP ONLY) */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
       try {
@@ -1026,7 +1026,15 @@
         { pos: 1200, bg: 'linear-gradient(135deg, #7c3aed, #a855f7)', shadow: 'rgba(124,58,237,0.4)' },
       ];
 
-      // Animation physique ressort
+      // MOBILE : Version simplifiée statique (pas d'animation 60fps)
+      if (window.innerWidth <= 768) {
+        liliBtn.style.background = scrollColors[0].bg;
+        liliBtn.style.boxShadow = `0 8px 30px ${scrollColors[0].shadow}`;
+        liliBtn.style.transition = 'transform 0.2s ease';
+        return; // Pas d'animation coûteuse sur mobile
+      }
+
+      // DESKTOP : Animation physique ressort
       let targetY = window.scrollY;
       let currentY = window.scrollY;
       let velocity = 0;
