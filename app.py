@@ -22,7 +22,6 @@ import base64
 from pdf2image import convert_from_bytes
 from werkzeug.utils import secure_filename
 from utils.generate_mandat import generate_mandat_pdf, generate_mandat_data
-from xhtml2pdf import pisa
 from io import BytesIO
 
 # Charger les variables d'environnement
@@ -46,6 +45,7 @@ GMAIL_USER           = os.getenv("GMAIL_USER", "contact@liliwatt.fr")
 GMAIL_PASSWORD       = os.getenv("GMAIL_PASSWORD", "VOTRE_APP_PASSWORD")
 CONSEILLER_EMAIL     = os.getenv("CONSEILLER_EMAIL", "contact@liliwatt.fr")
 ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
+PDFSHIFT_API_KEY     = os.getenv("PDFSHIFT_API_KEY", "sk_e673176851840a5914f85f27fcf04d7e42cda567")
 
 # Client Anthropic
 anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
@@ -566,11 +566,14 @@ def send_alert_conseiller(data, eco, doc_id=None):
                 mandat_data = mandats_temp[doc_id]
                 # Rendre le template HTML
                 html_content = render_template('mandat_template.html', **mandat_data)
-                # Convertir HTML en PDF
-                pdf_buffer = BytesIO()
-                pisa_status = pisa.CreatePDF(BytesIO(html_content.encode('utf-8')), dest=pdf_buffer)
-                if not pisa_status.err:
-                    mandat_pdf_bytes = pdf_buffer.getvalue()
+                # Convertir HTML en PDF via PDFShift
+                response = requests.post(
+                    'https://api.pdfshift.io/v3/convert/pdf',
+                    headers={'X-API-Key': PDFSHIFT_API_KEY, 'Content-Type': 'application/json'},
+                    json={'source': html_content, 'sandbox': False}
+                )
+                if response.status_code == 200:
+                    mandat_pdf_bytes = response.content
                     mandat_filename = f"mandat_{data.get('nom', '')}_{doc_id}.pdf"
             except Exception as e:
                 print(f"Erreur génération PDF mandat : {e}")
