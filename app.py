@@ -1,3 +1,4 @@
+mandats_temp = {}  # Stockage temporaire des mandats
 from flask import Flask, render_template, send_file, redirect, request, jsonify
 from flask_caching import Cache
 from datetime import datetime, timezone
@@ -1871,6 +1872,16 @@ def chat():
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404 - Page non trouvée</h1><p>Cette page n'existe pas.</p><a href='/'>Retour à l'accueil</a>", 404
+
+
+@app.route('/mandat/<doc_id>')
+def afficher_mandat(doc_id):
+    """Affiche le mandat en HTML pour impression PDF"""
+    # Récupérer les données depuis la session ou un fichier temp
+    data = mandats_temp.get(doc_id, {})
+    if not data:
+        return "Mandat non trouvé", 404
+    return render_template('mandat_template.html', **data)
 
 if __name__ == '__main__':
     print("🚀 LILIWATT Website lancé sur http://localhost:8080")
