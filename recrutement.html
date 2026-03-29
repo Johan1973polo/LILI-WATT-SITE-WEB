@@ -615,6 +615,71 @@
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
   <!-- CHATBOT LILI FLOTTANT -->
   <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="lili-chat-widget">
+    <!-- Bouton flottant -->
+    <div id="lili-bubble" onclick="toggleChat()">
+      <div class="lili-avatar-btn">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
+          <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
+        </svg>
+      </div>
+      <span class="lili-badge">LILI</span>
+      <div class="lili-notification" id="lili-notif">💬</div>
+    </div>
+
+    <!-- Fenêtre de chat -->
+    <div id="lili-window" style="display: none;">
+      <div class="lili-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="lili-avatar">
+            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
+              <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 15px;">LILI</div>
+            <div style="font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 5px;">
+              <span class="status-dot"></span>
+              En ligne
+            </div>
+          </div>
+        </div>
+        <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button>
+      </div>
+
+      <div class="lili-messages" id="lili-messages">
+        <div class="lili-msg lili-bot">
+          <div class="lili-msg-avatar">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
+              <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
+            </svg>
+          </div>
+          <div class="lili-msg-content">
+            Bonjour ! Je suis LILI, votre conseillère énergie 😊<br><br>
+            Comment puis-je vous aider aujourd'hui ?
+          </div>
+        </div>
+        <div class="lili-suggestions">
+          <button onclick="sendSuggestion('Je veux analyser ma facture')">💡 Analyser ma facture</button>
+          <button onclick="sendSuggestion('Quelles aides pour la rénovation ?')">🏠 Aides rénovation</button>
+          <button onclick="sendSuggestion('Je veux être rappelé')">📞 Être rappelé</button>
+        </div>
+      </div>
+
+      <div class="lili-input-zone">
+        <input type="text" id="lili-input" placeholder="Posez votre question..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <style>
     /* ═══════════════════════════════════════════════════════════════════════ */
     /* CHATBOT LILI - STYLES */
@@ -947,79 +1012,18 @@
     }
   </style>
 
-  <div id="lili-chat-widget">
-    <!-- Bouton flottant -->
-    <div id="lili-bubble" onclick="toggleChat()">
-      <div class="lili-avatar-btn">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
-          <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
-        </svg>
-      </div>
-      <span class="lili-badge">LILI</span>
-      <div class="lili-notification" id="lili-notif">💬</div>
-    </div>
-
-    <!-- Fenêtre de chat -->
-    <div id="lili-window" style="display: none;">
-      <div class="lili-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div class="lili-avatar">
-            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
-              <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
-            </svg>
-          </div>
-          <div>
-            <div style="font-weight: 600; font-size: 15px;">LILI</div>
-            <div style="font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 5px;">
-              <span class="status-dot"></span>
-              En ligne
-            </div>
-          </div>
-        </div>
-        <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button>
-      </div>
-
-      <div class="lili-messages" id="lili-messages">
-        <div class="lili-msg lili-bot">
-          <div class="lili-msg-avatar">
-            <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 20C5 20 10 10 20 10C30 10 35 20 35 20C35 20 30 30 20 30C10 30 5 20 5 20Z" fill="white" opacity="0.9"/>
-              <circle cx="20" cy="20" r="4" fill="#7C3AED"/>
-            </svg>
-          </div>
-          <div class="lili-msg-content">
-            Bonjour ! Je suis LILI, votre conseillère énergie 😊<br><br>
-            Comment puis-je vous aider aujourd'hui ?
-          </div>
-        </div>
-        <div class="lili-suggestions">
-          <button onclick="sendSuggestion('Je veux analyser ma facture')">💡 Analyser ma facture</button>
-          <button onclick="sendSuggestion('Quelles aides pour la rénovation ?')">🏠 Aides rénovation</button>
-          <button onclick="sendSuggestion('Je veux être rappelé')">📞 Être rappelé</button>
-        </div>
-      </div>
-
-      <div class="lili-input-zone">
-        <input type="text" id="lili-input" placeholder="Posez votre question..." onkeypress="if(event.key==='Enter') sendMessage()">
-        <button onclick="sendMessage()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
   <script>
-        /* ═══════════════════════════════════════════════════════════════════════ */
-    /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE (DESKTOP ONLY) */
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    /* CHATBOT LILI - JAVASCRIPT */
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    
+    /* ═══════════════════════════════════════════════════════════════════════ */
+    /* CHATBOT COULEUR DYNAMIQUE SCROLL + REBOND IDLE */
     /* ═══════════════════════════════════════════════════════════════════════ */
     (function() {
       try {
-      const liliBtn = document.getElementById('lili-bubble');
-      if (!liliBtn) return;
+        const liliBtn = document.getElementById('lili-bubble');
+        if (!liliBtn) return;
 
       // Couleurs selon position de scroll
       const scrollColors = [
@@ -1030,15 +1034,7 @@
         { pos: 1200, bg: 'linear-gradient(135deg, #7c3aed, #a855f7)', shadow: 'rgba(124,58,237,0.4)' },
       ];
 
-      // MOBILE : Version simplifiée statique (pas d'animation 60fps)
-      if (window.innerWidth <= 768) {
-        liliBtn.style.background = scrollColors[0].bg;
-        liliBtn.style.boxShadow = `0 8px 30px ${scrollColors[0].shadow}`;
-        liliBtn.style.transition = 'transform 0.2s ease';
-        return; // Pas d'animation coûteuse sur mobile
-      }
-
-      // DESKTOP : Animation physique ressort
+      // Animation physique ressort
       let targetY = window.scrollY;
       let currentY = window.scrollY;
       let velocity = 0;
@@ -1064,7 +1060,7 @@
         // Appliquer couleur avec transition douce
         if (liliBtn) {
           liliBtn.style.background = color.bg;
-          liliBtn.style.boxShadow = \`0 8px 30px \${color.shadow}\`;
+          liliBtn.style.boxShadow = `0 8px 30px ${color.shadow}`;
           liliBtn.style.transition = 'background 0.8s ease, box-shadow 0.8s ease';
         }
 
@@ -1072,7 +1068,7 @@
         const rotation = Math.max(-15, Math.min(15, velocity * 0.5));
         const icon = liliBtn ? liliBtn.querySelector('.lili-avatar-btn, svg, span') : null;
         if (icon) {
-          icon.style.transform = \`rotate(\${rotation}deg)\`;
+          icon.style.transform = `rotate(${rotation}deg)`;
           icon.style.transition = 'transform 0.3s ease';
         }
 
@@ -1093,7 +1089,7 @@
 
       // CSS animation rebond
       const style = document.createElement('style');
-      style.textContent = \`
+      style.textContent = `
       @keyframes liliBounce {
         0%   { transform: translateY(0) scale(1); }
         30%  { transform: translateY(-12px) scale(1.1); }
@@ -1101,7 +1097,7 @@
         80%  { transform: translateY(-4px) scale(1.02); }
         100% { transform: translateY(0) scale(1); }
       }
-      \`;
+      `;
       document.head.appendChild(style);
 
       window.addEventListener('scroll', resetIdle);
@@ -1111,7 +1107,6 @@
         console.log('Scroll animation error:', e);
       }
     })();
-
 
 
     let chatHistory = [{
@@ -1283,10 +1278,9 @@ Pour tout RDV ou rappel : demande nom + téléphone`
     }, 8000);
   </script>
 
-  <script src="assets/js/recrutement-form.js"></script>
-
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
 <!-- BANNIÈRE COOKIES RGPD -->
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <div id="cookie-banner" style="
