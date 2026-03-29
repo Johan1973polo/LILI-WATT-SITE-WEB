@@ -3438,3 +3438,41 @@ body.extracteur-page {
     background-attachment: scroll;
   }
 }
+
+/* ===== MENU MOBILE FIX DEFINITIF ===== */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: white !important;
+    z-index: 99999 !important;
+    padding: 80px 32px 32px !important;
+    overflow-y: auto !important;
+  }
+  .nav-menu.open {
+    display: flex !important;
+  }
+  .nav-menu a {
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    color: #1e1b4b !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #f0eeff !important;
+    text-decoration: none !important;
+    display: block !important;
+  }
+  .nav-menu a:hover {
+    color: #7c3aed !important;
+  }
+  .menu-toggle {
+    display: flex !important;
+    z-index: 100000 !important;
+    position: relative !important;
+    cursor: pointer !important;
+  }
+}
