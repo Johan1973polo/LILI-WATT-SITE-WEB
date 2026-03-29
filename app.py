@@ -1212,8 +1212,6 @@ def analyze_invoice():
         
         # Stocker la facture sur disque (survit aux redémarrages worker)
         import uuid
-        import tempfile
-        import os
         facture_id = str(uuid.uuid4())[:8].upper()
         temp_dir = '/tmp/liliwatt_factures'
         os.makedirs(temp_dir, exist_ok=True)
