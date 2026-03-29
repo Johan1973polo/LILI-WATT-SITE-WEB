@@ -1,4 +1,5 @@
-mandats_temp = {}  # Stockage temporaire des mandats
+mandats_temp = {}
+factures_temp = {}  # Stockage temporaire factures  # Stockage temporaire des mandats
 from flask import Flask, render_template, send_file, redirect, request, jsonify
 from flask_caching import Cache
 from datetime import datetime, timezone
@@ -549,8 +550,8 @@ def send_email_prospect(data, eco):
         print(f"Erreur email prospect : {e}")
         return False
 
-def send_alert_conseiller(data, eco, doc_id=None):
-    """Email conseiller - génère et joint le PDF du mandat depuis le HTML"""
+def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
+    """Email conseiller - génère et joint le PDF du mandat depuis le HTML + la facture"""
     try:
         msg = MIMEMultipart("mixed")
         msg["Subject"] = f"🔔 Nouveau mandat signé — {data['prenom']} {data['nom']} — {eco['eco_min']}€ à {eco['eco_max']}€"
@@ -577,6 +578,18 @@ def send_alert_conseiller(data, eco, doc_id=None):
                     mandat_filename = f"mandat_{data.get('nom', '')}_{doc_id}.pdf"
             except Exception as e:
                 print(f"Erreur génération PDF mandat : {e}")
+
+        # Récupérer la facture si disponible
+        facture_bytes = None
+        facture_filename = None
+        if facture_id and facture_id in factures_temp:
+            try:
+                facture_data = factures_temp[facture_id]
+                facture_bytes = facture_data['file_bytes']
+                facture_filename = facture_data['filename']
+                print(f"📎 Facture récupérée pour email : {facture_filename}")
+            except Exception as e:
+                print(f"Erreur récupération facture : {e}")
 
         mandat_section = ""
         if mandat_pdf_bytes:
@@ -625,6 +638,22 @@ def send_alert_conseiller(data, eco, doc_id=None):
             pdf_attachment = MIMEApplication(mandat_pdf_bytes, _subtype="pdf")
             pdf_attachment.add_header('Content-Disposition', 'attachment', filename=mandat_filename)
             msg.attach(pdf_attachment)
+
+        # Ajouter la facture en pièce jointe
+        if facture_bytes and facture_filename:
+            ext = facture_filename.rsplit('.', 1)[1].lower() if '.' in facture_filename else ''
+            if ext == 'pdf':
+                facture_attachment = MIMEApplication(facture_bytes, _subtype="pdf")
+            elif ext in ['jpg', 'jpeg']:
+                facture_attachment = MIMEApplication(facture_bytes, _subtype="jpeg")
+            elif ext == 'png':
+                facture_attachment = MIMEApplication(facture_bytes, _subtype="png")
+            else:
+                facture_attachment = MIMEApplication(facture_bytes)
+
+            facture_attachment.add_header('Content-Disposition', 'attachment', filename=facture_filename)
+            msg.attach(facture_attachment)
+            print(f"✅ Facture attachée à l'email : {facture_filename}")
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
@@ -1173,6 +1202,17 @@ def analyze_invoice():
         result = analyze_invoice_with_claude(file_bytes, file_extension)
 
         print(f"📊 Résultat de l'analyse : {result.get('success', False)}")
+        
+        # Stocker la facture temporairement pour l'email conseiller
+        import uuid
+        facture_id = str(uuid.uuid4())[:8].upper()
+        factures_temp[facture_id] = {
+            'file_bytes': file_bytes,
+            'filename': filename,
+            'extension': file_extension
+        }
+        result['facture_id'] = facture_id
+        print(f"💾 Facture stockée avec ID: {facture_id}")
         if "error" in result:
             print(f"❌ ERREUR retournée par analyze_invoice_with_claude : {result['error']}")
             return jsonify({"success": False, "error": result["error"]}), 500
@@ -1288,7 +1328,8 @@ def submit_lead():
 
         # Envoyer emails
         send_email_prospect(data, eco)  # Prospect sans PDF
-        send_alert_conseiller(data, eco, doc_id)  # Conseiller avec PDF généré depuis HTML
+        facture_id = data.get('facture_id')
+        send_alert_conseiller(data, eco, doc_id, facture_id)  # Conseiller avec PDF mandat + facture
 
         return jsonify({
             "success": True,
