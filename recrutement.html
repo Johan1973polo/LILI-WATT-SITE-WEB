@@ -1356,6 +1356,49 @@ Pour tout RDV ou rappel : demande nom + téléphone`
     to   { transform: translateY(0); opacity: 1; }
   }
 }
+
+/* ===== RESPONSIVE MOBILE RECRUTEMENT ===== */
+@media (max-width: 768px) {
+  /* Cartes offres d'emploi */
+  .job-card,
+  div[style*="background:#7c3aed"],
+  div[style*="background: #7c3aed"],
+  .offre-card, .mission-card {
+    padding: 20px 16px !important;
+    margin: 0 8px 16px !important;
+    width: calc(100% - 16px) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Texte des listes */
+  ul li, ol li {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 8px !important;
+    word-break: break-word !important;
+  }
+
+  /* Titres sections */
+  h2, h3 {
+    font-size: 1.3rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Conteneur principal */
+  .container, main, section {
+    padding: 16px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Sections violettes */
+  section[style*="background"],
+  div[style*="background:#7c3aed"] {
+    padding: 24px 16px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+}
 </style>
 
   <div class="cookie-icon">🍪</div>
