@@ -1407,6 +1407,14 @@ Pour tout RDV ou rappel : demande nom + téléphone`
   div[style*="position:fixed"][style*="background: #fff"] {
     display: none !important;
   }
+
+  /* Augmenter z-index menu hamburger pour passer au-dessus de tout */
+  .menu-toggle {
+    z-index: 999999 !important;
+  }
+  .nav-menu.open {
+    z-index: 999998 !important;
+  }
 }
 </style>
 
