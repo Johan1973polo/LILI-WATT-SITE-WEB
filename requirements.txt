@@ -15,4 +15,4 @@ pdf2image==1.16.3
 reportlab==4.0.7
 werkzeug==3.0.1
 gunicorn==21.2.0
-weasyprint
+xhtml2pdf

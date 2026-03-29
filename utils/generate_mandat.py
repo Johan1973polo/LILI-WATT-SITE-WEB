@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """
 Générateur de mandat de courtage LILIWATT en PDF
-Version 3.0 - WeasyPrint + Template HTML
+Version 3.1 - xhtml2pdf (compatible Render sans dépendances système)
 """
 
 import io
 import uuid
 from datetime import datetime
 from flask import render_template
-from weasyprint import HTML
+from xhtml2pdf import pisa
 
 
 def generate_mandat_pdf(data: dict) -> bytes:
     """
-    Génère le PDF mandat via WeasyPrint + template HTML Jinja2.
+    Génère le PDF mandat via xhtml2pdf + template HTML Jinja2.
+
+    xhtml2pdf est une bibliothèque Python pure sans dépendances système,
+    contrairement à WeasyPrint qui nécessite Cairo/Pango.
 
     Args:
         data (dict): Dictionnaire contenant les informations du prospect
@@ -67,7 +70,12 @@ def generate_mandat_pdf(data: dict) -> bytes:
     # Rendre le template HTML
     html_content = render_template('mandat_template.html', **context)
 
-    # Générer le PDF avec WeasyPrint
-    pdf_bytes = HTML(string=html_content).write_pdf()
+    # Générer le PDF avec xhtml2pdf
+    buffer = io.BytesIO()
+    pisa_status = pisa.CreatePDF(html_content, dest=buffer)
 
-    return pdf_bytes
+    if pisa_status.err:
+        print(f"⚠️  Erreur génération PDF xhtml2pdf: {pisa_status.err}")
+
+    buffer.seek(0)
+    return buffer.read()
