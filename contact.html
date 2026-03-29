@@ -1315,8 +1315,13 @@ document.getElementById('newsletter-form').addEventListener('submit', function(e
 <script>
 function toggleMenu() {
   const nav = document.querySelector('.nav-menu');
+  const toggle = document.querySelector('.menu-toggle');
+
   if (nav) {
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    nav.classList.toggle('open');
+  }
+  if (toggle) {
+    toggle.classList.toggle('open');
   }
 }
 </script>
