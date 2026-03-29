@@ -192,6 +192,41 @@
     .form-card {
       padding: 24px 20px !important;
     }
+
+    /* Masquer la barre de réassurance sur mobile */
+    .barre-reassurance,
+    div[style*="position:fixed"][style*="bottom:0"][style*="width:42%"] {
+      display: none !important;
+    }
+
+    /* Correction layout mobile #s5 résultats */
+    #s5 .form-card {
+      margin: 0 !important;
+      padding: 20px 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .result-hero {
+      padding: 20px 16px !important;
+    }
+    .res-amount {
+      font-size: 2.5rem !important;
+    }
+    .contract-detail {
+      padding: 16px !important;
+    }
+    .contract-line {
+      flex-direction: column !important;
+      gap: 4px !important;
+    }
+
+    /* Padding bottom pour éviter que la barre cache le contenu */
+    #left-panel {
+      padding-bottom: 0 !important;
+    }
+    .screen.on {
+      padding-bottom: 40px !important;
+    }
   }
 
   /* Form card avec bordure violette lumineuse */
