@@ -1710,10 +1710,10 @@ pose ces questions UNE PAR UNE avec OPTIONS :
 [OPTIONS: Propriétaire occupant|Propriétaire bailleur|Locataire|Copropriété]"
 3. "Quel est votre code postal ?
 [OPTIONS: Je le saisis dans le formulaire]"
-Puis conclure avec : "Découvrez toutes vos aides en quelques clics ! 
+Puis conclure avec : "Découvrez toutes vos aides en quelques clics !
 Simulez gratuitement vos aides MaPrimeRénov, CEE et ANAH 👇
 [OPTIONS: Simuler mes aides sur liliwatt.fr/c2e.html]"
-→ Ce bouton ouvre : window.open('/c2e.html', '_blank')"
+→ Ce bouton ouvre : window.open('/c2e.html', '_blank')
 
 Quand tu poses une question à choix, termine TOUJOURS
 ta réponse par une ligne spéciale au format :
