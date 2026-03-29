@@ -1535,12 +1535,73 @@ document.getElementById('newsletter-form').addEventListener('submit', function(e
 </script>
 <script>
 function toggleMenu() {
-  const nav = document.querySelector('.nav-menu');
-  const toggle = document.querySelector('.menu-toggle');
-
-  if (nav) {
-    nav.classList.toggle('open');
+  // Solution définitive — overlay menu créé directement dans body
+  const existing = document.getElementById('mobile-menu-overlay');
+  if (existing) {
+    existing.remove();
+    return;
   }
+
+  // Récupérer les liens du nav-menu existant
+  const navMenu = document.querySelector('.nav-menu');
+  if (!navMenu) return;
+  const links = navMenu.querySelectorAll('a');
+
+  // Créer overlay plein écran directement dans body
+  const overlay = document.createElement('div');
+  overlay.id = 'mobile-menu-overlay';
+  overlay.style.cssText = [
+    'position:fixed',
+    'top:0',
+    'left:0',
+    'width:100vw',
+    'height:100vh',
+    'background:white',
+    'z-index:999999',
+    'display:flex',
+    'flex-direction:column',
+    'padding:80px 32px 32px',
+    'box-sizing:border-box',
+    'overflow-y:auto'
+  ].join(';');
+
+  // Bouton fermer
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '✕';
+  closeBtn.style.cssText = [
+    'position:absolute',
+    'top:20px',
+    'right:20px',
+    'background:none',
+    'border:none',
+    'font-size:24px',
+    'cursor:pointer',
+    'color:#7c3aed'
+  ].join(';');
+  closeBtn.onclick = () => overlay.remove();
+  overlay.appendChild(closeBtn);
+
+  // Ajouter les liens
+  links.forEach(link => {
+    const a = document.createElement('a');
+    a.href = link.href;
+    a.textContent = link.textContent;
+    a.style.cssText = [
+      'display:block',
+      'padding:16px 0',
+      'font-size:22px',
+      'font-weight:600',
+      'color:#1e1b4b',
+      'text-decoration:none',
+      'border-bottom:1px solid #f0eeff'
+    ].join(';');
+    a.onclick = () => overlay.remove();
+    overlay.appendChild(a);
+  });
+
+  // Ajouter directement dans body — aucun parent ne peut casser le fixed
+  document.body.appendChild(overlay);
+}
   if (toggle) {
     toggle.classList.toggle('open');
   }
