@@ -1398,6 +1398,15 @@ Pour tout RDV ou rappel : demande nom + téléphone`
     margin: 0 !important;
     border-radius: 0 !important;
   }
+
+  /* Masquer overlays/modals blancs bloquants */
+  .overlay, .modal,
+  div[style*="position:fixed"][style*="background:white"],
+  div[style*="position:fixed"][style*="background:#fff"],
+  div[style*="position:fixed"][style*="background: white"],
+  div[style*="position:fixed"][style*="background: #fff"] {
+    display: none !important;
+  }
 }
 </style>
 
