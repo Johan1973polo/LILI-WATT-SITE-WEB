@@ -1073,7 +1073,7 @@
 
             // Si "aides" ou "rénovation" → redirection /c2e.html
             if (optionLower.includes('aide') || optionLower.includes('rénovation') || optionLower.includes('c2e') || optionLower.includes('cee')) {
-              window.location.href = '/c2e.html';
+              window.open('/c2e.html', '_blank');
               return;
             }
 

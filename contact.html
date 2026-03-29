@@ -548,7 +548,7 @@
         </div>
         <div class="lili-suggestions">
           <button onclick="sendSuggestion('Je veux analyser ma facture')">💡 Analyser ma facture</button>
-          <button onclick="window.location.href='/c2e.html'">🏠 Aides rénovation</button>
+          <button onclick=\"window.open('/c2e.html', '_blank')\">🏠 Aides rénovation</button>
           <button onclick="sendSuggestion('Je veux être rappelé')">📞 Être rappelé</button>
         </div>
       </div>
@@ -1129,7 +1129,7 @@
 
             // Si "aides" ou "rénovation" → redirection /c2e.html
             if (optionLower.includes('aide') || optionLower.includes('rénovation') || optionLower.includes('c2e') || optionLower.includes('cee')) {
-              window.location.href = '/c2e.html';
+              window.open('/c2e.html', '_blank');
               return;
             }
 
