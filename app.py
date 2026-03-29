@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import requests
 import os
+import re
 import gspread
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -988,8 +989,6 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
         print("=" * 60)
 
         # Nettoyer le texte pour extraire uniquement le JSON (regex robuste)
-        import re
-
         # D'abord essayer de retirer les backticks markdown si présents
         if "```json" in response_text:
             response_text = response_text.split("```json")[1].split("```")[0].strip()
