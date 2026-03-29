@@ -21,7 +21,7 @@ import io
 import base64
 from pdf2image import convert_from_bytes
 from werkzeug.utils import secure_filename
-from utils.generate_mandat import generate_mandat_pdf
+from utils.generate_mandat import generate_mandat_pdf, generate_mandat_data
 
 # Charger les variables d'environnement
 load_dotenv()
@@ -1228,7 +1228,8 @@ def submit_lead():
             date_signature = datetime.now().strftime('%d/%m/%Y à %H:%M')
             client_ip = request.remote_addr
 
-            mandat_pdf_bytes = generate_mandat_pdf({
+            # Générer les données du mandat et stocker temporairement
+            mandat_data = generate_mandat_data({
                 'prenom': data.get('prenom'),
                 'nom': data.get('nom'),
                 'nom_entreprise': data.get('nom_entreprise'),
@@ -1244,14 +1245,11 @@ def submit_lead():
                 'ip': client_ip,
                 'date_signature': date_signature,
             })
-
-            # Nom du fichier
-            mandat_filename = f"mandat_{data.get('nom', '').upper()}_{datetime.now().strftime('%Y%m%d')}.pdf"
-
-            # Sauvegarder sur Drive
-            drive_result = save_mandat_to_drive(mandat_pdf_bytes, mandat_filename, data)
-            if drive_result.get("success"):
-                mandat_drive_url = drive_result.get("link")
+            doc_id = mandat_data.get('doc_id')
+            mandats_temp[doc_id] = mandat_data
+            mandat_drive_url = f"/mandat/{doc_id}"
+            mandat_pdf_bytes = None
+            mandat_filename = None
 
             # Ajouter les données du mandat aux données du lead
             data['mandat_signe'] = "OUI"
