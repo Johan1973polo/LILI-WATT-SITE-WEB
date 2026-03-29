@@ -174,6 +174,13 @@
   }
 
   @media (max-width: 768px) {
+    /* Masquer éléments fixes desktop sur mobile */
+    #header-analyseur,
+    #barre-reassurance,
+    #separateur-gradient {
+      display: none !important;
+    }
+
     #left-panel {
       position: fixed !important;
       width: 100% !important;
@@ -1298,7 +1305,7 @@
     </div>
 
     <!-- Header lavande pleine largeur -->
-    <div style="position:fixed;top:0;left:0;width:100vw;height:70px;background:#f0eeff;z-index:10;display:flex;align-items:center;padding:0 40px;">
+    <div id="header-analyseur" style="position:fixed;top:0;left:0;width:100vw;height:70px;background:#f0eeff;z-index:10;display:flex;align-items:center;padding:0 40px;">
       <span style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:#7c3aed;letter-spacing:3px;text-transform:uppercase;">
         Analyseur Intelligent
       </span>
@@ -1730,13 +1737,13 @@
     <div class="mention">LILIWATT · Courtage Énergie B2B & B2C<br>contact@liliwatt.fr · www.liliwatt.fr</div>
   </div>
 
-  <div style="position:fixed;bottom:0;left:0;width:42%;background:white;padding:16px 40px;border-top:1px solid #e5e7eb;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:#374151;z-index:10;">
+  <div id="barre-reassurance" style="position:fixed;bottom:0;left:0;width:42%;background:white;padding:16px 40px;border-top:1px solid #e5e7eb;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:#374151;z-index:10;">
     <span>✓ Analyse en <strong style="color:#7c3aed">30 secondes</strong></span>
     <span>🔒 Données <strong style="color:#7c3aed">100% sécurisées</strong> (RGPD)</span>
     <span>📊 <strong style="color:#7c3aed">+2 000</strong> factures analysées</span>
   </div>
 
-  <div style="position:fixed;top:0;left:42%;width:60px;height:100vh;background:linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(240,238,255,0) 100%);z-index:3;pointer-events:none;"></div>
+  <div id="separateur-gradient" style="position:fixed;top:0;left:42%;width:60px;height:100vh;background:linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(240,238,255,0) 100%);z-index:3;pointer-events:none;"></div>
 
   </div><!-- fin left-panel -->
 
