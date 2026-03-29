@@ -1603,13 +1603,38 @@ def blog():
         data = response.json()
         articles = data.get('articles', [])
 
-        # Filtrer les articles sans image et nettoyer
-        articles = [
-            a for a in articles
-            if a.get('urlToImage') and a.get('title') and a.get('description')
+        # Mots-clés à exclure (hors sujet énergie)
+        exclude_keywords = [
+            'sport', 'football', 'tennis', 'rugby',
+            'cinéma', 'film', 'série', 'musique',
+            'crypto', 'bitcoin', 'nft',
+            'people', 'célébrité', 'star',
+            'jeu vidéo', 'gaming', 'esport',
+            'météo', 'horoscope',
+            'recette', 'cuisine',
+            'mode', 'beauté', 'fashion'
         ]
 
-        return render_template('blog.html', articles=articles)
+        # Filtrer les articles sans image, incomplets et hors sujet
+        filtered_articles = []
+        for a in articles:
+            # Vérifier présence des champs essentiels
+            if not (a.get('urlToImage') and a.get('title') and a.get('description')):
+                continue
+
+            # Vérifier si l'article contient des mots-clés hors sujet
+            title_lower = a.get('title', '').lower()
+            desc_lower = a.get('description', '').lower()
+
+            is_off_topic = any(
+                keyword in title_lower or keyword in desc_lower
+                for keyword in exclude_keywords
+            )
+
+            if not is_off_topic:
+                filtered_articles.append(a)
+
+        return render_template('blog.html', articles=filtered_articles)
 
     except Exception as e:
         print(f"❌ Erreur NewsAPI : {e}")
