@@ -552,6 +552,8 @@ def send_email_prospect(data, eco):
 
 def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
     """Email conseiller - génère et joint le PDF du mandat depuis le HTML + la facture"""
+    print(f"📧 send_alert_conseiller appelé avec facture_id={facture_id}, doc_id={doc_id}")
+    print(f"📦 factures_temp contient : {list(factures_temp.keys())}")
     try:
         msg = MIMEMultipart("mixed")
         msg["Subject"] = f"🔔 Nouveau mandat signé — {data['prenom']} {data['nom']} — {eco['eco_min']}€ à {eco['eco_max']}€"
@@ -582,21 +584,38 @@ def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
         # Récupérer la facture si disponible
         facture_bytes = None
         facture_filename = None
-        if facture_id and facture_id in factures_temp:
-            try:
-                facture_data = factures_temp[facture_id]
-                # Lire depuis disque
-                file_path = facture_data.get('file_path')
-                if file_path and os.path.exists(file_path):
-                    with open(file_path, 'rb') as fp:
-                        facture_bytes = fp.read()
-                    os.remove(file_path)  # Nettoyer après envoi
-                else:
-                    facture_bytes = facture_data.get('file_bytes', b'')
-                facture_filename = facture_data['filename']
-                print(f"📎 Facture récupérée pour email : {facture_filename}")
-            except Exception as e:
-                print(f"Erreur récupération facture : {e}")
+        print(f"🔍 Vérification facture_id: {facture_id}")
+        if facture_id:
+            print(f"✅ facture_id présent: {facture_id}")
+            if facture_id in factures_temp:
+                print(f"✅ facture_id trouvé dans factures_temp")
+                try:
+                    facture_data = factures_temp[facture_id]
+                    print(f"📄 facture_data: {facture_data}")
+                    # Lire depuis disque
+                    file_path = facture_data.get('file_path')
+                    print(f"📂 file_path: {file_path}")
+                    if file_path and os.path.exists(file_path):
+                        print(f"✅ Fichier existe sur disque: {file_path}")
+                        with open(file_path, 'rb') as fp:
+                            facture_bytes = fp.read()
+                        print(f"✅ Facture lue ({len(facture_bytes)} bytes)")
+                        os.remove(file_path)  # Nettoyer après envoi
+                        print(f"🗑️ Fichier supprimé: {file_path}")
+                    else:
+                        print(f"⚠️ Fichier n'existe pas sur disque, fallback vers file_bytes")
+                        facture_bytes = facture_data.get('file_bytes', b'')
+                    facture_filename = facture_data['filename']
+                    print(f"📎 Facture récupérée pour email : {facture_filename}")
+                except Exception as e:
+                    print(f"❌ Erreur récupération facture : {e}")
+                    import traceback
+                    traceback.print_exc()
+            else:
+                print(f"❌ facture_id '{facture_id}' NOT FOUND dans factures_temp")
+                print(f"📦 Keys disponibles: {list(factures_temp.keys())}")
+        else:
+            print(f"❌ facture_id est None ou vide")
 
         mandat_section = ""
         if mandat_pdf_bytes:
@@ -1341,6 +1360,8 @@ def submit_lead():
         # Envoyer emails
         send_email_prospect(data, eco)  # Prospect sans PDF
         facture_id = data.get('facture_id')
+        print(f"📤 submit-lead: facture_id extrait = {facture_id}")
+        print(f"📤 submit-lead: data keys = {list(data.keys())}")
         send_alert_conseiller(data, eco, doc_id, facture_id)  # Conseiller avec PDF mandat + facture
 
         return jsonify({
