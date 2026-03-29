@@ -1089,6 +1089,10 @@ def extracteur_html():
 def blog_article():
     return serve_html('blog-article.html')
 
+@app.route('/blog-reduire-facture-electricite-2026.html')
+def blog_reduire_facture():
+    return serve_html('blog-reduire-facture-electricite-2026.html')
+
 # ──── ROUTES API EXTRACTEUR ──────────────────────────────────
 @app.route("/api/analyze-invoice", methods=["POST"])
 def analyze_invoice():
