@@ -1792,6 +1792,62 @@ def chat():
 
         reply = response_api.content[0].text
         print(f"Réponse générée : {reply[:100]}...")
+
+        # Détecter un numéro de téléphone dans le dernier message utilisateur
+        last_user_msg = ""
+        for m in reversed(messages):
+            if m.get('role') == 'user':
+                last_user_msg = m.get('content', '')
+                break
+
+        phone_pattern = re.compile(r'(?:(?:\+33|0033|0)[1-9])(?:[.\-\s]?\d{2}){4}')
+        phone_found = phone_pattern.search(last_user_msg)
+
+        if phone_found:
+            try:
+                phone = phone_found.group(0)
+                print(f"📞 Numéro détecté : {phone}")
+
+                # Extraire contexte conversation
+                context = ""
+                for m in messages[-6:]:
+                    role = "Visiteur" if m.get('role') == 'user' else "LILI"
+                    msg_content = m.get('content', '')[:100]
+                    context += f"{role} : {msg_content}\n"
+
+                msg_email = MIMEMultipart('alternative')
+                msg_email['Subject'] = f'🔔 LILI — Nouveau lead téléphone : {phone}'
+                msg_email['From'] = f'LILIWATT <{os.environ.get("GMAIL_USER")}>'
+                msg_email['To'] = 'contact@liliwatt.fr'
+
+                html_body = f'''<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+<div style="background:linear-gradient(135deg,#7c3aed,#a855f7);padding:24px;border-radius:12px 12px 0 0;text-align:center;">
+<h2 style="color:#fff;margin:0;">📞 Nouveau lead LILI</h2>
+<p style="color:rgba(255,255,255,0.85);margin:8px 0 0;">Un visiteur a partagé son numéro dans le chat</p>
+</div>
+<div style="background:#f5f3ff;padding:24px;border-radius:0 0 12px 12px;">
+<table style="width:100%;font-size:15px;border-collapse:collapse;">
+<tr><td style="color:#6b7280;padding:8px 0;width:140px;">📞 Téléphone</td>
+<td style="font-weight:700;color:#7c3aed;font-size:18px;">{phone}</td></tr>
+</table>
+<div style="margin-top:20px;padding:16px;background:white;border-radius:8px;border-left:4px solid #7c3aed;">
+<p style="margin:0 0 8px;font-weight:700;color:#1e1b4b;">Contexte de la conversation :</p>
+<pre style="margin:0;font-size:13px;color:#374151;white-space:pre-wrap;">{context}</pre>
+</div>
+<div style="margin-top:16px;text-align:center;">
+<a href="tel:{phone}" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px;">📞 Appeler maintenant</a>
+</div></div></div>'''
+
+                msg_email.attach(MIMEText(html_body, 'html'))
+
+                with smtplib.SMTP('smtp.gmail.com', 587) as s:
+                    s.starttls()
+                    s.login(os.environ.get('GMAIL_USER'), os.environ.get('GMAIL_PASSWORD'))
+                    s.sendmail(os.environ.get('GMAIL_USER'), 'contact@liliwatt.fr', msg_email.as_string())
+                print(f"✅ Email lead envoyé pour {phone}")
+            except Exception as email_err:
+                print(f"⚠️ Erreur envoi email lead : {email_err}")
+
         print(f"=== CHAT LILI TERMINÉ AVEC SUCCÈS ===")
 
         response = jsonify({
