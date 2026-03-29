@@ -1244,6 +1244,77 @@ def analyze_invoice():
         }
         result['facture_id'] = facture_id
         print(f"💾 Facture stockée sur disque avec ID: {facture_id} -> {temp_path}")
+
+        # Envoyer email immédiat avec la facture au conseiller
+        try:
+            print(f"📧 Envoi email immédiat au conseiller avec facture {facture_id}")
+
+            msg = MIMEMultipart("mixed")
+            msg["From"] = GMAIL_USER
+            msg["To"] = CONSEILLER_EMAIL
+            msg["Subject"] = f"📄 Nouvelle facture uploadée — {filename}"
+
+            # Extraire les données détectées pour l'email
+            provider = result.get('data', {}).get('fournisseur', 'Non détecté')
+            segment = result.get('data', {}).get('segment', 'Non détecté')
+            montant = result.get('data', {}).get('montant', 'Non détecté')
+
+            html_body = f"""
+            <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+                <h2 style="color:#d32f2f;">⚠️ Nouvelle facture uploadée</h2>
+                <p><strong>ATTENTION :</strong> Le visiteur n'a pas encore complété le formulaire.</p>
+                <p>Cette facture a été uploadée et analysée, mais le visiteur n'a pas encore soumis ses coordonnées.</p>
+
+                <h3>Informations de la facture :</h3>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr style="background:#f5f5f5;">
+                        <td style="padding:8px;border:1px solid #ddd;"><strong>ID Facture</strong></td>
+                        <td style="padding:8px;border:1px solid #ddd;">{facture_id}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px;border:1px solid #ddd;"><strong>Nom du fichier</strong></td>
+                        <td style="padding:8px;border:1px solid #ddd;">{filename}</td>
+                    </tr>
+                    <tr style="background:#f5f5f5;">
+                        <td style="padding:8px;border:1px solid #ddd;"><strong>Fournisseur détecté</strong></td>
+                        <td style="padding:8px;border:1px solid #ddd;">{provider}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px;border:1px solid #ddd;"><strong>Segment</strong></td>
+                        <td style="padding:8px;border:1px solid #ddd;">{segment}</td>
+                    </tr>
+                    <tr style="background:#f5f5f5;">
+                        <td style="padding:8px;border:1px solid #ddd;"><strong>Montant TTC</strong></td>
+                        <td style="padding:8px;border:1px solid #ddd;">{montant}</td>
+                    </tr>
+                </table>
+
+                <p style="margin-top:20px;color:#666;">
+                    <em>La facture est jointe à cet email. Si le visiteur complète le formulaire,
+                    vous recevrez un second email avec toutes ses coordonnées.</em>
+                </p>
+            </div>
+            """
+
+            msg.attach(MIMEText(html_body, "html"))
+
+            # Attacher la facture
+            with open(temp_path, 'rb') as f:
+                facture_attachment = MIMEApplication(f.read(), _subtype=file_extension.lstrip('.'))
+                facture_attachment.add_header('Content-Disposition', 'attachment', filename=filename)
+                msg.attach(facture_attachment)
+
+            # Envoyer l'email
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+                server.login(GMAIL_USER, GMAIL_PASSWORD)
+                server.sendmail(GMAIL_USER, CONSEILLER_EMAIL, msg.as_string())
+
+            print(f"✅ Email immédiat envoyé au conseiller avec succès")
+        except Exception as e:
+            print(f"⚠️ Erreur envoi email immédiat (non bloquant) : {e}")
+            import traceback
+            traceback.print_exc()
+
         if "error" in result:
             print(f"❌ ERREUR retournée par analyze_invoice_with_claude : {result['error']}")
             return jsonify({"success": False, "error": result["error"]}), 500

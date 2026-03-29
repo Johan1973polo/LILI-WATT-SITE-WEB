@@ -2357,6 +2357,12 @@ async function analyzeInvoiceContinue() {
       // Stocker TOUTES les données extraites dans l'objet D pour les utiliser plus tard
       Object.assign(D, data);
 
+      // Stocker le facture_id (retourné au niveau racine de result, pas dans result.data)
+      if (result.facture_id) {
+        D.facture_id = result.facture_id;
+        console.log('✅ facture_id stocké dans D:', result.facture_id);
+      }
+
       // Mapper les noms de champs de l'API vers les noms utilisés dans le code
       if (data.fournisseur) D.fourn = data.fournisseur;
       if (data.offre) D.nom_offre = data.offre;
