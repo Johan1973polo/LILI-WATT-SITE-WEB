@@ -1709,6 +1709,13 @@ continue la conversation normalement sans format OPTIONS.
 LILIWATT : courtage énergie B2B/B2C, analyse gratuite,
 économies moyennes 18%, sans coupure.
 Aides rénovation : MaPrimeRénov, CEE, Éco-PTZ, ANAH.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÉQUIPE LILIWATT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Kévin Moreau : Président
+- Johan Mallet : Directeur Commercial
+- Emmanuel Leray : Chargé RH
+
 Contact : 01 84 16 08 56
 Extracteur : liliwatt.fr/extracteur"""
 
