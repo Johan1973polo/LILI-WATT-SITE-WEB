@@ -921,7 +921,7 @@ function toggleMenu() {
         </div>
         <div class="lili-suggestions">
           <button onclick="sendSuggestion('Je veux analyser ma facture')">💡 Analyser ma facture</button>
-          <button onclick="sendSuggestion('Quelles aides pour la rénovation ?')">🏠 Aides rénovation</button>
+          <button onclick="window.location.href='/c2e.html'">🏠 Aides rénovation</button>
           <button onclick="sendSuggestion('Je veux être rappelé')">📞 Être rappelé</button>
         </div>
       </div>
@@ -1497,7 +1497,16 @@ function toggleMenu() {
           const btn = document.createElement('button');
           btn.textContent = option;
           btn.onclick = () => {
-            // Envoyer l'option sélectionnée comme message utilisateur
+            // Détection redirection spécifique
+            const optionLower = option.toLowerCase();
+
+            // Si "aides" ou "rénovation" → redirection /c2e.html
+            if (optionLower.includes('aide') || optionLower.includes('rénovation') || optionLower.includes('c2e') || optionLower.includes('cee')) {
+              window.location.href = '/c2e.html';
+              return;
+            }
+
+            // Sinon, envoyer l'option sélectionnée comme message utilisateur
             document.getElementById('lili-input').value = option;
             sendMessage();
             // Retirer les boutons après clic
