@@ -3,27 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --purple:     #6d28d9;
-    --purple-mid: #8b5cf6;
-    --purple-soft:#ede9fe;
-    --purple-xlt: #f5f3ff;
-    --ink:        #1e1b4b;
-    --text:       #374151;
-    --muted:      #6b7280;
-    --border:     #e5e7eb;
-    --bg:         #ffffff;
-  }
+  
 
   body {
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 9pt;
-    color: var(--text);
-    background: var(--bg);
+    color: #374151;
+    background: #ffffff;
     line-height: 1.6;
   }
 
@@ -36,7 +26,7 @@
   }
 
   .header {
-    background: var(--ink);
+    background: #1e1b4b;
     padding: 22px 36px 18px;
     display: flex;
     align-items: center;
@@ -58,7 +48,7 @@
   .logo-icon {
     width: 28px;
     height: 28px;
-    background: var(--purple-mid);
+    background: #8b5cf6;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -101,7 +91,7 @@
 
   .header-accent {
     height: 3px;
-    background: linear-gradient(90deg, var(--purple) 0%, var(--purple-mid) 60%, transparent 100%);
+    background: linear-gradient(90deg, #6d28d9 0%, #8b5cf6 60%, transparent 100%);
   }
 
   .body {
@@ -110,7 +100,7 @@
 
   .section {
     margin-bottom: 18px;
-    border: 1px solid var(--border);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
     overflow: hidden;
   }
@@ -120,22 +110,22 @@
     align-items: center;
     gap: 8px;
     padding: 9px 16px;
-    background: var(--purple-xlt);
-    border-bottom: 1px solid var(--purple-soft);
+    background: #f5f3ff;
+    border-bottom: 1px solid #ede9fe;
   }
 
   .section-dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--purple);
+    background: #6d28d9;
     flex-shrink: 0;
   }
 
   .section-title {
     font-size: 8pt;
     font-weight: 700;
-    color: var(--purple);
+    color: #6d28d9;
     text-transform: uppercase;
     letter-spacing: 0.8px;
   }
@@ -159,7 +149,7 @@
 
   .field-label {
     font-size: 7pt;
-    color: var(--muted);
+    color: #6b7280;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -168,12 +158,12 @@
   .field-value {
     font-size: 9pt;
     font-weight: 600;
-    color: var(--ink);
+    color: #1e1b4b;
   }
 
   .field-value.empty {
     font-weight: 400;
-    color: var(--muted);
+    color: #6b7280;
     font-style: italic;
   }
 
@@ -191,7 +181,7 @@
     align-items: flex-start;
     gap: 8px;
     font-size: 8.5pt;
-    color: var(--text);
+    color: #374151;
   }
 
   .bullet-list li::before {
@@ -199,7 +189,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--purple-mid);
+    background: #8b5cf6;
     flex-shrink: 0;
     margin-top: 5px;
   }
@@ -210,7 +200,7 @@
   }
 
   .cond-table tr {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #e5e7eb;
   }
 
   .cond-table tr:last-child {
@@ -226,13 +216,13 @@
   .cond-key {
     width: 110px;
     font-weight: 600;
-    color: var(--ink);
+    color: #1e1b4b;
     padding-right: 12px;
     font-size: 8pt;
   }
 
   .cond-val {
-    color: var(--text);
+    color: #374151;
   }
 
   .rgpd-section {
@@ -247,7 +237,7 @@
     align-items: center;
     gap: 8px;
     padding: 9px 16px;
-    background: var(--purple-xlt);
+    background: #f5f3ff;
     border-bottom: 1px solid #ddd6fe;
   }
 
@@ -270,7 +260,7 @@
   .rgpd-icon {
     width: 22px;
     height: 22px;
-    background: var(--purple-soft);
+    background: #ede9fe;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -286,7 +276,7 @@
   .rgpd-key {
     font-size: 7.5pt;
     font-weight: 700;
-    color: var(--purple);
+    color: #6d28d9;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     margin-bottom: 1px;
@@ -294,7 +284,7 @@
 
   .rgpd-val {
     font-size: 8.5pt;
-    color: var(--text);
+    color: #374151;
     line-height: 1.5;
   }
 
@@ -305,7 +295,7 @@
   }
 
   .signature-box {
-    border: 1.5px solid var(--purple-soft);
+    border: 1.5px solid #ede9fe;
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 18px;
@@ -316,8 +306,8 @@
     align-items: center;
     gap: 8px;
     padding: 9px 16px;
-    background: var(--purple-xlt);
-    border-bottom: 1px solid var(--purple-soft);
+    background: #f5f3ff;
+    border-bottom: 1px solid #ede9fe;
   }
 
   .signature-body {
@@ -335,7 +325,7 @@
   .checkmark {
     width: 20px;
     height: 20px;
-    background: var(--purple);
+    background: #6d28d9;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -348,7 +338,7 @@
   .sig-accepted {
     font-size: 9pt;
     font-weight: 700;
-    color: var(--purple);
+    color: #6d28d9;
   }
 
   .sig-meta {
@@ -357,15 +347,15 @@
     gap: 10px;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid #e5e7eb;
   }
 
   .sig-note {
     font-size: 7.5pt;
-    color: var(--muted);
+    color: #6b7280;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid #e5e7eb;
     font-style: italic;
   }
 
@@ -375,7 +365,7 @@
     left: 0;
     right: 0;
     padding: 10px 36px;
-    background: var(--ink);
+    background: #1e1b4b;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -401,7 +391,7 @@
   }
 
   .page2-header {
-    background: var(--ink);
+    background: #1e1b4b;
     padding: 14px 36px;
     display: flex;
     align-items: center;
@@ -592,7 +582,7 @@
     <div class="rgpd-section">
       <div class="rgpd-header">
         <div class="section-dot"></div>
-        <div class="section-title" style="color:var(--purple);">Données Personnelles &amp; RGPD</div>
+        <div class="section-title" style="color:#6d28d9;">Données Personnelles &amp; RGPD</div>
       </div>
       <div class="rgpd-body">
 
@@ -630,7 +620,7 @@
     <div class="signature-box">
       <div class="signature-header">
         <div class="section-dot"></div>
-        <div class="section-title" style="color:var(--purple);">Signature Électronique</div>
+        <div class="section-title" style="color:#6d28d9;">Signature Électronique</div>
       </div>
       <div class="signature-body">
         <div class="sig-check">
