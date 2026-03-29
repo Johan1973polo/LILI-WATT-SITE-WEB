@@ -585,7 +585,14 @@ def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
         if facture_id and facture_id in factures_temp:
             try:
                 facture_data = factures_temp[facture_id]
-                facture_bytes = facture_data['file_bytes']
+                # Lire depuis disque
+                file_path = facture_data.get('file_path')
+                if file_path and os.path.exists(file_path):
+                    with open(file_path, 'rb') as fp:
+                        facture_bytes = fp.read()
+                    os.remove(file_path)  # Nettoyer après envoi
+                else:
+                    facture_bytes = facture_data.get('file_bytes', b'')
                 facture_filename = facture_data['filename']
                 print(f"📎 Facture récupérée pour email : {facture_filename}")
             except Exception as e:
@@ -1203,16 +1210,23 @@ def analyze_invoice():
 
         print(f"📊 Résultat de l'analyse : {result.get('success', False)}")
         
-        # Stocker la facture temporairement pour l'email conseiller
+        # Stocker la facture sur disque (survit aux redémarrages worker)
         import uuid
+        import tempfile
+        import os
         facture_id = str(uuid.uuid4())[:8].upper()
+        temp_dir = '/tmp/liliwatt_factures'
+        os.makedirs(temp_dir, exist_ok=True)
+        temp_path = os.path.join(temp_dir, f"{facture_id}_{filename}")
+        with open(temp_path, 'wb') as tmp_f:
+            tmp_f.write(file_bytes)
         factures_temp[facture_id] = {
-            'file_bytes': file_bytes,
+            'file_path': temp_path,
             'filename': filename,
             'extension': file_extension
         }
         result['facture_id'] = facture_id
-        print(f"💾 Facture stockée avec ID: {facture_id}")
+        print(f"💾 Facture stockée sur disque avec ID: {facture_id} -> {temp_path}")
         if "error" in result:
             print(f"❌ ERREUR retournée par analyze_invoice_with_claude : {result['error']}")
             return jsonify({"success": False, "error": result["error"]}), 500
