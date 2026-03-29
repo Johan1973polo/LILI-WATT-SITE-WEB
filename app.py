@@ -1872,12 +1872,12 @@ def chat():
             messages = messages[-10:]
 
         print(f"Nombre de messages dans l'historique : {len(messages)}")
-        print(f"Modèle utilisé : claude-haiku-4-5-20251001")
+        print(f"Modèle utilisé : claude-3-5-haiku-20241022")
 
         client = anthropic.Anthropic(api_key=api_key)
 
         response_api = client.messages.create(
-            model="claude-haiku-4-5-20251001",
+            model="claude-3-5-haiku-20241022",
             max_tokens=500,
             system=LILI_SYSTEM_PROMPT,
             messages=messages
