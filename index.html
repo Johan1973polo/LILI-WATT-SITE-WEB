@@ -149,7 +149,25 @@
         padding: 80px 20px !important;
       }
     }
-  </style>
+  
+  /* Photos témoignages */
+  .testimonial-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid;
+    border-image: linear-gradient(135deg, #7c3aed, #d946ef) 1;
+    filter: grayscale(100%);
+    flex-shrink: 0;
+  }
+  
+  .testimonial-author-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+</style>
 
 </head>
 <body>
@@ -606,8 +624,13 @@
           </div>
           <p class="card-text" style="font-style: italic; margin-bottom: 1.5rem;">"En tant que boulanger, ma facture d'électricité était mon cauchemar. LILIWATT m'a fait économiser 558€ par an, sans rien changer à mes habitudes. Le passage s'est fait sans coupure."</p>
           <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
-            <h4 style="margin-bottom: 0.25rem;">Marc D.</h4>
-            <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Boulangerie, Paris 11ème</p>
+            <div class="testimonial-author-row">
+              <div>
+                <h4 style="margin-bottom: 0.25rem;">Marc D.</h4>
+                <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Boulangerie, Paris 11ème</p>
+              </div>
+              <img src="images/TEMOIGNAGES/Marc D..png" alt="Marc D." class="testimonial-photo">
+            </div>
           </div>
         </div>
 
@@ -627,8 +650,13 @@
           </div>
           <p class="card-text" style="font-style: italic; margin-bottom: 1.5rem;">"Gérant d'un hôtel 3 étoiles, je pensais avoir déjà le meilleur tarif. LILIWATT a trouvé mieux et m'a accompagné dans toutes les démarches. Service impeccable."</p>
           <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
-            <h4 style="margin-bottom: 0.25rem;">Sophie L.</h4>
-            <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Hôtel Le Rivage, Lyon</p>
+            <div class="testimonial-author-row">
+              <div>
+                <h4 style="margin-bottom: 0.25rem;">Sophie L.</h4>
+                <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Hôtel Le Rivage, Lyon</p>
+              </div>
+              <img src="images/TEMOIGNAGES/Sophie L..png" alt="Sophie L." class="testimonial-photo">
+            </div>
           </div>
         </div>
 
@@ -648,8 +676,13 @@
           </div>
           <p class="card-text" style="font-style: italic; margin-bottom: 1.5rem;">"Pour ma laverie, LILIWATT a comparé toutes les offres et m'a fait passer à une offre SPOT. Résultat : 1 200€ économisés la première année. Je recommande."</p>
           <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
-            <h4 style="margin-bottom: 0.25rem;">Ahmed B.</h4>
-            <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Laverie Éclair, Marseille</p>
+            <div class="testimonial-author-row">
+              <div>
+                <h4 style="margin-bottom: 0.25rem;">Ahmed B.</h4>
+                <p style="color: var(--steel); font-size: 0.9rem; margin: 0;">Laverie Éclair, Marseille</p>
+              </div>
+              <img src="images/TEMOIGNAGES/Ahmed B..png" alt="Ahmed B." class="testimonial-photo">
+            </div>
           </div>
         </div>
       </div>
