@@ -971,7 +971,7 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après, sans markdown, san
 
         for attempt in range(max_retries):
             try:
-                model_name = "claude-opus-4-20250514"
+                model_name = "claude-haiku-4-5-20251001"
                 print(f"🤖 Appel Claude Vision (tentative {attempt + 1}/{max_retries})...")
                 print(f"   📌 Modèle : {model_name}")
                 print(f"   📌 Max tokens : 1024")
