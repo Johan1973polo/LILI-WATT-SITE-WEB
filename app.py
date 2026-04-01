@@ -542,7 +542,7 @@ def send_email_prospect(data, eco):
 
         msg.attach(MIMEText(html, "html"))
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, data["email"], msg.as_string())
         return True
@@ -681,7 +681,7 @@ def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
             msg.attach(facture_attachment)
             print(f"✅ Facture attachée à l'email : {facture_filename}")
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, CONSEILLER_EMAIL, msg.as_string())
         return True
@@ -723,7 +723,7 @@ def send_contact_email(nom, email, telephone, message, sujet):
 
         msg.attach(MIMEText(html, "html"))
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, "contact@liliwatt.fr", msg.as_string())
         return True
@@ -786,7 +786,7 @@ def send_recrutement_email(nom, email, telephone, poste, message, cv_filename=No
             cv_attachment.add_header('Content-Disposition', 'attachment', filename=cv_filename)
             msg.attach(cv_attachment)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, "recrutement@liliwatt.fr", msg.as_string())
         return True
@@ -1305,7 +1305,7 @@ def analyze_invoice():
                 msg.attach(facture_attachment)
 
             # Envoyer l'email
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
                 server.login(GMAIL_USER, GMAIL_PASSWORD)
                 server.sendmail(GMAIL_USER, CONSEILLER_EMAIL, msg.as_string())
 
@@ -1580,7 +1580,7 @@ def contact_c2e():
         msg.attach(MIMEText(html_body, 'html'))
 
         print("Envoi email via SMTP...")
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        with smtplib.SMTP("smtp.zoho.eu", 587) as server:
             server.starttls()
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, 'contact@liliwatt.fr', msg.as_string())
@@ -1658,7 +1658,7 @@ def rgpd_demande():
         msg.attach(MIMEText(html_body, 'html'))
 
         print("Envoi email RGPD via SMTP...")
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        with smtplib.SMTP("smtp.zoho.eu", 587) as server:
             server.starttls()
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, 'dpo@liliwatt.fr', msg.as_string())
@@ -2006,7 +2006,7 @@ def chat():
 
                 msg_email.attach(MIMEText(html_body, 'html'))
 
-                with smtplib.SMTP('smtp.gmail.com', 587) as s:
+                with smtplib.SMTP('smtp.zoho.eu', 587) as s:
                     s.starttls()
                     s.login(os.environ.get('GMAIL_USER'), os.environ.get('GMAIL_PASSWORD'))
                     s.sendmail(os.environ.get('GMAIL_USER'), 'contact@liliwatt.fr', msg_email.as_string())
