@@ -1749,7 +1749,7 @@ def admin_leads():
 
 # ──── ROUTE BLOG NEWSAPI ─────────────────────────────────────
 @app.route('/blog')
-@cache.cached(timeout=3600)  # Cache 1 heure
+@cache.cached(timeout=7200)  # Cache 2 heures — news servies instantanément
 def blog():
     """Page blog dynamique avec articles NewsAPI"""
     try:
@@ -1763,7 +1763,7 @@ def blog():
             'excludeDomains': 'remove.bg'  # Exclure les domaines spam
         }
 
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
 
         data = response.json()
