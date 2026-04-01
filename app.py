@@ -684,9 +684,12 @@ def send_alert_conseiller(data, eco, doc_id=None, facture_id=None):
         with smtplib.SMTP_SSL("smtp.zoho.eu", 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.sendmail(GMAIL_USER, CONSEILLER_EMAIL, msg.as_string())
+            print(f"✅ Email conseiller envoyé avec succès à {CONSEILLER_EMAIL}")
         return True
     except Exception as e:
-        print(f"Erreur email conseiller : {e}")
+        import traceback
+        print(f"❌ Erreur email conseiller : {e}")
+        print(f"❌ Traceback complet : {traceback.format_exc()}")
         return False
 
 def send_contact_email(nom, email, telephone, message, sujet):
